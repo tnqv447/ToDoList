@@ -18,6 +18,30 @@ namespace AppCore.Models
 
         public virtual IList<User> JointUsers { get; set; }
         public virtual IList<Comment> Comments { get; set; }
-        public virtual IList<AttachedFile> AttachedFile { get; set; }
+        public virtual IList<AttachedFile> AttachedFiles { get; set; }
+
+        public ToDoTask() { }
+
+        public ToDoTask(int id, string title, DateTime startDate, DateTime endDate, int userId, STATUS status, SCOPE scope)
+        {
+            Id = id;
+            Title = title;
+            StartDate = startDate;
+            EndDate = endDate;
+            UserId = userId;
+            Status = status;
+            Scope = scope;
+        }
+        public ToDoTask(ToDoTask task) { this.Copy(task);  }
+
+        public void Copy(ToDoTask task){
+            Id = task.Id;
+            Title = task.Title;
+            StartDate = task.StartDate;
+            EndDate = task.EndDate;
+            UserId = task.UserId;
+            Status = task.Status;
+            Scope = task.Scope;
+        }
     }
 }
