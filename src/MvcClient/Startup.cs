@@ -32,7 +32,7 @@ namespace MvcClient
 
             services.AddDbContext<ToDoListContext>(options => options
                 .UseLazyLoadingProxies()
-                .UseSqlite(Configuration.GetConnectionString("Connection"), x => x.MigrationsAssembly("Presentation.Migrations")));
+                .UseSqlite(Configuration.GetConnectionString("Connection"), x => x.MigrationsAssembly("MvcClient")));
 
             services.AddScoped<IUserRepos, UserRepos>();
             services.AddScoped<IJointUserRepos, JointUserRepos>();

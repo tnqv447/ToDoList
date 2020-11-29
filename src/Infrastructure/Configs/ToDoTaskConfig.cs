@@ -14,8 +14,8 @@ namespace Infrastructure.Configs
             builder.Property(m => m.RegisteredUserId).IsRequired();
             
             builder.HasOne(m => m.RegisteredUser)
-                .WithOne(o => o.ToDoTask)
-                .HasForeignKey<ToDoTask>(m => m.RegisteredUserId);
+                .WithMany(o => o.ToDoTasks)
+                .HasForeignKey(m => m.RegisteredUserId);
 
             builder.HasMany(m => m.Comments)
                 .WithOne(o => o.ToDoTask)

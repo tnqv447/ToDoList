@@ -95,10 +95,6 @@ namespace AppCore.Models
         TASK,
         COMMENT,
     }
-    public enum SORT_ORDER
-    {
-        ASCENDING,
-        DESCENDING,
-    }
+    
 
 }

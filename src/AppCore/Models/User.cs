@@ -18,14 +18,22 @@ namespace AppCore.Models
 
         public virtual IList<JointUser> JointUsers { get; set; }
         public virtual IList<DbLog> DbLogs { get; set; }
+        public virtual IList<ToDoTask> ToDoTasks { get; set; }
 
          [NotMapped]
         public string RoleName { get { return EnumConverter.Convert(this.Role); } }
+         [NotMapped]
+        public string StatusName { get { return EnumConverter.Convert(this.Status); } }
 
         public User(){}
         public User(User user)
         {
             this.Copy(user);
+        }
+        public User(User user, int Id)
+        {
+            this.Copy(user);
+            this.Id = Id;
         }
         public User(string name, string phoneNumber, string address, ROLE role, USER_STATUS status, string username, string password)
         {

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AppCore.Models
 {
     public class JointUser
@@ -9,6 +11,11 @@ namespace AppCore.Models
         
         public int ToDoTaskId { get; set; }
         public virtual ToDoTask ToDoTask { get; set; }
+
+        [NotMapped]
+        public string UserName { get { return this.User?.Name ?? ""; } } 
+        [NotMapped]
+        public string TaskTitle { get { return this.ToDoTask?.Title ?? ""; } } 
 
         public JointUser()
         {

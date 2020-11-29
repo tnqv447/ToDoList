@@ -20,7 +20,7 @@ namespace AppCore.Models
         public DateTime EndDate { get; set; }
 
         public int RegisteredUserId { get; set; }
-        public virtual JointUser RegisteredUser { get; set; }
+        public virtual User RegisteredUser { get; set; }
 
         public STATUS Status { get; set; }
         public SCOPE Scope { get; set; }
@@ -48,6 +48,10 @@ namespace AppCore.Models
             Scope = scope;
         }
         public ToDoTask(ToDoTask task) { this.Copy(task);  }
+        public ToDoTask(ToDoTask task, int id) { 
+            this.Copy(task); 
+            this.Id = id; 
+            }
 
         public void Copy(ToDoTask task){
             Title = task.Title;
