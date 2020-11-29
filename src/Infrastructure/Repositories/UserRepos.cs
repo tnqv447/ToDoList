@@ -27,7 +27,7 @@ namespace Infrastructure.Repositories
             entity.Status = status;
             this.Update(null, entity);
 
-            var log = new DbLog(DateTime.Now, ACTION_TARGET.USER, ACTION.CHANGE_STATUS, source.Id, entity.Id, entity.Name, EnumConverter.Convert(status));
+            var log = new DbLog(DateTime.Now, ACTION_TARGET.USER, ACTION.CHANGE_STATUS, source.Id, entity.Id, entity.Name, EnumConverter.Convert(status), null);
             _context.DbLogs.Add(log);
             _context.SaveChanges();
         }

@@ -19,6 +19,7 @@ namespace AppCore.Models
         public int TargetId { get; set; }
         public string TargetName { get; set; }
         public string TargetStatusName { get; set; }
+        public string TargetScopeName { get; set; }
 
         public DbLog()
         {
@@ -29,7 +30,7 @@ namespace AppCore.Models
             this.Copy(log);
         }
 
-        public DbLog(DateTime execDate, ACTION_TARGET actionTarget, ACTION action, int execUserId, int targetId, string targetName, string targetStatusName)
+        public DbLog(DateTime execDate, ACTION_TARGET actionTarget, ACTION action, int execUserId, int targetId, string targetName, string targetStatusName, string targetScopeName)
         {
             ExecDate = execDate;
             ActionTarget = actionTarget;
@@ -38,6 +39,7 @@ namespace AppCore.Models
             TargetId = targetId;
             TargetName = targetName;
             TargetStatusName = targetStatusName;
+            TargetScopeName = targetScopeName;
         }
 
         public void Copy(DbLog log)
@@ -49,7 +51,8 @@ namespace AppCore.Models
             ExecUserId = log.ExecUserId;
             TargetId = log.TargetId;
             TargetName = log.TargetName;
-            TargetStatusName = TargetStatusName;
+            TargetStatusName = log.TargetStatusName;
+            TargetScopeName = log.TargetScopeName;
         }
 
         public override string ToString()
@@ -67,7 +70,8 @@ namespace AppCore.Models
                             case ACTION.ADD : res =  String.Format("đã thêm task {0} [ID: {1}], trang thái {2}", TargetName, TargetId, TargetStatusName); break;
                             case ACTION.DELETE : res = String.Format("đã xóa task {0} [ID: {1}]", TargetName, TargetId); break;
                             case ACTION.UPDATE : res = String.Format("đã cập nhật task {0} [ID: {1}]", TargetName, TargetId); break;
-                            case ACTION.CHANGE_STATUS : res = String.Format("đã thay đổi trạng thái task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
+                            case ACTION.CHANGE_STATUS : res = String.Format("đã thay đổi tiến độ task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
+                            case ACTION.CHANGE_SCOPE : res = String.Format("đã thay đổi phạm vi task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetScopeName); break;
                          }
                         break;
                     }
@@ -81,13 +85,14 @@ namespace AppCore.Models
                         break;
                     }
                 default: {
-                    switch(Action){
+                    switch(Action)
+                    {
                         case ACTION.ADD : res = String.Format("đã thêm user {0} [ID: {1}]", TargetName, TargetId); break;
                         case ACTION.DELETE : res = String.Format("đã xóa user {0} [ID: {1}]", TargetName, TargetId); break;
                         case ACTION.UPDATE : res = String.Format("đã cập nhật user {0} [ID: {1}]", TargetName, TargetId); break;
                         case ACTION.CHANGE_STATUS : res = String.Format("đã thay đổi trạng thái user {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
-                        }
-                        break;
+                    }
+                    break;
                     }
             }
             var template = "[{0}] || " + res;

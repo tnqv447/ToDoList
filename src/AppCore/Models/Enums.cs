@@ -88,12 +88,13 @@ namespace AppCore.Models
         DELETE,
         UPDATE,
         CHANGE_STATUS,
+        CHANGE_SCOPE
     }
     public enum ACTION_TARGET
     {
         USER,
         TASK,
-        COMMENT,
+        COMMENT
     }
     
 
