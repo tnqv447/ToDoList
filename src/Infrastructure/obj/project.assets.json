@@ -1696,6 +1696,10 @@
       "AppCore/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "5.0.0",
+          "System.Linq": "4.3.0"
+        },
         "compile": {
           "bin/placeholder/AppCore.dll": {}
         },

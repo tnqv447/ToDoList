@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Repositories;
+using AppCore.Interfaces;
 
 namespace MvcClient
 {
@@ -26,7 +30,18 @@ namespace MvcClient
         {
             services.AddControllersWithViews();
 
-            
+            services.AddDbContext<ToDoListContext>(options => options
+                .UseLazyLoadingProxies()
+                .UseSqlite(Configuration.GetConnectionString("Connection"), x => x.MigrationsAssembly("Presentation.Migrations")));
+
+            services.AddScoped<IUserRepos, UserRepos>();
+            services.AddScoped<IJointUserRepos, JointUserRepos>();
+            services.AddScoped<IToDoTaskRepos, ToDoTaskRepos>();
+            services.AddScoped<ICommentRepos, CommentRepos>();
+            services.AddScoped<IAttachedFileRepos, AttachedFileRepos>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
