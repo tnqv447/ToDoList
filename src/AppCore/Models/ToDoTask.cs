@@ -38,6 +38,7 @@ namespace AppCore.Models
         public string ScopeName { get { return EnumConverter.Convert(this.Scope); } }
 
         
+        
 
         public ToDoTask() { }
 
