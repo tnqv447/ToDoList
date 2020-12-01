@@ -21,6 +21,8 @@ namespace AppCore.Models
 
         public int RegisteredUserId { get; set; }
         public virtual User RegisteredUser { get; set; }
+        [NotMapped]
+        public string RegisteredUserName { get { return this.RegisteredUser?.Name ?? null; } }
 
         public STATUS Status { get; set; }
         public SCOPE Scope { get; set; }
@@ -34,6 +36,8 @@ namespace AppCore.Models
         
         [NotMapped]
         public string ScopeName { get { return EnumConverter.Convert(this.Scope); } }
+
+        
 
         public ToDoTask() { }
 
