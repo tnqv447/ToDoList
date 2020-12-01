@@ -7,7 +7,6 @@ using AppCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MvcClient.Models;
-
 namespace MvcClient.Controllers
 {
     public class HomeController : Controller
@@ -21,8 +20,10 @@ namespace MvcClient.Controllers
         }
 
         public IActionResult Index()
-        {
-            return View();
+        {   
+            var tasks = _unitOfWork.ToDoTasks.GetAll();
+            var TaskView = new TaskViewModel(tasks);
+            return View(TaskView);
         }
 
         public IActionResult Privacy()

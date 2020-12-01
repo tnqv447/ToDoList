@@ -28,7 +28,8 @@ namespace AppCore.Models
         public virtual IList<JointUser> JointUsers { get; set; }
         public virtual IList<Comment> Comments { get; set; }
         public virtual IList<AttachedFile> AttachedFiles { get; set; }
-
+        [NotMapped]
+        public String RegisteredUserName{get{return this.RegisteredUser?.Name??null;}}
         [NotMapped]
         public string StatusName { get { return EnumConverter.Convert(this.Status); } } 
         
