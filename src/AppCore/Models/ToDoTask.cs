@@ -18,6 +18,8 @@ namespace AppCore.Models
         [Display(Name = "End date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         public DateTime EndDate { get; set; }
+        [NotMapped]
+        public bool isDelayed { get{return DateTime.Compare(DateTime.Today, this.EndDate.Date) > 0 && !Status.Equals( STATUS.DONE);}}
 
         public int RegisteredUserId { get; set; }
         public virtual User RegisteredUser { get; set; }

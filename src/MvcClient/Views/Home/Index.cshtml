@@ -19,10 +19,10 @@
                         </ol>
                     </nav>
                 </div>
-                @* <div class="col-lg-6 col-5 text-right">
-                    <a href="#" class="btn btn-sm btn-neutral">New</a>
-                    <a href="#" class="btn btn-sm btn-neutral">Filters</a>
-                    </div> *@
+                <div class="col-lg-6 col-5 text-right">
+                    <a href="#" class="btn btn-sm btn-neutral">Tạo</a>
+                    @* <a href="#" class="btn btn-sm btn-neutral">Filters</a> *@
+                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -34,7 +34,7 @@
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th scope="col"></th>ID</th>
+                                        <th scope="col">ID</th>
                                         <th scope="col">Tiêu đề</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Người tạo</th>
@@ -51,7 +51,7 @@
                                             <td>@item.StatusName</td>
                                             <td>@item.RegisteredUserName</td>
                                             <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                                            <td class="text-right">@item.ScopeName</td>
+                                            <td>@item.ScopeName</td>
                                         </tr>
                                     }
 
