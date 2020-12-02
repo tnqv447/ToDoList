@@ -26,18 +26,29 @@ namespace MvcClient.Controllers
             return View(TaskView);
         }
 
-        public IActionResult Login()
+        public IActionResult CreateTask()
         {
             return View();
+        }
+
+        public IActionResult Login()
+        {
+            var model = new LoginModel();
+            return View(model);
         }
 
         public IActionResult UserManager()
         {
             var users = _unitOfWork.Users.GetAll();
             // var roles = _unitOfWork.
-            var userManager = new UserManagerModel();
-            userManager.Users = users;
-            return View(userManager);
+            var model = new UserManagerModel();
+            model.Users = users;
+            return View(model);
+        }
+
+        public IActionResult CreateUser()
+        {
+            return View();
         }
 
         public IActionResult Privacy()
