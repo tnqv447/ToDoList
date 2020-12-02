@@ -1,21 +1,20 @@
-﻿@model TaskViewModel
+@model UserManagerModel
 @{
-    ViewData["Title"] = "Trang chủ";
+    ViewData["Title"] = "Quản lý nhân viên";
 }
-
 
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <h6 class="h2 text-white d-inline-block mb-0">Mặc định</h6>
+                    <h6 class="h2 text-white d-inline-block mb-0">Nhân viên</h6>
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                         <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home"><i
                                         class="fas fa-home"></i></a></li>
                             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Mặc định</li>
+                            <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,34 +23,35 @@
                     <a href="#" class="btn btn-sm btn-neutral">Filters</a>
                     </div> *@
             </div>
+
             <div class="row">
                 <div class="col">
                     <div class="card">
                         <div class="card-header border-0">
-                            <h3 class="mb-0">Danh sách công việc</h3>
+                            <h3 class="mb-0">Danh sách nhân viên</h3>
                         </div>
                         <div class="table-responsive">
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th scope="col"></th>ID</th>
-                                        <th scope="col">Tiêu đề</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Họ và tên</th>
+                                        <th scope="col">Vị trí</th>
+                                        <th scope="col">Số điện thoại</th>
+                                        <th scope="col">Địa chỉ</th>
                                         <th scope="col">Trạng thái</th>
-                                        <th scope="col">Người tạo</th>
-                                        <th scope="col">Ngày kết thúc</th>
-                                        <th scope="col">Tình trạng</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
-                                    @foreach (var item in @Model.Tasks)
+                                    @foreach (var item in @Model.Users)
                                     {
                                         <tr>
                                             <th scope="row">@item.Id</th>
-                                            <td class="budget">@item.Title</td>
-                                            <td>@item.StatusName</td>
-                                            <td>@item.RegisteredUserName</td>
-                                            <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                                            <td class="text-right">@item.ScopeName</td>
+                                            <td class="budget">@item.Name</td>
+                                            <td>@item.RoleName</td>
+                                            <td>@item.PhoneNumber</td>
+                                            <td>@item.Address</td>
+                                            <td class="text-right">@item.StatusName</td>
                                         </tr>
                                     }
 

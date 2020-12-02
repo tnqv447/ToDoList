@@ -20,10 +20,24 @@ namespace MvcClient.Controllers
         }
 
         public IActionResult Index()
-        {   
+        {
             var tasks = _unitOfWork.ToDoTasks.GetAll();
             var TaskView = new TaskViewModel(tasks);
             return View(TaskView);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult UserManager()
+        {
+            var users = _unitOfWork.Users.GetAll();
+            // var roles = _unitOfWork.
+            var userManager = new UserManagerModel();
+            userManager.Users = users;
+            return View(userManager);
         }
 
         public IActionResult Privacy()
