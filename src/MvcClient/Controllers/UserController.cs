@@ -27,7 +27,8 @@ namespace MvcClient.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            var model = new UserModel();
+            return View(model);
         }
     }
 }

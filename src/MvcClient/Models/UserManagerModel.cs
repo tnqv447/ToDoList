@@ -7,17 +7,15 @@ namespace MvcClient.Models
     public class UserManagerModel
     {
         public IList<User> Users { get; set; }
-        public User NewUser { get; set; }
-        public IList<string> Roles { get; set; }
+        public IList<ROLE> Roles { get; set; }
+        public string SearchName { get; set; }
         public UserManagerModel()
         {
-            NewUser = new User();
         }
-        public UserManagerModel(IList<User> users, IList<string> roles)
+        public UserManagerModel(IList<User> users, IList<ROLE> roles)
         {
             Users = users;
             Roles = roles;
-            NewUser = new User();
         }
     }
 }
