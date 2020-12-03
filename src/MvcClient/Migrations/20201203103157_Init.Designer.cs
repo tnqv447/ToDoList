@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MvcClient.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    [Migration("20201129144828_Initial")]
-    partial class Initial
+    [Migration("20201203103157_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,9 @@ namespace MvcClient.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("TargetName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TargetScopeName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TargetStatusName")

@@ -88,6 +88,9 @@ namespace MvcClient.Migrations
                     b.Property<string>("TargetName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("TargetScopeName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("TargetStatusName")
                         .HasColumnType("TEXT");
 

@@ -14,7 +14,13 @@ namespace Infrastructure.Configs
 
             builder.HasMany(m => m.DbLogs)
                 .WithOne(o => o.ExecUser)
-                .HasForeignKey(o => o.ExecUserId);
+                .HasForeignKey(o => o.ExecUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(m => m.JointUsers)
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(m => m.Name)
                 .IsRequired()
