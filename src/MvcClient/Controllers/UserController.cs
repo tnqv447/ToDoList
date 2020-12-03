@@ -31,24 +31,31 @@ namespace MvcClient.Controllers
             return View(model);
         }
 
-        // [ValidateAntiForgeryToken]
-        // public IActionResult Create(UserModel model)
-        // {
-        //     // var model = new UserModel();
-        //     // if (ModelState.IsValid){
-        //     //      this._unitOfWork.User.
-        //     //  }
-        //     return View();
-        // }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(UserModel model)
+        {
+            User user = model.User;
+            User source = this._unitOfWork.Users.GetBy(6);
+
+            // MyEnum myEnum = (MyEnum)Enum.Parse(typeof(MyEnum), myString);
+            // (ROLE)Enum.parse(typeof(ROLE), 'WORKER')
+            if (ModelState.IsValid)
+            {
+                this._unitOfWork.Users.Add(source, user);
+            }
+            return View();
+        }
         public IActionResult Detail(int id)
         {
             var model = new UserModel();
-            model.user = this._unitOfWork.Users.GetBy(id);
+            model.User = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
-        public IActionResult Update()
+        public IActionResult Update(int id)
         {
             var model = new UserModel();
+            model.User = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
     }
