@@ -159,15 +159,25 @@
                                                         <th scope="col"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody class='list'>
                                                     @foreach (var user in Model.TaskDetail.JointUsers)
                                                     {
                                                         <tr>
-                                                            <td>
+                                                            <td id="name_@user.UserId">
                                                                 @user.UserName
                                                             </td>
-                                                            <td>
+                                                            <td id="role_@user.UserId">
                                                                 @user.User.Role
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <a id="@user.UserId"
+                                                                    class="btn btn-icon btn-danger remove_user">
+                                                                    <span class="btn-inner--icon">
+                                                                        <i class="ni ni-fat-remove"
+                                                                            style="color:#ffffff"></i></span>
+                                                                    <span class="btn-inner--text"
+                                                                        style="color:#ffffff">Xóa</span>
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     }
@@ -175,7 +185,7 @@
 
                                             </table>
 
-                                            <div class="input-group">
+                                            <div class="input-group" style="margin-top: 10px;">
                                                 <select class="form-control" id="task-joint-users"
                                                     asp-for="@Model.jointUser" asp-items="@Model.UserNotJointed">
 
@@ -272,6 +282,9 @@
 
             var str = '<tr><td>' + txt +
                 '</td><td>' + label +
+                '</td><td class="text-right"><a id="' + val + '" class="btn btn-icon btn-danger remove_user">' +
+                '<span class="btn-inner--icon"><i class="ni ni-fat-remove"style="color:#ffffff"></i></span><span class="btn-inner--text"' +
+                'style="color:#ffffff">Xóa</span>' +
                 '</td></tr>';
             $('table> tbody:last').append(str);
             $('option:selected', '#task-joint-users').remove();
@@ -279,7 +292,11 @@
                 $('#addUser').prop('disabled', true);
                 $('#task-joint-users').prop('disabled', true);
             }
-        })
+        });
+        $('.remove_user').click(function () {
+            var id = $(this).attr("id");
+            alert(id);
+        });
     });
 
 </script>

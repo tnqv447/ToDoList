@@ -20,10 +20,12 @@
                 <td>@item.RegisteredUserName</td>
                 <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                 <td>@item.ScopeName</td>
-                <td class="text-right">
-                    <a id="@item.Id" class="btn btn-sm btn-icon-only text-light" asp-action="TaskDetail"
-                        asp-controller="home" asp-route-taskId=@item.Id>
-                        <i class="ni ni-active-40"></i>
+                <td>
+                    <a id="@item.Id" class="btn btn-icon btn-info" asp-action="TaskDetail" asp-controller="home"
+                        asp-route-taskId=@item.Id>
+                        <span class="btn-inner--icon">
+                            <i class="ni ni-settings"></i></span>
+                        <span class="btn-inner--text">Chi tiết</span>
                     </a>
                 </td>
             </tr>
