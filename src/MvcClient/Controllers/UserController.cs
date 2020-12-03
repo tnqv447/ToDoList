@@ -30,5 +30,22 @@ namespace MvcClient.Controllers
             var model = new UserModel();
             return View(model);
         }
+
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(UserModel model)
+        {
+            var model = new UserModel();
+            return View(model);
+        }
+        public IActionResult Detail()
+        {
+            var model = new UserModel();
+            return View(model);
+        }
+        public IActionResult Update()
+        {
+            var model = new UserModel();
+            return View(model);
+        }
     }
 }
