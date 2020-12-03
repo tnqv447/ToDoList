@@ -9,7 +9,8 @@ namespace MvcClient.Models
     {
         public IList<ToDoTask> Tasks { get; set; }
         public ToDoTask TaskDetail { get; set; }
-
+        public SelectList UserNotJointed { get; set; }
+        public JointUser jointUser { get; set; }
         public TaskViewModel()
         {
 

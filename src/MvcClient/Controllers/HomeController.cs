@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using MvcClient.Models;
 namespace MvcClient.Controllers
@@ -35,8 +36,12 @@ namespace MvcClient.Controllers
         public IActionResult TaskDetail(int taskId)
         {
             var task = _unitOfWork.ToDoTasks.GetBy(taskId);
+            var users = _unitOfWork.Users.GetAll();
+            var joint_users = task.JointUsers.Select(item => item.User).ToList();
             var view = new TaskViewModel();
             view.TaskDetail = task;
+            var user_not_joints = users.Except(joint_users).ToList();
+            view.UserNotJointed = new SelectList(user_not_joints, "Id", "Name", user_not_joints.FirstOrDefault(), "Role");
             return View(view);
         }
         public IActionResult Privacy()

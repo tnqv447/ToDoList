@@ -6,7 +6,43 @@
 <div class="header bg-primary pb-6">
     <div class="container-fluid mt--6">
         <div class="row">
-            <div class="col-xl-8 order-xl-1">
+            <div class="col-xl-5 order-xl-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h3 class="mb-0">
+                                    Bình luận
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chats" id="chats">
+                            @foreach (var cmt in Model.TaskDetail.Comments)
+                            {
+
+                                <p style="float:left;font-size:13px;font-weight:500">@cmt.UserPostName </p>
+                                <span style="float:right;font-size:13px">@cmt.PostDate.ToString("dd/MM/yyyy")</span>
+                                <div style="clear:both"></div>
+                                <p class="botMsg">@cmt.Content</p>
+                                <div class="clearfix">
+
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="keypad">
+                            <textarea id="userInput" placeholder="Hãy nhắn ở đây..." class="userInput"></textarea>
+                            <div id="sendButton">
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-7 order-xl-1">
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -42,7 +78,8 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="task-description">Mô tả chi tiết công việc</label>
+                                            <label class="form-control-label" for="task-description">Mô tả chi tiết công
+                                                việc</label>
                                             <textarea class="form-control" id="task-description" rows="3">
                                                 @Model.TaskDetail.Description
                                             </textarea>
@@ -67,8 +104,7 @@
                                             <select class="form-control" id="task-scope"
                                                 asp-for="@Model.TaskDetail.Scope"
                                                 asp-items="Html.GetEnumSelectList<SCOPE>()">
-                                                <option value="2" disabled></option>
-                                            
+
                                             </select>
                                         </div>
                                     </div>
@@ -99,10 +135,13 @@
                                         <div class="form-group">
                                             @if (Model.TaskDetail.isDelayed)
                                             {
-                                                <label id="check-task" class="form-control-label" style="color:red">Công việc đã quá hạn</label>
+                                                <label id="check-task" class="form-control-label" style="color:red">Công
+                                                    việc đã quá hạn</label>
                                             }
-                                            else{
-                                                <label id="check-task" class="form-control-label" style="color:green">Công việc đang trong thời gian tiến hành</label>
+                                            else
+                                            {
+                                                <label id="check-task" class="form-control-label" style="color:green">Công
+                                                    việc đang trong thời gian tiến hành</label>
                                             }
                                         </div>
                                     </div>
@@ -110,15 +149,81 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="task-joint-users">Danh sách thành viên tham gia</label>
-                                            <label>asd</label>
-                                        </div>    
-                                        @foreach(var user in Model.TaskDetail.JointUsers){
-                                            <label>
-                                                user
-                                            </label>
-                                        }
-                                        
+                                            <label class="form-control-label" for="task-joint-users">Danh sách thành
+                                                viên tham gia</label>
+                                            <table class="table align-items-center table-flush">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th scope="col">Họ và tên</th>
+                                                        <th scope="col">Chức vụ</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var user in Model.TaskDetail.JointUsers)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @user.UserName
+                                                            </td>
+                                                            <td>
+                                                                @user.User.Role
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+
+                                            </table>
+
+                                            <div class="input-group">
+                                                <select class="form-control" id="task-joint-users"
+                                                    asp-for="@Model.jointUser" asp-items="@Model.UserNotJointed">
+
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary" id="addUser"
+                                                        type="button">Chọn</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Danh sách tập tin</label>
+
+
+                                            @if (Model.TaskDetail.AttachedFiles.Count() == 0)
+                                            {
+                                                <input class="form-control form-control-flush"
+                                                    style="background-color:#ffffff;font-style: italic;" disabled
+                                                    value="Chưa có tập tin nào">
+                                            }
+                                            else
+                                            {
+
+
+                                                <ul>
+                                                    @foreach (var file in Model.TaskDetail.AttachedFiles)
+                                                    {
+                                                        <li>
+                                                            <a href="@file.FileUrl">@file.FileUrl.Split(".")[0]</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="task-file" lang="en">
+                                            <label class="custom-file-label" for="task-file">Chọn</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -136,28 +241,45 @@
             autoclose: true,
             format: 'dd/mm/yyyy'
         });
-        $('#task-end-date').change(function(){
+        $('#task-end-date').change(function () {
             var d = new Date();
 
-            var month = d.getMonth()+1;
+            var month = d.getMonth() + 1;
             var day = d.getDate();
 
-            var output = (day<10 ? '0' : '') + day + '/' +
-                (month<10 ? '0' : '') + month + '/' +
+            var output = (day < 10 ? '0' : '') + day + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
                 d.getFullYear();
             var date_selected = $(this).val();
-            alert(output);
-            if(date_selected >= output){
+
+            if (new Date(output) <= new Date(date_selected)) {
                 var temp = "Công việc đang trong thời gian tiến hành";
                 $("#check-task").text(temp);
-                $("#check-task").css("color","green");
+                $("#check-task").css("color", "green");
             }
-            else{
+            else {
+                alert("false");
                 var temp = "Công việc đã quá hạn";
                 $("#check-task").text(temp);
-                $("#check-task").css("color","red");
+                $("#check-task").css("color", "red");
             }
         });
+        $('#addUser').click(function () {
+
+            var val = $('#task-joint-users option:selected').val();
+            var txt = $('#task-joint-users option:selected').text();
+            var label = $('#task-joint-users option:selected').parent().attr('label');
+
+            var str = '<tr><td>' + txt +
+                '</td><td>' + label +
+                '</td></tr>';
+            $('table> tbody:last').append(str);
+            $('option:selected', '#task-joint-users').remove();
+            if ($('#task-joint-users').has('option').length == 0) {
+                $('#addUser').prop('disabled', true);
+                $('#task-joint-users').prop('disabled', true);
+            }
+        })
     });
 
 </script>
