@@ -5,7 +5,7 @@ namespace MvcClient.Models
 {
     public class UserModel
     {
-        public User user { get; set; }
+        public User User { get; set; }
         public IList<ROLE> Roles { get; set; }
     }
 }

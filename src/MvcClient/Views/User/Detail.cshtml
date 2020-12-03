@@ -36,14 +36,14 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-name">Họ và tên</label>
-                                            <p class="card-text">@Model.user.Name</p>
+                                            <p class="card-text">@Model.User.Name</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-phone">Số điện
                                                 thoại</label>
-                                            <p class="card-text">@Model.user.PhoneNumber</p>
+                                            <p class="card-text">@Model.User.PhoneNumber</p>
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-address">Địa chỉ</label>
-                                            <p class="card-text">@Model.user.Address</p>
+                                            <p class="card-text">@Model.User.Address</p>
                                         </div>
                                     </div>
                                 </div>
@@ -65,20 +65,20 @@
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-username">Tên tài
                                                 khoản</label>
-                                            <p class="card-text">@Model.user.Username</p>
+                                            <p class="card-text">@Model.User.Username</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-name">Vị trí</label>
-                                            <p class="card-text">@Model.user.RoleName</p>
+                                            <p class="card-text">@Model.User.RoleName</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-username">Trạng
                                                 thái</label>
-                                            <p class="card-text">@Model.user.StatusName</p>
+                                            <p class="card-text">@Model.User.StatusName</p>
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody class="list">
-                                                        @foreach (var item in @Model.user.ToDoTasks)
+                                                        @foreach (var item in @Model.User.ToDoTasks)
                                                         {
                                                             <tr>
                                                                 <th scope="row">@item.Id</th>
@@ -148,7 +148,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody class="list">
-                                                        @foreach (var item in @Model.user.JointUsers)
+                                                        @foreach (var item in @Model.User.JointUsers)
                                                         {
                                                             <tr>
                                                                 <th scope="row">@item.Id</th>
