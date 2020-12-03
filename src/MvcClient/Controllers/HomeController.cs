@@ -7,7 +7,6 @@ using AppCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MvcClient.Models;
-
 namespace MvcClient.Controllers
 {
     public class HomeController : Controller
@@ -22,11 +21,27 @@ namespace MvcClient.Controllers
 
         public IActionResult Index()
         {
+            var tasks = _unitOfWork.ToDoTasks.GetAll();
+            var TaskView = new TaskViewModel(tasks);
+            return View(TaskView);
+        }
+
+        public IActionResult Create()
+        {
             return View();
         }
 
+        [Route("Home/TaskDetail/{taskId:int}")]
+        public IActionResult TaskDetail(int taskId)
+        {
+            var task = _unitOfWork.ToDoTasks.GetBy(taskId);
+            var view = new TaskViewModel();
+            view.TaskDetail = task;
+            return View(view);
+        }
         public IActionResult Privacy()
         {
+
             return View();
         }
 

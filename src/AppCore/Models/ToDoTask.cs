@@ -18,11 +18,12 @@ namespace AppCore.Models
         [Display(Name = "End date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         public DateTime EndDate { get; set; }
+        [NotMapped]
+        public bool isDelayed { get{return DateTime.Compare(DateTime.Today, this.EndDate.Date) > 0 && !Status.Equals( STATUS.DONE);}}
 
         public int RegisteredUserId { get; set; }
         public virtual User RegisteredUser { get; set; }
-        [NotMapped]
-        public string RegisteredUserName { get { return this.RegisteredUser?.Name ?? null; } }
+        
 
         public STATUS Status { get; set; }
         public SCOPE Scope { get; set; }
@@ -30,13 +31,15 @@ namespace AppCore.Models
         public virtual IList<JointUser> JointUsers { get; set; }
         public virtual IList<Comment> Comments { get; set; }
         public virtual IList<AttachedFile> AttachedFiles { get; set; }
-
+        [NotMapped]
+        public String RegisteredUserName{get{return this.RegisteredUser?.Name??null;}}
         [NotMapped]
         public string StatusName { get { return EnumConverter.Convert(this.Status); } } 
         
         [NotMapped]
         public string ScopeName { get { return EnumConverter.Convert(this.Scope); } }
 
+        
         
 
         public ToDoTask() { }
