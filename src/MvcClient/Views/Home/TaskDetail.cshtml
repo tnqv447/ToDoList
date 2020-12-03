@@ -1,0 +1,101 @@
+@model TaskViewModel
+@using AppCore.Models
+@{
+    ViewData["Title"] = "Chi tiết công việc";
+}
+<div class="header bg-primary pb-6">
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col-xl-8 order-xl-1">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h3 class="mb-0">
+                                    @Model.TaskDetail.Id - @Model.TaskDetail.Title
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="task-title">Tiêu đề</label>
+                                            <input type="text" id="task-title" class="form-control" placeholder=""
+                                                value="@Model.TaskDetail.Title">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="task-registered-name">Người tạo</label>
+                                            <input type="text" id="task-registered-name" class="form-control form-control-flush" placeholder=""
+                                                value="@Model.TaskDetail.RegisteredUserName" style="background-color:#ffffff" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="task-description">Ghi chú</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" >
+                                                @Model.TaskDetail.Description
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="task-status">Tình trạng</label>
+                                            <select class="form-control" id="task-status" asp-for="@Model.TaskDetail.Status" asp-items="Html.GetEnumSelectList<STATUS>()">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="task-scope">Trạng thái</label>
+                                            <select class="form-control" id="task-scope" asp-for="@Model.TaskDetail.Scope" asp-items="Html.GetEnumSelectList<SCOPE>()">
+                                                @* <option selected="selected" value="@Model.TaskDetail.Scope"></option> *@
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="task-start-date">Ngày tạo</label>
+                                            @{
+                                                string start_day = Model.TaskDetail.StartDate.ToString("dd/MM/yyyy");
+                                                string end_day = Model.TaskDetail.EndDate.ToString("dd/MM/yyyy");
+                                            }
+                                            <input class="form-control form-control-flush date-picker-format" type="text" style="background-color:#ffffff" value="@start_day" id="task-start-date" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="task-end-day">Ngày kết thúc</label>
+                                            <input class="form-control form-control date-picker-format"  style="background-color:#ffffff" value="@end_day" id="task-end-date" >
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script >
+    $('.date-picker-format').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy' 
+    });
+</script>

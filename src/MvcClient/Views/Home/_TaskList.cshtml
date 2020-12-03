@@ -1,0 +1,33 @@
+<table class="table align-items-center table-flush">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Tiêu đề</th>
+            <th scope="col">Tình trạng</th>
+            <th scope="col">Người tạo</th>
+            <th scope="col">Ngày kết thúc</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody class="list">
+        @foreach (var item in @Model.Tasks)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td class="budget">@item.Title</td>
+                <td>@item.StatusName</td>
+                <td>@item.RegisteredUserName</td>
+                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.ScopeName</td>
+                <td class="text-right">
+                    <a id="@item.Id" class="btn btn-sm btn-icon-only text-light" asp-action="TaskDetail"
+                        asp-controller="home" asp-route-taskId=@item.Id>
+                        <i class="ni ni-active-40"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
