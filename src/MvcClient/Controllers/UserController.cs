@@ -31,15 +31,19 @@ namespace MvcClient.Controllers
             return View(model);
         }
 
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(UserModel model)
+        // [ValidateAntiForgeryToken]
+        // public IActionResult Create(UserModel model)
+        // {
+        //     // var model = new UserModel();
+        //     // if (ModelState.IsValid){
+        //     //      this._unitOfWork.User.
+        //     //  }
+        //     return View();
+        // }
+        public IActionResult Detail(int id)
         {
             var model = new UserModel();
-            return View(model);
-        }
-        public IActionResult Detail()
-        {
-            var model = new UserModel();
+            model.user = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
         public IActionResult Update()

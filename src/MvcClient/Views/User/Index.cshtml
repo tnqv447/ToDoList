@@ -55,10 +55,11 @@
                                             <td>@item.PhoneNumber</td>
                                             <td>@item.StatusName</td>
                                             <td>
-                                                <a class="btn btn-info" asp-action="Create" asp-controller="User">
+                                                <a class="btn btn-info" asp-route-id="@item.Id" asp-action="Detail"
+                                                    asp-controller="User">
                                                     <i class="ni ni-single-02"></i>
                                                 </a>
-                                                <a class="btn btn-warning" asp-action="Create" asp-controller="User">
+                                                <a class="btn btn-warning" asp-action="Update" asp-controller="User">
                                                     <i class="ni ni-settings"></i>
                                                 </a>
                                             </td>
