@@ -26,8 +26,22 @@ namespace MvcClient.Controllers
             return View(TaskView);
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Route("Home/TaskDetail/{taskId:int}")]
+        public IActionResult TaskDetail(int taskId)
+        {
+            var task = _unitOfWork.ToDoTasks.GetBy(taskId);
+            var view = new TaskViewModel();
+            view.TaskDetail = task;
+            return View(view);
+        }
         public IActionResult Privacy()
         {
+
             return View();
         }
 
