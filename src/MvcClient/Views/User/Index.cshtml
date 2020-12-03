@@ -41,8 +41,8 @@
                                         <th scope="col">Họ và tên</th>
                                         <th scope="col">Vị trí</th>
                                         <th scope="col">Số điện thoại</th>
-                                        <th scope="col">Địa chỉ</th>
                                         <th scope="col">Trạng thái</th>
+                                        <th scope="col">Hoạt động</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
@@ -53,8 +53,16 @@
                                             <td class="budget">@item.Name</td>
                                             <td>@item.RoleName</td>
                                             <td>@item.PhoneNumber</td>
-                                            <td>@item.Address</td>
                                             <td>@item.StatusName</td>
+                                            <td>
+                                                <a class="btn btn-info" asp-route-id="@item.Id" asp-action="Detail"
+                                                    asp-controller="User">
+                                                    <i class="ni ni-single-02"></i>
+                                                </a>
+                                                <a class="btn btn-warning" asp-action="Update" asp-controller="User">
+                                                    <i class="ni ni-settings"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
 
