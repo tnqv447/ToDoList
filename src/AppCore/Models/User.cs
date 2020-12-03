@@ -20,9 +20,9 @@ namespace AppCore.Models
         public virtual IList<DbLog> DbLogs { get; set; }
         public virtual IList<ToDoTask> ToDoTasks { get; set; }
 
-         [NotMapped]
+        [NotMapped]
         public string RoleName { get { return EnumConverter.Convert(this.Role); } }
-         [NotMapped]
+        [NotMapped]
         public string StatusName { get { return EnumConverter.Convert(this.Status); } }
 
         public User(){}
