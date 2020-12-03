@@ -43,6 +43,7 @@ namespace MvcClient {
 
             services.AddScoped<ISearchSortService, SearchSortService>();
             services.AddScoped<IAnalysisService, AnalysisService>();
+            services.AddScoped<ILoginService, LoginService>();
 
         }
 

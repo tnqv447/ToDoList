@@ -15,19 +15,23 @@ namespace Infrastructure.Configs
             
             builder.HasOne(m => m.RegisteredUser)
                 .WithMany(o => o.ToDoTasks)
-                .HasForeignKey(m => m.RegisteredUserId);
+                .HasForeignKey(m => m.RegisteredUserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(m => m.Comments)
                 .WithOne(o => o.ToDoTask)
-                .HasForeignKey(o => o.ToDoTaskId);
+                .HasForeignKey(o => o.ToDoTaskId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(m => m.JointUsers)
                 .WithOne(o => o.ToDoTask)
-                .HasForeignKey(o => o.ToDoTaskId);
+                .HasForeignKey(o => o.ToDoTaskId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(m => m.AttachedFiles)
                 .WithOne(o => o.ToDoTask)
-                .HasForeignKey(o => o.ToDoTaskId);
+                .HasForeignKey(o => o.ToDoTaskId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(m => m.Title)
                 .IsRequired()

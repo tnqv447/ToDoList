@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MvcClient.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,7 +38,8 @@ namespace MvcClient.Migrations
                     ExecUserId = table.Column<int>(type: "INTEGER", nullable: false),
                     TargetId = table.Column<int>(type: "INTEGER", nullable: false),
                     TargetName = table.Column<string>(type: "TEXT", nullable: true),
-                    TargetStatusName = table.Column<string>(type: "TEXT", nullable: true)
+                    TargetStatusName = table.Column<string>(type: "TEXT", nullable: true),
+                    TargetScopeName = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

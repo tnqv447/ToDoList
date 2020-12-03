@@ -58,6 +58,7 @@ namespace Infrastructure
                         STATUS.NEW,
                         SCOPE.PUBLIC)
                 );
+                // if(!context.)
                 context.SaveChanges();
             }
             if (!context.JointUsers.Any())
