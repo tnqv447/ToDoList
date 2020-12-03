@@ -46,9 +46,10 @@ namespace MvcClient.Controllers
             model.user = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
-        public IActionResult Update()
+        public IActionResult Update(int id)
         {
             var model = new UserModel();
+            model.user = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
     }
