@@ -86,6 +86,15 @@ namespace Infrastructure
                 );
                 context.SaveChanges();
             }
+            if (!context.AttachedFiles.Any())
+            {
+                context.AttachedFiles.AddRange(
+                    new AttachedFile(1, "src\\MvcClient\\Files\\ttt.txt"),
+                    new AttachedFile(2, "src\\MvcClient\\Files\\zzz.txt"),
+                    new AttachedFile(3, "src\\MvcClient\\Files\\abc.txt")
+                );
+                context.SaveChanges();
+            }
         }
     }
 }
