@@ -84,6 +84,16 @@
                                 </div>
                             </div>
                             <hr class="my-4" />
+                            <idv class="row">
+                                <form asp-action="Active" contro method="POST" style="display: inline;">
+                                    <input type="hidden" asp-for="User.Id" />
+                                    <button type="submit" class="btn btn-xs btn-primary">Kích hoạt</button>
+                                </form>
+                                <form asp-action="Disable" contro method="POST" style="display: inline;">
+                                    <input type="hidden" asp-for="User.Id" />
+                                    <button type="submit" class="btn btn-xs btn-danger">Khóa</button>
+                                </form>
+                            </idv>
                         </div>
                     </div>
                 </div>

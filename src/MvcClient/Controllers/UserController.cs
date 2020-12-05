@@ -3,6 +3,7 @@ using AppCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MvcClient.Models;
+using System;
 
 namespace MvcClient.Controllers
 {
@@ -10,11 +11,15 @@ namespace MvcClient.Controllers
     {
         private readonly ILogger<User> _logger;
         private readonly IUnitOfWork _unitOfWork;
+
+        private readonly User source;
         public UserController(IUnitOfWork unitOfWork,
                               ILogger<User> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+
+            source = this._unitOfWork.Users.GetBy(6);
         }
 
         public IActionResult Index()
@@ -36,7 +41,6 @@ namespace MvcClient.Controllers
         public IActionResult Create(UserModel model)
         {
             User user = model.User;
-            User source = this._unitOfWork.Users.GetBy(6);
 
             // MyEnum myEnum = (MyEnum)Enum.Parse(typeof(MyEnum), myString);
             // (ROLE)Enum.parse(typeof(ROLE), 'WORKER')
@@ -44,7 +48,7 @@ namespace MvcClient.Controllers
             {
                 this._unitOfWork.Users.Add(source, user);
             }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult Detail(int id)
         {
@@ -57,6 +61,43 @@ namespace MvcClient.Controllers
             var model = new UserModel();
             model.User = this._unitOfWork.Users.GetBy(id);
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(UserModel model)
+        {
+            User user = model.User;
+
+            User oldUser = this._unitOfWork.Users.GetBy(user.Id);
+            oldUser.Name = user.Name;
+            oldUser.PhoneNumber = user.PhoneNumber;
+            oldUser.Address = user.Address;
+            oldUser.Role = user.Role;
+            oldUser.Status = user.Status;
+
+            if (ModelState.IsValid)
+            {
+                this._unitOfWork.Users.Update(source, oldUser);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Disable(int id)
+        {
+            User user = this._unitOfWork.Users.GetBy(id);
+            this._unitOfWork.Users.Disable(source, user);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Active(int id)
+        {
+            Console.WriteLine("aaafedfd " + id);
+            User user = this._unitOfWork.Users.GetBy(id);
+            this._unitOfWork.Users.Activate(source, user);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
