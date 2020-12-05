@@ -27,7 +27,7 @@ namespace Infrastructure.Repositories {
             task.Status = status;
             this.Update (null, task);
 
-            var log = new DbLog (DateTime.Now, ACTION_TARGET.TASK, ACTION.CHANGE_STATUS, source.Id, task.Id, task.Title, EnumConverter.Convert (status), null);
+            var log = new DbLog (DateTime.Now, ACTION_TARGET.TASK, ACTION.CHANGE_STATUS, CHANGE_FIELD.TITLE, source.Id, task.Id, task.Title, EnumConverter.Convert (status), null);
             _context.DbLogs.Add (log);
             _context.SaveChanges ();
         }
@@ -42,7 +42,7 @@ namespace Infrastructure.Repositories {
             task.Scope = scope;
             this.Update (null, task);
 
-            var log = new DbLog (DateTime.Now, ACTION_TARGET.TASK, ACTION.CHANGE_SCOPE, source.Id, task.Id, task.Title, null, EnumConverter.Convert (scope));
+            var log = new DbLog (DateTime.Now, ACTION_TARGET.TASK, ACTION.CHANGE_SCOPE, CHANGE_FIELD.TITLE, source.Id, task.Id, task.Title, null, EnumConverter.Convert (scope));
             _context.DbLogs.Add (log);
             _context.SaveChanges ();
         }

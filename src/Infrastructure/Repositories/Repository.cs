@@ -41,7 +41,7 @@ namespace Infrastructure.Repositories
             return tracked.Entity;
         }
 
-        public void Update(User source, T entity)
+        public void Update(User source, T entity, CHANGE_FIELD field = CHANGE_FIELD.NONE)
         {
             
             _context.Set<T>().Update(entity);
@@ -51,6 +51,7 @@ namespace Infrastructure.Repositories
                 var log = new DbLog();
                 log.ExecUserId = source.Id;
                 log.Action = ACTION.UPDATE;
+                log.ChangeField = field;
 
                 this.Logging(log, entity);
             }
@@ -87,10 +88,15 @@ namespace Infrastructure.Repositories
                     var temp = entity as User;
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Name;
-                }else{
+                }else if(typeof(T).Equals(typeof(ToDoTask))){
                     var temp = entity as ToDoTask;
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
+                }else if(typeof(T).Equals(typeof(JointUser))){
+                    var temp = (entity as JointUser).ToDoTask;
+                    log.TargetId = temp.Id;
+                    log.TargetName = temp.Title;
+                    log.ChangeField = CHANGE_FIELD.JOINT_USERS;
                 }
             }
             _context.Set<DbLog>().Add(log);

@@ -8,7 +8,7 @@ namespace AppCore.Interfaces
          IList<T> GetAll();
         T GetBy(int id);
         T Add(User source, T entity);
-        void Update(User source, T entity);
+        void Update(User source, T entity, CHANGE_FIELD field = CHANGE_FIELD.NONE);
         void Delete(User source, T entity);
 
         bool Exists(int id);

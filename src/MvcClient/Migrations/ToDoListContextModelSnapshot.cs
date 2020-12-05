@@ -76,6 +76,9 @@ namespace MvcClient.Migrations
                     b.Property<int>("ActionTarget")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ChangeField")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("ExecDate")
                         .HasColumnType("TEXT");
 
