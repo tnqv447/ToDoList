@@ -67,6 +67,14 @@ namespace AppCore.Models
             else res = String.Format("Quản lí {0} [ID: {1}] ", ExecUserName, ExecUserId);
             
             switch(ActionTarget){
+                case ACTION_TARGET.JOIN_USERS:{
+                        res += String.Format("đã cập nhật <Danh sách người tham gia> trong task {0} [ID: {1}]", TargetName, TargetId);
+                        break;
+                    }
+                case ACTION_TARGET.ATTACHED_FILES:{
+                        res += String.Format("đã cập nhật <File đính kèm> trong task {0} [ID: {1}]", TargetName, TargetId);
+                        break;
+                    }
                 case ACTION_TARGET.TASK: {
                         switch(Action){
                             case ACTION.ADD : res +=  String.Format("đã thêm task {0} [ID: {1}], trang thái {2}", TargetName, TargetId, TargetStatusName); break;
@@ -78,7 +86,6 @@ namespace AppCore.Models
                                     case CHANGE_FIELD.TIME: field = "<Thời hạn> "; break;
                                     case CHANGE_FIELD.DESCRIPTION: field = "<Mô tả> "; break;
                                     case CHANGE_FIELD.REGISTERED_USER: field = "<Người thực hiện chính> "; break;
-                                    case CHANGE_FIELD.JOINT_USERS: field = "<Danh sách người tham gia> "; break;
                                     default:  break;
                                 }
                                 res += String.Format("đã cập nhật {0}trong task {1} [ID: {2}]", field, TargetName, TargetId);
@@ -117,7 +124,10 @@ namespace AppCore.Models
             if(type.Equals(typeof(DbLog))) check = false;
             else if(type.Equals(typeof(Comment))) ActionTarget = ACTION_TARGET.COMMENT;
             else if(type.Equals(typeof(User))) ActionTarget = ACTION_TARGET.USER;
-            else ActionTarget = ACTION_TARGET.TASK;
+            else if(type.Equals(typeof(ToDoTask))) ActionTarget = ACTION_TARGET.TASK;
+            else if(type.Equals(typeof(JointUser))) ActionTarget = ACTION_TARGET.JOIN_USERS;
+            else if(type.Equals(typeof(AttachedFile))) ActionTarget = ACTION_TARGET.ATTACHED_FILES;
+            else check = false;
 
             return check;
         }
