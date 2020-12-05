@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using AppCore.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -10,6 +11,7 @@ namespace MvcClient.Models
         public IList<ToDoTask> Tasks { get; set; }
         public ToDoTask TaskDetail { get; set; }
         public SelectList UserNotJointed { get; set; }
+        public SelectList Users { get; set; }
         public JointUser jointUser { get; set; }
         public TaskViewModel()
         {
@@ -21,5 +23,22 @@ namespace MvcClient.Models
         }
         // public IList<User> Users { get;set;}
 
+    }
+
+    public enum Scope
+    {
+        [Display(Name = "Public")]
+        PUBLIC,
+        [Display(Name = "Private")]
+        PRIVATE
+    }
+    public enum Status
+    {
+        [Display(Name = "Mới")]
+        NEW,
+        [Display(Name = "Đang tiến hành")]
+        ON_PROGRESS,
+        [Display(Name = "Đã hoàn thành")]
+        DONE
     }
 }

@@ -47,6 +47,9 @@ namespace MvcClient
 
             services.AddScoped<ISearchSortService, SearchSortService>();
             services.AddScoped<IAnalysisService, AnalysisService>();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             // services.AddScoped<ILoginService, LoginService>();
 
         }

@@ -1,9 +1,16 @@
 @model TaskViewModel
-@using AppCore.Models
 @{
     ViewData["Title"] = "Chi tiết công việc";
 }
+
 <div class="header bg-primary pb-6">
+    <div style="display: none;z-index:1" class="alert alert-success alert-dismissible" id="success" role="alert">
+        <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+        <span class="alert-text"><strong>Cập nhật thành công!</strong></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container-fluid mt--6">
         <div class="row">
             <div class="col-xl-5 order-xl-2">
@@ -18,27 +25,45 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="chats" id="chats">
-                            @foreach (var cmt in Model.TaskDetail.Comments)
-                            {
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="chats" id="chats">
 
-                                <p style="float:left;font-size:13px;font-weight:500">@cmt.UserPostName </p>
-                                <span style="float:right;font-size:13px">@cmt.PostDate.ToString("dd/MM/yyyy")</span>
-                                <div style="clear:both"></div>
-                                <p class="botMsg">@cmt.Content</p>
-                                <div class="clearfix">
+                                        @foreach (var cmt in Model.TaskDetail.Comments)
+                                        {
+                                            <div>
+                                                <span style="font-size:16px;font-weight:600">@cmt.UserPostName </span>
+                                                <span
+                                                    style="padding-left:10px;font-size:13px">@cmt.PostDate.ToString("dd/MM/yyyy")
+                                                </span>
+                                            </div>
+                                            <p class="botMsg">@cmt.Content</p>
+                                            <div class="clearfix">
+                                            </div>
+                                        }
 
+                                    </div>
                                 </div>
-                            }
-
-                        </div>
-
-                        <div class="keypad">
-                            <textarea id="userInput" placeholder="Hãy nhắn ở đây..." class="userInput"></textarea>
-                            <div id="sendButton">
-                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
                             </div>
+                            <div class="row" style="margin-top:10px">
+                                <div class="col-lg-12">
+                                    <div class="input-group mb-3">
+                                        <textarea id="userInput" placeholder="Hãy nhắn ở đây..."
+                                            class="form-control form-control-sm form-controll-flush"
+                                            style="resize:none"></textarea>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-small" id="sendButton">
+                                                <span class="btn-inner--icon"><i class="ni ni-send"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -48,8 +73,9 @@
                         <div class="row align-items-center">
                             <div class="col-8">
                                 <h3 class="mb-0">
-                                    @Model.TaskDetail.Id - @Model.TaskDetail.Title
+                                    @Model.TaskDetail.Id - <span id="text_title">@Model.TaskDetail.Title</span>
                                 </h3>
+                                <input type='hidden' value="@Model.TaskDetail.Id" id="task_id">
                             </div>
                         </div>
                     </div>
@@ -60,18 +86,18 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="task-title">Tiêu đề</label>
-                                            <input type="text" id="task-title" class="form-control" placeholder=""
-                                                value="@Model.TaskDetail.Title">
+                                            <input type="text" id="task-title" class="form-control form-control-muted"
+                                                placeholder="" value="@Model.TaskDetail.Title">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="task-registered-name">Người
-                                                tạo</label>
-                                            <input type="text" id="task-registered-name"
-                                                class="form-control form-control-flush" placeholder=""
-                                                value="@Model.TaskDetail.RegisteredUserName"
-                                                style="background-color:#ffffff" disabled>
+                                            <label class="form-control-label" for="task-registered-user">Người
+                                                thực hiện chính</label>
+                                            <select class="form-control" id="task-registered-user"
+                                                asp-items="@Model.Users">
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -80,9 +106,8 @@
                                         <div class="form-group">
                                             <label class="form-control-label" for="task-description">Mô tả chi tiết công
                                                 việc</label>
-                                            <textarea class="form-control" id="task-description" rows="3">
-                                                @Model.TaskDetail.Description
-                                            </textarea>
+                                            <textarea style="text-align:left" class="form-control form-control-muted"
+                                                id="task-description" rows="3">@Model.TaskDetail.Description</textarea>
                                         </div>
                                     </div>
 
@@ -94,7 +119,7 @@
                                             <label class="form-control-label" for="task-status">Tình trạng</label>
                                             <select class="form-control" id="task-status"
                                                 asp-for="@Model.TaskDetail.Status"
-                                                asp-items="Html.GetEnumSelectList<STATUS>()">
+                                                asp-items="Html.GetEnumSelectList<Status>()">
                                             </select>
                                         </div>
                                     </div>
@@ -103,7 +128,7 @@
                                             <label class="form-control-label" for="task-scope">Trạng thái</label>
                                             <select class="form-control" id="task-scope"
                                                 asp-for="@Model.TaskDetail.Scope"
-                                                asp-items="Html.GetEnumSelectList<SCOPE>()">
+                                                asp-items="Html.GetEnumSelectList<Scope>()">
 
                                             </select>
                                         </div>
@@ -151,7 +176,7 @@
                                         <div class="form-group">
                                             <label class="form-control-label" for="task-joint-users">Danh sách thành
                                                 viên tham gia</label>
-                                            <table class="table align-items-center table-flush">
+                                            <table class="table align-items-center table-flush" id="table_emp">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th scope="col">Họ và tên</th>
@@ -162,12 +187,12 @@
                                                 <tbody class='list'>
                                                     @foreach (var user in Model.TaskDetail.JointUsers)
                                                     {
-                                                        <tr>
+                                                        <tr id="row_@user.UserId">
                                                             <td id="name_@user.UserId">
                                                                 @user.UserName
                                                             </td>
                                                             <td id="role_@user.UserId">
-                                                                @user.User.Role
+                                                                @user.User.RoleName
                                                             </td>
                                                             <td class="text-right">
                                                                 <a id="@user.UserId"
@@ -185,7 +210,7 @@
 
                                             </table>
 
-                                            <div class="input-group" style="margin-top: 10px;">
+                                            <div class="input-group" style="margin-top: 30px;">
                                                 <select class="form-control" id="task-joint-users"
                                                     asp-for="@Model.jointUser" asp-items="@Model.UserNotJointed">
 
@@ -245,43 +270,45 @@
 
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
+        var old_title = $('#task-title').val();
+        var old_describe = $('#task-description').val();
+        var task_id = $('#task_id').val();
+        var start_date = $('#task-start-date').val();
         $('.date-picker-format').datepicker({
             autoclose: true,
-            format: 'dd/mm/yyyy'
+            format: 'dd/mm/yyyy',
+            minDate: 0,
+            startDate: new Date()
+
         });
+        $('#task-end-date').datepicker('option', 'minDate', 0);
         $('#task-end-date').change(function () {
-            var d = new Date();
-
-            var month = d.getMonth() + 1;
-            var day = d.getDate();
-
-            var output = (day < 10 ? '0' : '') + day + '/' +
-                (month < 10 ? '0' : '') + month + '/' +
-                d.getFullYear();
             var date_selected = $(this).val();
-
-            if (new Date(output) <= new Date(date_selected)) {
-                var temp = "Công việc đang trong thời gian tiến hành";
-                $("#check-task").text(temp);
-                $("#check-task").css("color", "green");
-            }
-            else {
-                alert("false");
-                var temp = "Công việc đã quá hạn";
-                $("#check-task").text(temp);
-                $("#check-task").css("color", "red");
-            }
+            var act = 'Day';
+            updateTask(act, date_selected)
         });
-        $('#addUser').click(function () {
-
+        $(document).on('change', '#task-registered-user', function () {
+            var act = 'Registered';
+            var value = $('#task-registered-user option:selected').val();
+            alert(value);
+            updateTask(act, value)
+        })
+        $(document).on('click', '#addUser', function () {
             var val = $('#task-joint-users option:selected').val();
             var txt = $('#task-joint-users option:selected').text();
             var label = $('#task-joint-users option:selected').parent().attr('label');
+            var act = 'Add Joint User';
 
-            var str = '<tr><td>' + txt +
-                '</td><td>' + label +
+            updateTask(act, val)
+            var empty_id = $('#table_emp tr:last').attr('id');
+            if (empty_id == "row_empty") {
+                $("#row_empty").remove();
+            }
+            var str = '<tr id="row_' + val + '"><td id="name_' + val + '">' + txt +
+                '</td><td id="role_' + val + '">' + label +
                 '</td><td class="text-right"><a id="' + val + '" class="btn btn-icon btn-danger remove_user">' +
                 '<span class="btn-inner--icon"><i class="ni ni-fat-remove"style="color:#ffffff"></i></span><span class="btn-inner--text"' +
                 'style="color:#ffffff">Xóa</span>' +
@@ -292,11 +319,147 @@
                 $('#addUser').prop('disabled', true);
                 $('#task-joint-users').prop('disabled', true);
             }
+
         });
-        $('.remove_user').click(function () {
+        $(document).on('click', '.remove_user', function () {
             var id = $(this).attr("id");
-            alert(id);
+            var name = $("#name_" + id).text();
+            var role = $("#role_" + id).text();
+            $("<option>").val(id).text(name).appendTo("#task-joint-users optgroup[label='" + role + "']");
+            $("#row_" + id).remove();
+            if ($('#task-joint-users').has('option').length > 0) {
+                $('#addUser').prop('disabled', false);
+                $('#task-joint-users').prop('disabled', false);
+            }
+            var tbody = $("#table_emp tbody");
+            if (tbody.children().length == 0) {
+                tbody.html('<tr id="row_empty"><td colspan="3" class="text-center">Danh sách rỗng</td></tr>');
+            }
         });
+        $(document).on('keypress', '#task-title', function (e) {
+            var action = 'Title';
+            var value = $(this).val();
+            if (value == old_title) {
+                return;
+            }
+            else {
+                if (e.which == 13) {
+
+                    updateTask(action, value.trim());
+                    old_title = value.trim();
+                }
+            }
+        });
+
+        $(document).on('focusout', '#task-title', function (e) {
+            var action = 'Title';
+            var value = $(this).val();
+            if (value == old_title) {
+                return;
+            }
+            else {
+                updateTask(action, value.trim());
+                old_title = value.trim();
+            }
+
+        });
+        $(document).on('focusout ', '#task-description', function (e) {
+            var action = 'Describe';
+            var value = $(this).val();
+            if (value == old_describe) {
+                return;
+            }
+            else {
+                updateTask(action, value.trim());
+                old_describe = value.trim();
+            }
+
+        });
+        $(document).on('change', '#task-status', function () {
+            var value = $('#task-status option:selected').val();
+            var act = 'Status';
+            updateTask(act, value);
+        })
+        $(document).on('change', '#task-scope', function () {
+            var value = $('#task-scope option:selected').val();
+            var act = 'Status';
+            updateTask(act, value);
+        })
+        $(document).on('click', '#sendButton', function () {
+            var act = 'Comment';
+            var value = $('#userInput').val();
+            updateTask(act, value);
+        })
+        function updateTask(action, val) {
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateTaskDetail","Home")',
+                dataType: 'json',
+                data: {
+                    action: action,
+                    id: task_id,
+                    val: val
+                },
+                success: function (data) {
+                    switch (action) {
+                        case 'Title':
+                            $('#text_title').text(data.title);
+                            $('#task-title').val(data.title);
+                            break;
+                        case 'Describe':
+                            $('#task-description').val(data.description);
+                            break;
+                        case 'Day':
+                            var d = new Date();
+
+                            var month = d.getMonth() + 1;
+                            var day = d.getDate();
+
+                            var output = (day < 10 ? '0' : '') + day + '/' +
+                                (month < 10 ? '0' : '') + month + '/' +
+                                d.getFullYear();
+                            if (new Date(output) <= new Date(data.endDate)) {
+                                var temp = "Công việc đang trong thời gian tiến hành";
+                                $("#check-task").text(temp);
+                                $("#check-task").css("color", "green");
+                            }
+                            else {
+                                var temp = "Công việc đã quá hạn";
+                                $("#check-task").text(temp);
+                                $("#check-task").css("color", "red");
+                            }
+                            break;
+                        case 'Comment':
+                            var cmt = data.comments[data.comments.length - 1];
+                            var date = new Date(cmt.postDate);
+                            var month = date.getMonth() + 1;
+                            var day = date.getDate();
+                            var str_date = (day < 10 ? '0' : '') + day + '/' +
+                                (month < 10 ? '0' : '') + month + '/' +
+                                date.getFullYear()
+                            var html = '<div>' +
+                                '<span style="font-size:16px;font-weight:600">' + cmt.userPostName + '</span>' +
+                                '<span style="padding-left:10px;font-size:13px">' + str_date +
+                                '</span></div><p class="botMsg">' + cmt.content + '</p>' +
+                                '<div class="clearfix"></div>';
+                            $('#chats').append(html);
+                            break;
+
+                    }
+                    $('#success').fadeIn();
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#success').fadeOut();
+                    }, 2000)
+
+                },
+                error: function (xhr) {
+                    alert(xhr);
+                }
+            })
+        };
     });
 
 </script>
