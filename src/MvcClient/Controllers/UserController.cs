@@ -84,18 +84,17 @@ namespace MvcClient.Controllers
         }
 
         [HttpPost]
-        public IActionResult Disable(int id)
+        public IActionResult Disable(UserModel model)
         {
-            User user = this._unitOfWork.Users.GetBy(id);
+            User user = this._unitOfWork.Users.GetBy(model.User.Id);
             this._unitOfWork.Users.Disable(source, user);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public IActionResult Active(int id)
+        public IActionResult Active(UserModel model)
         {
-            Console.WriteLine("aaafedfd " + id);
-            User user = this._unitOfWork.Users.GetBy(id);
+            User user = this._unitOfWork.Users.GetBy(model.User.Id);
             this._unitOfWork.Users.Activate(source, user);
             return RedirectToAction(nameof(Index));
         }
