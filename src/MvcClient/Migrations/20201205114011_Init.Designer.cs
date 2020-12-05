@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MvcClient.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    [Migration("20201203103157_Init")]
+    [Migration("20201205114011_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,9 @@ namespace MvcClient.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ActionTarget")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ChangeField")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("ExecDate")

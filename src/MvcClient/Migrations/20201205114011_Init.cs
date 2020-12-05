@@ -35,6 +35,7 @@ namespace MvcClient.Migrations
                     ExecDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ActionTarget = table.Column<int>(type: "INTEGER", nullable: false),
                     Action = table.Column<int>(type: "INTEGER", nullable: false),
+                    ChangeField = table.Column<int>(type: "INTEGER", nullable: false),
                     ExecUserId = table.Column<int>(type: "INTEGER", nullable: false),
                     TargetId = table.Column<int>(type: "INTEGER", nullable: false),
                     TargetName = table.Column<string>(type: "TEXT", nullable: true),

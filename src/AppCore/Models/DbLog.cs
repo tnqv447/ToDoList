@@ -10,6 +10,7 @@ namespace AppCore.Models
 
         public ACTION_TARGET ActionTarget { get; set; }
         public ACTION Action { get; set; }
+        public CHANGE_FIELD ChangeField { get; set; }
 
         public int ExecUserId { get; set; }
         public virtual User ExecUser { get; set; }
@@ -30,11 +31,12 @@ namespace AppCore.Models
             this.Copy(log);
         }
 
-        public DbLog(DateTime execDate, ACTION_TARGET actionTarget, ACTION action, int execUserId, int targetId, string targetName, string targetStatusName, string targetScopeName)
+        public DbLog(DateTime execDate, ACTION_TARGET actionTarget, ACTION action, CHANGE_FIELD changeField, int execUserId, int targetId, string targetName, string targetStatusName, string targetScopeName)
         {
             ExecDate = execDate;
             ActionTarget = actionTarget;
             Action = action;
+            ChangeField = changeField;
             ExecUserId = execUserId;
             TargetId = targetId;
             TargetName = targetName;
@@ -47,7 +49,7 @@ namespace AppCore.Models
             ExecDate = log.ExecDate;
             ActionTarget = log.ActionTarget;
             Action = log.Action;
-
+            ChangeField = log.ChangeField;
             ExecUserId = log.ExecUserId;
             TargetId = log.TargetId;
             TargetName = log.TargetName;
@@ -65,32 +67,50 @@ namespace AppCore.Models
             else res = String.Format("Quản lí {0} [ID: {1}] ", ExecUserName, ExecUserId);
             
             switch(ActionTarget){
+                case ACTION_TARGET.JOIN_USERS:{
+                        res += String.Format("đã cập nhật <Danh sách người tham gia> trong task {0} [ID: {1}]", TargetName, TargetId);
+                        break;
+                    }
+                case ACTION_TARGET.ATTACHED_FILES:{
+                        res += String.Format("đã cập nhật <File đính kèm> trong task {0} [ID: {1}]", TargetName, TargetId);
+                        break;
+                    }
                 case ACTION_TARGET.TASK: {
                         switch(Action){
-                            case ACTION.ADD : res =  String.Format("đã thêm task {0} [ID: {1}], trang thái {2}", TargetName, TargetId, TargetStatusName); break;
-                            case ACTION.DELETE : res = String.Format("đã xóa task {0} [ID: {1}]", TargetName, TargetId); break;
-                            case ACTION.UPDATE : res = String.Format("đã cập nhật task {0} [ID: {1}]", TargetName, TargetId); break;
-                            case ACTION.CHANGE_STATUS : res = String.Format("đã thay đổi tiến độ task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
-                            case ACTION.CHANGE_SCOPE : res = String.Format("đã thay đổi phạm vi task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetScopeName); break;
+                            case ACTION.ADD : res +=  String.Format("đã thêm task {0} [ID: {1}], trang thái {2}", TargetName, TargetId, TargetStatusName); break;
+                            case ACTION.DELETE : res += String.Format("đã xóa task {0} [ID: {1}]", TargetName, TargetId); break;
+                            case ACTION.UPDATE :
+                                string field = "";
+                                switch(ChangeField){
+                                    case CHANGE_FIELD.TITLE : field = "<Tiêu đề> "; break;
+                                    case CHANGE_FIELD.TIME: field = "<Thời hạn> "; break;
+                                    case CHANGE_FIELD.DESCRIPTION: field = "<Mô tả> "; break;
+                                    case CHANGE_FIELD.REGISTERED_USER: field = "<Người thực hiện chính> "; break;
+                                    default:  break;
+                                }
+                                res += String.Format("đã cập nhật {0}trong task {1} [ID: {2}]", field, TargetName, TargetId);
+                                break;
+                            case ACTION.CHANGE_STATUS : res += String.Format("đã thay đổi tiến độ task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
+                            case ACTION.CHANGE_SCOPE : res += String.Format("đã thay đổi phạm vi task {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetScopeName); break;
                          }
                         break;
                     }
                 case ACTION_TARGET.COMMENT: {
                     switch (Action)
                     {
-                        case ACTION.ADD : res = String.Format("đã bình luận trong task {0} [ID: {1}]", TargetName, TargetId); break;
-                        case ACTION.DELETE : res = String.Format("đã xóa một bình luận trong task {0} [ID: {1}]", TargetName, TargetId); break;
-                        case ACTION.UPDATE : res = String.Format("đã cập nhật bình luận trong task {0} [ID: {1}]", TargetName, TargetId); break;
+                        case ACTION.ADD : res += String.Format("đã bình luận trong task {0} [ID: {1}]", TargetName, TargetId); break;
+                        case ACTION.DELETE : res += String.Format("đã xóa một bình luận trong task {0} [ID: {1}]", TargetName, TargetId); break;
+                        case ACTION.UPDATE : res += String.Format("đã cập nhật bình luận trong task {0} [ID: {1}]", TargetName, TargetId); break;
                     }
                         break;
                     }
                 default: {
                     switch(Action)
                     {
-                        case ACTION.ADD : res = String.Format("đã thêm user {0} [ID: {1}]", TargetName, TargetId); break;
-                        case ACTION.DELETE : res = String.Format("đã xóa user {0} [ID: {1}]", TargetName, TargetId); break;
-                        case ACTION.UPDATE : res = String.Format("đã cập nhật user {0} [ID: {1}]", TargetName, TargetId); break;
-                        case ACTION.CHANGE_STATUS : res = String.Format("đã thay đổi trạng thái user {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
+                        case ACTION.ADD : res += String.Format("đã thêm user {0} [ID: {1}]", TargetName, TargetId); break;
+                        case ACTION.DELETE : res += String.Format("đã xóa user {0} [ID: {1}]", TargetName, TargetId); break;
+                        case ACTION.UPDATE : res += String.Format("đã cập nhật user {0} [ID: {1}]", TargetName, TargetId); break;
+                        case ACTION.CHANGE_STATUS : res += String.Format("đã thay đổi trạng thái user {0} [ID: {1}] thành {2}", TargetName, TargetId, TargetStatusName); break;
                     }
                     break;
                     }
@@ -104,7 +124,10 @@ namespace AppCore.Models
             if(type.Equals(typeof(DbLog))) check = false;
             else if(type.Equals(typeof(Comment))) ActionTarget = ACTION_TARGET.COMMENT;
             else if(type.Equals(typeof(User))) ActionTarget = ACTION_TARGET.USER;
-            else ActionTarget = ACTION_TARGET.TASK;
+            else if(type.Equals(typeof(ToDoTask))) ActionTarget = ACTION_TARGET.TASK;
+            else if(type.Equals(typeof(JointUser))) ActionTarget = ACTION_TARGET.JOIN_USERS;
+            else if(type.Equals(typeof(AttachedFile))) ActionTarget = ACTION_TARGET.ATTACHED_FILES;
+            else check = false;
 
             return check;
         }

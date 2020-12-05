@@ -18038,7 +18038,13 @@ a.text-darker:focus
 }
 
 .alert
-{
+{ 
+    position:absolute;
+    right: 30px;
+    top: 44%;
+    width:415px;
+    
+    margin:auto;
     font-size: .875rem;
 }
 
@@ -29848,28 +29854,19 @@ input.datetimepicker[data-color='yellow'] + .bootstrap-datetimepicker-widget.dro
   transition: 0.2s;
 }
 
-div.chats::-webkit-scrollbar {
+/* div.chats::-webkit-scrollbar {
   overflow-y: hidden;
   width: 0px;
   /* remove scrollbar space /
     background: transparent;
-    / optional: just make scrollbar invisible */
-}
+    / optional: just make scrollbar invisible 
+} */
 
 .clearfix {
   margin-top: 1px;
   margin-bottom: 1px;
 }
-.keypad {
-    /* display: none;  */
-    background: white;
-    height: 50px;
-    width:90%;
-    position: absolute;
-    bottom: 0px;
-    padding: 5px;
-    border-radius: 0px 0px 10px 10px;
-  }
+
   .chat_content {
     transition: 0.2s;
     display: none;
@@ -29882,25 +29879,12 @@ div.chats::-webkit-scrollbar {
     border-radius: 10px 10px 10px 10px;
     box-shadow: 0px 2px 10px 1px #b5b5b5;
   }
-  #sendButton {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    /* display: inline-block; */
-    float: right;
-    margin-right: 30px;
-    text-align: center;
-    padding: 5px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #17c7bd;
-  }
+  
   .userInput {
     resize: none;
     overflow: hidden;
     padding: 0.5em;
     width: 80%;
-    margin-left: 4%;
     border: 0;
     padding-left: 15px;
     height: 40px;
@@ -29958,7 +29942,7 @@ div.chats::-webkit-scrollbar {
     background: white;
     color: black;
     margin-left: 0.5em;
-    padding: 10px;
+    /* padding: 10px; */
     
     max-width: 60%;
     min-width: 25%;

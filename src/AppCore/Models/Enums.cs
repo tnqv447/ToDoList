@@ -94,7 +94,17 @@ namespace AppCore.Models
     {
         USER,
         TASK,
-        COMMENT
+        COMMENT,
+        JOIN_USERS,
+        ATTACHED_FILES
+    }
+    public enum CHANGE_FIELD
+    {
+        NONE,
+        TITLE,
+        DESCRIPTION,
+        TIME,
+        REGISTERED_USER
     }
     
 
