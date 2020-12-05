@@ -96,11 +96,16 @@ namespace Infrastructure.Repositories
                     var temp = (entity as JointUser).ToDoTask;
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
-                    log.ChangeField = CHANGE_FIELD.JOINT_USERS;
+                }else if(typeof(T).Equals(typeof(AttachedFile))){
+                    var temp = (entity as AttachedFile).ToDoTask;
+                    log.TargetId = temp.Id;
+                    log.TargetName = temp.Title;
                 }
+                else return;
+                _context.Set<DbLog>().Add(log);
+                _context.SaveChanges();
             }
-            _context.Set<DbLog>().Add(log);
-            _context.SaveChanges();
+            
         }
 
     }
