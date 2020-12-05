@@ -44,6 +44,11 @@ namespace MvcClient.Controllers
             view.UserNotJointed = new SelectList(user_not_joints, "Id", "Name", user_not_joints.FirstOrDefault(), "Role");
             return View(view);
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
 
