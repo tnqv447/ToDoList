@@ -11,7 +11,7 @@ namespace Infrastructure
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            
 
             builder.ApplyConfiguration(new UserConfig());
             builder.ApplyConfiguration(new JointUserConfig());
@@ -19,6 +19,8 @@ namespace Infrastructure
             builder.ApplyConfiguration(new CommentConfig());
             builder.ApplyConfiguration(new AttachedFileConfig());
             builder.ApplyConfiguration(new DbLogConfig());
+
+            base.OnModelCreating(builder);
         }
 
         public DbSet<User> Users { get; set; }

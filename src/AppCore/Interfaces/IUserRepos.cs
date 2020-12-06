@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AppCore.Models;
 
 namespace AppCore.Interfaces {
@@ -10,5 +11,6 @@ namespace AppCore.Interfaces {
 
         User GetUserByAccount (string username, string password);
         bool isUserNameExists (string username);
+        IList<User> GetUserNotJointForTask(int taskId);
     }
 }

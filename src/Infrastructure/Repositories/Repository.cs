@@ -9,9 +9,9 @@ namespace Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-         private readonly DbContext _context;
+         private readonly ToDoListContext _context;
 
-        public Repository(DbContext context)
+        public Repository(ToDoListContext context)
         {
             _context = context;
         }
@@ -97,7 +97,7 @@ namespace Infrastructure.Repositories
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
                 }else if(typeof(T).Equals(typeof(AttachedFile))){
-                    var temp = (entity as AttachedFile).ToDoTask;
+                    var temp = _context.ToDoTasks.Find((entity as AttachedFile).ToDoTaskId);
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
                 }
