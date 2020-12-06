@@ -19,11 +19,11 @@ namespace AppCore.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         public DateTime EndDate { get; set; }
         [NotMapped]
-        public bool isDelayed { get{return DateTime.Compare(DateTime.Today, this.EndDate.Date) > 0 && !Status.Equals( STATUS.DONE);}}
+        public bool isDelayed { get { return DateTime.Compare(DateTime.Today, this.EndDate.Date) > 0 && !Status.Equals(STATUS.DONE); } }
 
         public int RegisteredUserId { get; set; }
         public virtual User RegisteredUser { get; set; }
-        
+
 
         public STATUS Status { get; set; }
         public SCOPE Scope { get; set; }
@@ -32,15 +32,17 @@ namespace AppCore.Models
         public virtual IList<Comment> Comments { get; set; }
         public virtual IList<AttachedFile> AttachedFiles { get; set; }
         [NotMapped]
-        public String RegisteredUserName{get{return this.RegisteredUser?.Name??null;}}
+        public String RegisteredUserName { get { return this.RegisteredUser?.Name ?? null; } }
         [NotMapped]
-        public string StatusName { get { return EnumConverter.Convert(this.Status); } } 
-        
+        public String RegisteredUserRoleName { get { return this.RegisteredUser?.RoleName ?? null; } }
+        [NotMapped]
+        public string StatusName { get { return EnumConverter.Convert(this.Status); } }
+
         [NotMapped]
         public string ScopeName { get { return EnumConverter.Convert(this.Scope); } }
 
-        
-        
+
+
 
         public ToDoTask() { }
 
@@ -54,13 +56,15 @@ namespace AppCore.Models
             Status = status;
             Scope = scope;
         }
-        public ToDoTask(ToDoTask task) { this.Copy(task);  }
-        public ToDoTask(ToDoTask task, int id) { 
-            this.Copy(task); 
-            this.Id = id; 
-            }
+        public ToDoTask(ToDoTask task) { this.Copy(task); }
+        public ToDoTask(ToDoTask task, int id)
+        {
+            this.Copy(task);
+            this.Id = id;
+        }
 
-        public void Copy(ToDoTask task){
+        public void Copy(ToDoTask task)
+        {
             Title = task.Title;
             Description = task.Description;
             StartDate = task.StartDate;

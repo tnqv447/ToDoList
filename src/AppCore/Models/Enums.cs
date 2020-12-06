@@ -2,10 +2,11 @@ using System;
 using System.Linq.Expressions;
 namespace AppCore.Models
 {
-    public class EnumConverter{
+    public class EnumConverter
+    {
         public static string Convert(ROLE role)
         {
-            switch(role)
+            switch (role)
             {
                 case ROLE.MANAGER: return "Quản lý";
                 case ROLE.WORKER: return "Nhân viên";
@@ -14,7 +15,7 @@ namespace AppCore.Models
         }
         public static string Convert(SCOPE scope)
         {
-            switch(scope)
+            switch (scope)
             {
                 case SCOPE.PRIVATE: return "Private";
                 case SCOPE.PUBLIC: return "Public";
@@ -23,7 +24,7 @@ namespace AppCore.Models
         }
         public static string Convert(USER_STATUS status)
         {
-            switch(status)
+            switch (status)
             {
                 case USER_STATUS.ACTIVE: return "Mở";
                 case USER_STATUS.DISABLED: return "Khóa";
@@ -32,7 +33,7 @@ namespace AppCore.Models
         }
         public static string Convert(SEX sex)
         {
-            switch(sex)
+            switch (sex)
             {
                 case SEX.FEMALE: return "Nữ";
                 case SEX.MALE: return "Nam";
@@ -42,7 +43,7 @@ namespace AppCore.Models
         }
         public static string Convert(STATUS status)
         {
-            switch(status)
+            switch (status)
             {
                 case STATUS.NEW: return "Mới";
                 case STATUS.ON_PROGRESS: return "Đang tiến hành";
@@ -63,7 +64,8 @@ namespace AppCore.Models
         PRIVATE,
         ALL
     }
-    public enum STATUS{
+    public enum STATUS
+    {
         NEW,
         ON_PROGRESS,
         DONE,
@@ -104,8 +106,9 @@ namespace AppCore.Models
         TITLE,
         DESCRIPTION,
         TIME,
-        REGISTERED_USER
+        REGISTERED_USER,
+
     }
-    
+
 
 }

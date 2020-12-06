@@ -6929,7 +6929,7 @@ a.badge:focus
     border-radius: 0;
 }
 
-.alert
+/* .alert
 {
     position: relative;
 
@@ -6938,7 +6938,7 @@ a.badge:focus
 
     border: 1px solid transparent;
     border-radius: .375rem;
-}
+} */
 
 .alert-heading
 {
@@ -7019,7 +7019,7 @@ a.badge:focus
 {
     color: #fff;
     border-color: #4fd69c;
-    background-color: #4fd69c;
+    background-color: #4fd69bab;
 }
 .alert-success a
 {
@@ -18039,12 +18039,13 @@ a.text-darker:focus
 
 .alert
 { 
-    position:absolute;
-    right: 30px;
-    top: 44%;
+    position:fixed;
+    right: 20px;
+    bottom: 60px;
     width:415px;
-    
-    margin:auto;
+  
+    padding: 1rem 1.5rem;
+    /* margin:auto; */
     font-size: .875rem;
 }
 
