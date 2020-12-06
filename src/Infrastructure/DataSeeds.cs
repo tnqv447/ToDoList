@@ -89,9 +89,9 @@ namespace Infrastructure
             if (!context.AttachedFiles.Any())
             {
                 context.AttachedFiles.AddRange(
-                    new AttachedFile(1, "src\\MvcClient\\Files\\ttt.txt"),
-                    new AttachedFile(2, "src\\MvcClient\\Files\\zzz.txt"),
-                    new AttachedFile(3, "src\\MvcClient\\Files\\abc.txt")
+                    new AttachedFile(1, "ttt.txt"),
+                    new AttachedFile(2, "zzz.txt"),
+                    new AttachedFile(3, "abc.txt")
                 );
                 context.SaveChanges();
             }
