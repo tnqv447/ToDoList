@@ -86,14 +86,14 @@
                             </div>
                             <hr class="my-4" />
                             <idv class="row">
-                                @if (Model.User.Status == USER_STATUS.DISABLED)
+                                @if (Model.RoleUser == ROLE.MANAGER && Model.User.Status == USER_STATUS.DISABLED)
                                 {
                                     <form asp-action="Active" asp-controller="User" method="POST" style="display: inline;">
                                         <input type="hidden" asp-for="@Model.User.Id" />
                                         <button type="submit" class="btn btn-xs btn-success">Kích hoạt</button>
                                     </form>
                                 }
-                                else if (Model.User.Status == USER_STATUS.ACTIVE){
+                                else if (Model.RoleUser == ROLE.MANAGER && Model.User.Status == USER_STATUS.ACTIVE){
                                     <form asp-action="Disable" asp-controller="User" method="POST" style="display: inline;">
                                         <input type="hidden" asp-for="@Model.User.Id" />
                                         <button type="submit" class="btn btn-xs btn-danger">Khóa</button>

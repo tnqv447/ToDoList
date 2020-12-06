@@ -4,7 +4,7 @@ using AppCore.Models;
 
 namespace MvcClient.Models
 {
-    public class UserManagerModel
+    public class UserManagerModel : CommonModel
     {
         public IList<User> Users { get; set; }
         public IList<ROLE> Roles { get; set; }
