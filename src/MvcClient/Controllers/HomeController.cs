@@ -22,7 +22,7 @@ namespace MvcClient.Controllers
         public IList<User> user_not_joints = new List<User>();
         public TaskViewModel view = new TaskViewModel();
         private readonly IWebHostEnvironment _webHostEnvironment;
-
+        public ROLE Role { get; set; }
         public HomeController(IUnitOfWork unitOfWork, ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
@@ -32,6 +32,11 @@ namespace MvcClient.Controllers
 
         public IActionResult Index()
         {
+            if (this.isLogin() == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            LoginUser(); // get Role
             var tasks = _unitOfWork.ToDoTasks.GetAll();
             view = new TaskViewModel(tasks);
             return View(view);
@@ -39,12 +44,20 @@ namespace MvcClient.Controllers
 
         public IActionResult Create()
         {
+            if (this.isLogin() == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
 
         [Route("Home/TaskDetail/{taskId:int}")]
         public IActionResult TaskDetail(int taskId)
         {
+            if (this.isLogin() == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             var task = _unitOfWork.ToDoTasks.GetBy(taskId);
 
             var users = _unitOfWork.Users.GetAll();
@@ -58,6 +71,7 @@ namespace MvcClient.Controllers
 
             return View(view);
         }
+
         [HttpPost]
         // [ValidateAntiForgeryToken]
         public IActionResult UpdateTaskDetail(int id, string val, string action = "")
@@ -257,6 +271,30 @@ namespace MvcClient.Controllers
                 _unitOfWork.AttachedFiles.Add(user, new AttachedFile(id, file.FileName));
             }
             return rs;
+        }
+        public bool isLogin()
+        {
+            if (HttpContext.Session.GetInt32("id") != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void LoginUser()
+        {
+            // int id = HttpContext.Session.GetInt32("id").GetValueOrDefault();
+            if (HttpContext.Session.GetString("role").Equals("manager"))
+            {
+                this.Role = ROLE.MANAGER;
+            }
+            else
+            {
+                this.Role = ROLE.WORKER;
+            }
         }
         public IActionResult Privacy()
         {

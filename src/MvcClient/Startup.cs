@@ -16,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AppCore.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace MvcClient
 {
@@ -36,6 +38,28 @@ namespace MvcClient
             services.AddDbContext<ToDoListContext>(options => options
                .UseLazyLoadingProxies()
                .UseSqlite(Configuration.GetConnectionString("Connection"), x => x.MigrationsAssembly("MvcClient")));
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                // You might want to only set the application cookies over a secure connection:
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
+            services.AddHttpContextAccessor();
+            services.AddDistributedMemoryCache();
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+            services.AddAntiforgery(o =>
+            {
+                o.HeaderName = "XSRF-TOKEN";
+            });
 
             services.AddScoped<IUserRepos, UserRepos>();
             services.AddScoped<IJointUserRepos, JointUserRepos>();
@@ -69,7 +93,7 @@ namespace MvcClient
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
