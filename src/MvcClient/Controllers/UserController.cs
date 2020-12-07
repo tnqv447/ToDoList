@@ -108,5 +108,36 @@ namespace MvcClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Profile(int? id)
+        {
+            if (id == null)
+            {
+                Forbid();
+            }
+            int uid = id.GetValueOrDefault();
+            var model = new UserModel();
+            model.User = this._unitOfWork.Users.GetBy(uid);
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Profile(UserModel model)
+        {
+            User user = model.User;
+
+            User oldUser = this._unitOfWork.Users.GetBy(user.Id);
+            oldUser.Name = user.Name;
+            oldUser.PhoneNumber = user.PhoneNumber;
+            oldUser.Address = user.Address;
+
+            if (ModelState.IsValid)
+            {
+                this._unitOfWork.Users.Update(source, oldUser);
+                HttpContext.Session.SetString("name", oldUser.Name);
+                model.User = oldUser;
+            }
+            return View(model);
+        }
+
     }
 }

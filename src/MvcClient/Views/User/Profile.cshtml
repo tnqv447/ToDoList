@@ -1,0 +1,176 @@
+@using Microsoft.AspNetCore.Http
+@{
+    if (Context.Session.GetInt32("id") == null)
+        Context.Response.Redirect(Url.Action("Index", "Login", null));
+}
+@model UserModel
+@{
+    ViewData["Title"] = "Trang cá nhân";
+}
+<div class="header bg-primary pb-6">
+    <div class="container-fluid ">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <h3>Thông tin cá nhân</h3>
+            </div>
+            <div class="row">
+                <div class="col-xl-7 order-xl-1">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h3 class="mb-0">Câp nhật thông tin</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" asp-action="Profile" asp-controller="User">
+                                <input type="hidden" asp-for="User.Id" />
+                                <h6 class="heading-small text-muted mb-4">Thông tin cá nhân</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-name">Họ và tên</label>
+                                                <input type="text" asp-for="User.Name" class="form-control">
+                                                <span asp-validation-for="User.Name" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-phone">Số điện
+                                                    thoại</label>
+                                                <input type="tel" asp-for="User.PhoneNumber" class="form-control">
+                                                <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-address">Địa chỉ</label>
+                                                <input id="input-address" class="form-control"
+                                                    placeholder="Home Address" asp-for="User.Address" type="text">
+                                                <span asp-validation-for="User.Address" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+                                <!-- Account -->
+                                <h6 class="heading-small text-muted mb-4">Thông tin tài khoản</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-username">Tên tài
+                                                    khoản</label>
+                                                <p class="card-text">@Model.User.Username</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-name">Vị trí</label>
+                                                <p class="card-text">@Model.User.RoleName</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-username">Trạng
+                                                    thái</label>
+                                                <p class="card-text">@Model.User.StatusName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5 order-xl-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h3 class="mb-0">Danh sách Công việc</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="nav-wrapper">
+                                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text"
+                                    role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab"
+                                            data-toggle="tab" href="#tabs-icons-text-1" role="tab"
+                                            aria-controls="tabs-icons-text-1" aria-selected="true">Tạo</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab"
+                                            href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2"
+                                            aria-selected="false">Tham gia</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
+                                            aria-labelledby="tabs-icons-text-1-tab">
+                                            <div class="table-responsive">
+                                                <table class="table align-items-center table-flush">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th scope="col">Id</th>
+                                                            <th scope="col">Tên</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="list">
+                                                        @foreach (var item in @Model.User.ToDoTasks)
+                                                        {
+                                                            <tr>
+                                                                <th scope="row">@item.Id</th>
+                                                                <td class="budget">@item.Title</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel"
+                                            aria-labelledby="tabs-icons-text-2-tab">
+                                            <div class="table-responsive">
+                                                <table class="table align-items-center table-flush">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th scope="col">Id</th>
+                                                            <th scope="col">Tên</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="list">
+                                                        @foreach (var item in @Model.User.JointUsers)
+                                                        {
+                                                            <tr>
+                                                                <th scope="row">@item.Id</th>
+                                                                <td class="budget">@item.TaskTitle</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
