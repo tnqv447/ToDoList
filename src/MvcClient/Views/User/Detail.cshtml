@@ -1,8 +1,3 @@
-@model UserModel
-@using AppCore.Models
-@{
-    ViewData["Title"] = "Thông tin nhân viên";
-}
 @using Microsoft.AspNetCore.Http
 @{
     if (Context.Session.GetInt32("id") == null)
@@ -10,6 +5,11 @@
         Context.Response.Redirect("../Login/Index");
     }
     bool isManager = Context.Session.GetInt32("isManager") == 1 ? true : false;
+}
+@model UserModel
+@using AppCore.Models
+@{
+    ViewData["Title"] = "Thông tin nhân viên";
 }
 <div class="header bg-primary pb-6">
     <div class="container-fluid ">
