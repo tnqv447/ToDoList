@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AppCore.Interfaces;
 using AppCore.Models;
@@ -15,6 +16,10 @@ namespace Infrastructure.Repositories {
             var users = _context.Users.Where (m => m.Username.Equals (username) && m.Password.Equals (password));
             if (users.Any ()) return users.First ();
             return null;
+        }
+        public IList<User> GetUserNotJointForTask(int taskId){
+            var arr =  _context.JointUsers.Where(m => m.ToDoTaskId.Equals(taskId)).Select(m => m.User);
+            return this.GetAll().Except(arr).ToList();
         }
         public bool isUserNameExists (string username) 
         {

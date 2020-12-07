@@ -1,9 +1,13 @@
+@using Microsoft.AspNetCore.Http
+@{
+    if (Context.Session.GetInt32("id") == null)
+        Context.Response.Redirect(Url.Action("Index", "Login", null));
+}
 @model UserModel
 @using AppCore.Models
 @{
     ViewData["Title"] = "Thêm nhân viên";
 }
-
 <div class="header bg-primary pb-6">
     <div class="container-fluid ">
         <div class="header-body">

@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Chi tiết công việc";
 }
+@using Microsoft.AspNetCore.Http
+@{
+    if (Context.Session.GetInt32("id") == null)
+        Context.Response.Redirect(Url.Action("Index", "Login", null));
+}
 <div style="display: none;z-index:1" class="alert alert-success alert-dismissible" id="success" role="alert">
     <span class="alert-icon"><i class="ni ni-like-2"></i></span>
     <span class="alert-text"><strong>Cập nhật thành công!</strong></span>

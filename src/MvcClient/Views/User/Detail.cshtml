@@ -1,3 +1,11 @@
+@using Microsoft.AspNetCore.Http
+@{
+    if (Context.Session.GetInt32("id") == null)
+    {
+        Context.Response.Redirect(Url.Action("Index", "Login", null));
+    }
+    bool isManager = Context.Session.GetInt32("isManager") == 1 ? true : false;
+}
 @model UserModel
 @using AppCore.Models
 @{
@@ -86,14 +94,14 @@
                             </div>
                             <hr class="my-4" />
                             <idv class="row">
-                                @if (Model.RoleUser == ROLE.MANAGER && Model.User.Status == USER_STATUS.DISABLED)
+                                @if (isManager && Model.User.Status == USER_STATUS.DISABLED)
                                 {
                                     <form asp-action="Active" asp-controller="User" method="POST" style="display: inline;">
                                         <input type="hidden" asp-for="@Model.User.Id" />
                                         <button type="submit" class="btn btn-xs btn-success">Kích hoạt</button>
                                     </form>
                                 }
-                                else if (Model.RoleUser == ROLE.MANAGER && Model.User.Status == USER_STATUS.ACTIVE){
+                                else if (isManager && Model.User.Status == USER_STATUS.ACTIVE){
                                     <form asp-action="Disable" asp-controller="User" method="POST" style="display: inline;">
                                         <input type="hidden" asp-for="@Model.User.Id" />
                                         <button type="submit" class="btn btn-xs btn-danger">Khóa</button>

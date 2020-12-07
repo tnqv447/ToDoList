@@ -14,7 +14,6 @@ namespace MvcClient.Controllers
         private readonly IUnitOfWork _unitOfWork;
 
         private User source = null;
-        public ROLE Role { get; set; }
         public UserController(IUnitOfWork unitOfWork,
                               ILogger<User> logger)
         {
@@ -24,25 +23,14 @@ namespace MvcClient.Controllers
 
         public IActionResult Index()
         {
-            if (this.isLogin() == false)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            this.LoginUser();
             var users = _unitOfWork.Users.GetAll();
             var model = new UserManagerModel();
-            model.RoleUser = this.Role;
             model.Users = users;
             return View(model);
         }
         public IActionResult Create()
         {
-            if (this.isLogin() == false)
-            {
-                return RedirectToAction("Index", "Login");
-            }
             var model = new UserModel();
-            model.RoleUser = this.Role;
             return View(model);
 
         }
@@ -63,23 +51,13 @@ namespace MvcClient.Controllers
         }
         public IActionResult Detail(int id)
         {
-            if (this.isLogin() == false)
-            {
-                return RedirectToAction("Index", "Login");
-            }
             var model = new UserModel();
-            model.RoleUser = this.Role;
             model.User = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
         public IActionResult Update(int id)
         {
-            if (this.isLogin() == false)
-            {
-                return RedirectToAction("Index", "Login");
-            }
             var model = new UserModel();
-            model.RoleUser = this.Role;
             model.User = this._unitOfWork.Users.GetBy(id);
             return View(model);
         }
@@ -120,30 +98,5 @@ namespace MvcClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public bool isLogin()
-        {
-            if (HttpContext.Session.GetInt32("id") != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void LoginUser()
-        {
-            int id = HttpContext.Session.GetInt32("id").GetValueOrDefault();
-            source = this._unitOfWork.Users.GetBy(id);
-            if (HttpContext.Session.GetString("role").Equals("manager"))
-            {
-                this.Role = ROLE.MANAGER;
-            }
-            else
-            {
-                this.Role = ROLE.WORKER;
-            }
-        }
     }
 }
