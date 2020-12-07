@@ -13,6 +13,7 @@ namespace MvcClient.Models
         public SelectList UserNotJointed { get; set; }
         public SelectList Users { get; set; }
         public JointUser jointUser { get; set; }
+        public bool isInTask { get; set; }
         public TaskViewModel()
         {
 
