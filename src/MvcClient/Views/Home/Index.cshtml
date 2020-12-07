@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Trang chủ";
 }
+@using Microsoft.AspNetCore.Http
+@{
+    if (Context.Session.GetInt32("id") == null)
+        Context.Response.Redirect("Login/Index");
+}
 
 <div class="header bg-primary pb-6">
     <div class="container-fluid">

@@ -3,7 +3,12 @@
 @{
     ViewData["Title"] = "Quản lý nhân viên";
 }
-
+@using Microsoft.AspNetCore.Http
+@{
+    if (Context.Session.GetInt32("id") == null)
+        Context.Response.Redirect("Login/Index");
+    bool isManager = Context.Session.GetInt32("isManager") == 1 ? true : false;
+}
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body">
@@ -19,7 +24,7 @@
                         </ol>
                     </nav>
                 </div>
-                @if (Model.RoleUser == ROLE.MANAGER)
+                @if (isManager)
                 {
                     <div class="col-lg-6 col-5 text-right">
                         <a type="button" class="btn btn-neutral" asp-action="Create" asp-controller="User">
@@ -62,7 +67,7 @@
                                                     asp-controller="User">
                                                     <i class="ni ni-single-02"></i>
                                                 </a>
-                                                @if (Model.RoleUser == ROLE.MANAGER)
+                                                @if (isManager)
                                                 {
                                                     <a class="btn btn-warning" asp-route-id="@item.Id" asp-action="Update"
                                                         asp-controller="User">

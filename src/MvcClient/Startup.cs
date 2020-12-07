@@ -38,6 +38,8 @@ namespace MvcClient
             services.AddDbContext<ToDoListContext>(options => options
                .UseLazyLoadingProxies()
                .UseSqlite(Configuration.GetConnectionString("Connection"), x => x.MigrationsAssembly("MvcClient")));
+            services.AddMvc();
+            services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
             {
@@ -51,7 +53,6 @@ namespace MvcClient
                 options.Cookie.IsEssential = true;
             });
             services.AddHttpContextAccessor();
-            services.AddDistributedMemoryCache();
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
@@ -93,9 +94,9 @@ namespace MvcClient
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSession();
-            app.UseRouting();
 
+            app.UseRouting();
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -51,8 +51,18 @@ namespace MvcClient.Controllers
                     HttpContext.Session.SetInt32("id", account.Id);
                     HttpContext.Session.SetString("name", account.Name);
                     if (account.Role == ROLE.MANAGER)
+                    {
                         HttpContext.Session.SetString("role", "manager");
-                    else HttpContext.Session.SetString("role", "worker");
+                        HttpContext.Session.SetInt32("isManager", 1);
+                        HttpContext.Session.SetInt32("isWorker", 0);
+                    }
+
+                    else
+                    {
+                        HttpContext.Session.SetString("role", "worker");
+                        HttpContext.Session.SetInt32("isManager", 0);
+                        HttpContext.Session.SetInt32("isWorker", 1);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -67,8 +77,9 @@ namespace MvcClient.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); // return to index
         }
+        // t nói r, do đã login nó chứa session, nên sẽ thành infinity loop nếu cứ direct về login/index, phải clear session
 
     }
 }

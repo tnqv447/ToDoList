@@ -1,10 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@* @inject IHttpContextAccessor HttpContextAccessor *@
 @{
     string name = "";
-    string detail = "/User/Detail/" + HttpContextAccessor.HttpContext.Session.GetInt32("id");
-    @* href="/User/Detail/1"; *@
-    name = HttpContextAccessor.HttpContext.Session.GetString("name");
+    string detail = "/User/Detail/" + Context.Session.GetInt32("id");
+    name = Context.Session.GetString("name");
 }
 <!DOCTYPE html>
 <html lang="en">
