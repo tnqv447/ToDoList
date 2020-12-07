@@ -44,7 +44,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-name">Họ và tên</label>
-                                                <input type="text" asp-for="User.Name" class="form-control">
+                                                <input type="text" asp-for="User.Name" class="form-control" readonly>
                                                 <span asp-validation-for="User.Name" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -52,7 +52,8 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-phone">Số điện
                                                     thoại</label>
-                                                <input type="tel" asp-for="User.PhoneNumber" class="form-control">
+                                                <input type="tel" asp-for="User.PhoneNumber" class="form-control"
+                                                    readonly>
                                                 <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -62,7 +63,8 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-address">Địa chỉ</label>
                                                 <input id="input-address" class="form-control"
-                                                    placeholder="Home Address" asp-for="User.Address" type="text">
+                                                    placeholder="Home Address" asp-for="User.Address" type="text"
+                                                    readonly>
                                                 <span asp-validation-for="User.Address" class="text-danger"></span>
                                             </div>
                                         </div>

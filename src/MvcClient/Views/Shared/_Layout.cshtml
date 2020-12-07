@@ -2,7 +2,7 @@
 @* @inject IHttpContextAccessor HttpContextAccessor *@
 @{
     string name = "";
-    string detail = "/User/Detail/" + Context.Session.GetInt32("id");
+    string detail = "/User/Profile/" + Context.Session.GetInt32("id");
     name = Context.Session.GetString("name");
 }
 <!DOCTYPE html>
