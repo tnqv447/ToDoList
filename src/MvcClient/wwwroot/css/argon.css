@@ -2743,7 +2743,7 @@ pre code
 .form-control[readonly]
 {
     opacity: 1; 
-    background-color: #e9ecef;
+    background-color: #ffffff;
 }
 
 select.form-control:focus::-ms-value
@@ -2891,7 +2891,7 @@ textarea.form-control
 .form-check-input[disabled] ~ .form-check-label,
 .form-check-input:disabled ~ .form-check-label
 {
-    color: #8898aa;
+    color: #ffffff;
 }
 
 .form-check-label
@@ -7094,7 +7094,7 @@ a.badge:focus
 {
     color: #fff;
     border-color: #f75676;
-    background-color: #f75676;
+    background-color: #f7565ee1;
 }
 .alert-danger a
 {
@@ -18041,7 +18041,7 @@ a.text-darker:focus
 { 
     position:fixed;
     right: 20px;
-    bottom: 60px;
+    bottom: 30px;
     width:415px;
   
     padding: 1rem 1.5rem;

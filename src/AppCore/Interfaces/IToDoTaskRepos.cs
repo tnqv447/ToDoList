@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AppCore.Models;
 
@@ -8,8 +9,9 @@ namespace AppCore.Interfaces
         IList<ToDoTask> GetTasksForUser(int userId);
         void SetOnProgress(User source, ToDoTask task);
         void SetDone(User source, ToDoTask task);
-
+        void SetNew(User source, ToDoTask task);
         void SetPublic(User source, ToDoTask task);
         void SetPrivate(User source, ToDoTask task);
+        Boolean CheckUserInTask(int userId, ToDoTask task);
     }
 }
