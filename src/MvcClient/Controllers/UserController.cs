@@ -49,16 +49,26 @@ namespace MvcClient.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int? id)
         {
+            if (id == null)
+            {
+                Forbid();
+            }
+            int uid = id.GetValueOrDefault();
             var model = new UserModel();
-            model.User = this._unitOfWork.Users.GetBy(id);
+            model.User = this._unitOfWork.Users.GetBy(uid);
             return View(model);
         }
-        public IActionResult Update(int id)
+        public IActionResult Update(int? id)
         {
+            if (id == null)
+            {
+                Forbid();
+            }
+            int uid = id.GetValueOrDefault();
             var model = new UserModel();
-            model.User = this._unitOfWork.Users.GetBy(id);
+            model.User = this._unitOfWork.Users.GetBy(uid);
             return View(model);
         }
 
