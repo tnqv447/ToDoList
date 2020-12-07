@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Http
 @{
     if (Context.Session.GetInt32("id") == null)
-        Context.Response.Redirect("Login/Index");
+        Context.Response.Redirect(Url.Action("Index", "Login", null));
     bool isManager = Context.Session.GetInt32("isManager") == 1 ? true : false;
 }
 <div class="header bg-primary pb-6">
