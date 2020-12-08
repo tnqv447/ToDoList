@@ -1,0 +1,129 @@
+@model StatisticModel
+@{
+    ViewData["Title"] = "Thống kê nhân viên";
+}
+@using Microsoft.AspNetCore.Http
+@if (Context.Session.GetInt32("id") == null)
+{
+    Context.Response.Redirect(Url.Action("Index", "Login", null));
+
+}
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-8 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Thống kê</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home"><i
+                                        class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Statistic">Thống kê</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
+                        </ol>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-7 order-xl-1">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h3 class="mb-0">Thống kê nhân viên @Model.UserName</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <input type="hidden" asp-for="@Model.id" />
+                            <input type="hidden" asp-for="@Model.Analyze.UserId" />
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="example-date-input" class="form-control-label">Ngày bắt
+                                                đầu</label>
+                                            <input class="form-control" type="date" asp-for="@Model.StartDate">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="example-date-input" class="form-control-label">Ngày kết
+                                                thúc</label>
+                                            <input class="form-control" type="date" asp-for="@Model.EndDate">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="submit" value="Tìm" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4" />
+                            <!-- Count -->
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-name">Tổng số công
+                                                việc</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="card-text">@Model.Analyze.TasksCount</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-name">Hoàn thành</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="card-text">@Model.Analyze.TaskDoneCount</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-name">Mới</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="card-text">@Model.Analyze.TaskNewCount</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-name">Đang tiến
+                                                hành</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="card-text">@Model.Analyze.TaskOnProgressCount</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-name">Trễ hạn</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p class="card-text">@Model.Analyze.TaskDelayedCount</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
