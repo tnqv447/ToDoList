@@ -400,7 +400,7 @@ namespace MvcClient.Controllers
             }
             else
             {
-                var temp = _service.Search(tasks, searchString);
+                var temp = _service.Search(tasks, searchString, null);
                 view.Tasks = temp;
             }
             return PartialView("_TaskList", view);

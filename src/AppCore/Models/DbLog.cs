@@ -30,6 +30,11 @@ namespace AppCore.Models
         {
             this.Copy(log);
         }
+        public DbLog(DbLog log, int id)
+        {
+            this.Copy(log);
+            this.Id = id;
+        }
 
         public DbLog(DateTime execDate, ACTION_TARGET actionTarget, ACTION action, CHANGE_FIELD changeField, int execUserId, int targetId, string targetName, string targetStatusName, string targetScopeName)
         {

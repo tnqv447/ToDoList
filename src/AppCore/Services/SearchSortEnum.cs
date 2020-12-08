@@ -16,6 +16,14 @@ namespace AppCore.Services
         ROLE,
 
         //FOR TASK
-        SCOPE
+        SCOPE,
+
+        //FOR LOG
+        EXEC_DATE,
+        TASK_NAME,
+        EXEC_USER_NAME,
+        TASK_ID,
+        EXEC_USER_ID,
+        ACTION
     }
 }
