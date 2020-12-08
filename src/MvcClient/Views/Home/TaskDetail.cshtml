@@ -19,329 +19,348 @@
     </button>
 </div>
 <div class="header bg-primary pb-6">
+    <div class="container-fluid" id="get_url"  data-request-url="@Url.Action("UpdateTaskDetail", "Home")">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-12">
+                        <h6 class="h2 text-white d-inline-block mb-0">Chi tiết công việc @Model.TaskDetail.Id</h6>
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home"><i
+                                            class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                                <li class="breadcrumb-item" ><a asp-action="Index" asp-controller="Home">Danh sách công việc</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@Model.TaskDetail.Title</li>
 
-    <div class="container-fluid mt--6" id="get_url"  data-request-url="@Url.Action("UpdateTaskDetail", "Home")">
-        <div class="row">
-            <div class="col-xl-5 order-xl-2">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">
-                                    Bình luận
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="pl-lg-4">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="chats" id="chats">
-
-                                        @foreach (var cmt in Model.TaskDetail.Comments)
-                                        {
-                                            <div>
-                                                <span style="font-size:16px;font-weight:600">@cmt.UserPostName </span>
-                                                <span
-                                                    style="padding-left:10px;font-size:13px">@cmt.PostDate.ToString("dd/MM/yyyy")
-                                                </span>
-                                            </div>
-                                            <p class="botMsg">@cmt.Content</p>
-                                            <div class="clearfix">
-                                            </div>
-                                        }
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top:10px">
-                                <div class="col-lg-12">
-                                    <div class="input-group mb-3">
-                                        <textarea id="userInput" placeholder="Hãy nhắn ở đây..."
-                                            class="form-control form-control-sm form-controll-flush"
-                                            style="resize:none"></textarea>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary btn-small" id="sendButton">
-                                                <span class="btn-inner--icon"><i class="ni ni-send"></i></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </div>
+                            </ol>
+                        </nav>
                 </div>
             </div>
-            <div class="col-xl-7 order-xl-1">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">
-                                    @Model.TaskDetail.Id - <span id="text_title">@Model.TaskDetail.Title</span>
-                                </h3>
-                                <input type='hidden' value="@Model.TaskDetail.Id" id="task_id">
-                            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-6">
+    <div class="row">
+        <div class="col-xl-5 order-xl-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">
+                                Bình luận
+                            </h3>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <form>
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-title">Tiêu đề</label>
-                                            @if(!Model.isInTask){
-                                                <input type="text" id="task-title" class="form-control form-control-flush"
-                                                placeholder="" value="@Model.TaskDetail.Title" disabled>
-                                            }
-                                            else{
-                                                <input type="text" id="task-title" class="form-control form-control-muted"
-                                                placeholder="" value="@Model.TaskDetail.Title" >
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-registered-user">Người
-                                                thực hiện chính</label>
-                                            @if(!Context.Session.GetString("role").Equals("manager")){
-                                                <input class="form-control form-control-flush" type='text' disabled style="background-color:#ffffff" value="@Model.TaskDetail.RegisteredUserName">
-                                            }
-                                            else{
-                                                <select class="form-control" id="task-registered-user"
-                                                asp-items="@Model.Users" >
-                                                </select>
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-description">Mô tả chi tiết công
-                                                việc</label>
-                                            @if(!Model.isInTask){
-                                                <textarea style="text-align:left" class="form-control form-control-flush"
-                                                id="task-description" rows="3" disabled>@Model.TaskDetail.Description</textarea>
-                                            }    
-                                            else
-                                            {
-                                                <textarea style="text-align:left" class="form-control form-control-muted"
-                                                id="task-description" rows="3" >@Model.TaskDetail.Description</textarea>
-                                            }
-                                        </div>
-                                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="chats" id="chats">
 
+                                    @foreach (var cmt in Model.TaskDetail.Comments)
+                                    {
+                                        <div>
+                                            <span style="font-size:16px;font-weight:600">@cmt.UserPostName </span>
+                                            <span
+                                                style="padding-left:10px;font-size:13px">@cmt.PostDate.ToString("dd/MM/yyyy")
+                                            </span>
+                                        </div>
+                                        <p class="botMsg">@cmt.Content</p>
+                                        <div class="clearfix">
+                                        </div>
+                                    }
 
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-status">trạng thái</label>
-                                            @if(!Model.isInTask){
-                                                <input class="form-control form-control-flush" type='text' disabled style="background-color:#ffffff" value="@Model.TaskDetail.StatusName">
-                                            }
-                                            else{
-                                                <select class="form-control" id="task-status"
-                                                asp-for="@Model.TaskDetail.Status"
-                                                asp-items="Html.GetEnumSelectList<Status>()">
-                                                </select>
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-scope">Chia sẻ</label>
-                                            @if(!Model.isInTask){
-                                                <input class="form-control form-control-flush" type='text' disabled style="background-color:#ffffff" value="@Model.TaskDetail.ScopeName">
-                                            }
-                                            else{
-                                                <select class="form-control" id="task-scope"
-                                                asp-for="@Model.TaskDetail.Scope"
-                                                asp-items="Html.GetEnumSelectList<Scope>()">
-
-                                                </select>
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-start-date">Ngày bắt đầu</label>
-                                            @{
-                                                string start_day = Model.TaskDetail.StartDate.ToString("dd/MM/yyyy");
-                                                string end_day = Model.TaskDetail.EndDate.ToString("dd/MM/yyyy");
-                                            }
-                                            <input class="form-control form-control-flush date-picker-format"
-                                                style="background-color:#ffffff" value="@start_day" id="task-start-date"
-                                                disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-end-day">Ngày kết thúc</label>
-                                            @if(!Model.isInTask){
-                                                <input class="form-control form-control-flush date-picker-format"
-                                                style="background-color:#ffffff" value="@end_day" id="task-end-date" disabled>
-                                            }
-                                            else{
-                                                <input class="form-control date-picker-format"
-                                                style="background-color:#ffffff" value="@end_day" id="task-end-date">
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            @if (Model.TaskDetail.isDelayed)
-                                            {
-                                                <label id="check-task" class="form-control-label" style="color:red">Công
-                                                    việc đã quá hạn</label>
-                                            }
-                                            else
-                                            {
-                                                <label id="check-task" class="form-control-label" style="color:green">Công
-                                                    việc đang trong thời gian tiến hành</label>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="task-joint-users">Danh sách thành
-                                                viên tham gia</label>
-                                            <table class="table align-items-center table-flush" id="table_emp">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th scope="col">Họ và tên</th>
-                                                        <th scope="col">Chức vụ</th>
-                                                        @if(Model.isInTask){ <th scope="col"></th>}
-                                                    </tr>
-                                                </thead>
-                                                <tbody class='list'>
-                                                    @if(Model.TaskDetail.JointUsers.Count() == 0 ){
-                                                        <tr id="row_empty">
-                                                            <td class='text-center' colspan="2">
-                                                                <strong>Danh sách rỗng</strong>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                    else{
-                                                        
-                                                            @foreach (var user in Model.TaskDetail.JointUsers)
-                                                            {
-                                                                <tr id="row_@user.UserId">
-                                                                    <td id="name_@user.UserId">
-                                                                        @user.UserName
-                                                                    </td>
-                                                                    <td id="role_@user.UserId">
-                                                                        @user.User.RoleName
-                                                                    </td>
-                                                                    @if(Model.isInTask){
-                                                                    <td class="text-right">
-                                                                        <a id="@user.UserId"
-                                                                            class="btn btn-icon btn-danger remove_user">
-                                                                            <span class="btn-inner--icon">
-                                                                                <i class="ni ni-fat-remove"
-                                                                                    style="color:#ffffff"></i></span>
-                                                                            <span class="btn-inner--text"
-                                                                                style="color:#ffffff">Xóa</span>
-                                                                        </a>
-                                                                    </td>
-                                                                    }
-                                                                </tr>
-                                                            }
-                                                        
-                                                        
-                                                    }
-                                                    
-                                                </tbody>
-
-                                            </table>
-                                            @if(Model.isInTask){
-                                                <div class="input-group" style="margin-top: 30px;">
-                                                    <select class="form-control" id="task-joint-users"
-                                                        asp-for="@Model.jointUser" asp-items="@Model.UserNotJointed">
-
-                                                    </select>
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-outline-primary" id="addUser"
-                                                            type="button">Chọn</button>
-                                                    </div>
-                                                </div>
-                                            }
-                                            
-
-                                        </div>
-                                    </div>
-                                </div>
-                                @if(Model.isInTask){
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label class="form-control-label">Danh sách tập tin</label>
-
-
-                                                @if (Model.TaskDetail.AttachedFiles.Count() == 0)
-                                                {
-                                                    <input class="form-control form-control-flush"
-                                                        style="background-color:#ffffff;font-style: italic;" disabled
-                                                        value="Chưa có tập tin nào">
-                                                }
-                                                else
-                                                {
-
-
-                                                    <ul class="list-unstyled" id="attach_files">
-                                                        @foreach (var file in Model.TaskDetail.AttachedFiles)
-                                                        {
-                                                            <li>
-                                                                <a href="~/Files/@file.FileUrl" download="@file.FileUrl" >@file.FileUrl</a>
-                                                            </li>
-                                                        }
-                                                    </ul>
-                                                }
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="custom-file">
-                                                <div class="input-group mb-3">
-                                                    <input type="file" class="form-control" id="task-file">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-outline-primary" type="button" id="upload">Tải lên</button>
-                                                    </div>
-                                                    <input type="hidden" class= "get_task_id" id="@Model.TaskDetail.Id">
-                                                </div>                         
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                
                             </div>
-                        </form>
+                        </div>
+                        <div class="row" style="margin-top:10px">
+                            <div class="col-lg-12">
+                                <div class="input-group mb-3">
+                                    <textarea id="userInput" placeholder="Hãy nhắn ở đây..."
+                                        class="form-control form-control-sm form-controll-flush"
+                                        style="resize:none"></textarea>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary btn-small" id="sendButton">
+                                            <span class="btn-inner--icon"><i class="ni ni-send"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
+
                 </div>
             </div>
         </div>
+        <div class="col-xl-7 order-xl-1">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">
+                                @Model.TaskDetail.Id - <span id="text_title">@Model.TaskDetail.Title</span>
+                            </h3>
+                            <input type='hidden' value="@Model.TaskDetail.Id" id="task_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-title">Tiêu đề</label>
+                                        @if(!Model.isInTask){
+                                            <input type="text" id="task-title" class="form-control form-control-flush"
+                                            placeholder="" value="@Model.TaskDetail.Title" disabled>
+                                        }
+                                        else{
+                                            <input type="text" id="task-title" class="form-control form-control-muted"
+                                            placeholder="" value="@Model.TaskDetail.Title" >
+                                        }
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-registered-user">Người
+                                            thực hiện chính</label>
+                                        @if(!Context.Session.GetString("role").Equals("manager")){
+                                            <input class="form-control form-control-flush" type='text' disabled style="background-color:#ffffff" value="@Model.TaskDetail.RegisteredUserName">
+                                        }
+                                        else{
+                                            <select class="form-control" id="task-registered-user"
+                                            asp-items="@Model.Users" >
+                                            </select>
+                                        }
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-description">Mô tả chi tiết công
+                                            việc</label>
+                                        @if(!Model.isInTask){
+                                            <textarea style="text-align:left" class="form-control form-control-flush"
+                                            id="task-description" rows="3" disabled>@Model.TaskDetail.Description</textarea>
+                                        }    
+                                        else
+                                        {
+                                            <textarea style="text-align:left" class="form-control form-control-muted"
+                                            id="task-description" rows="3" >@Model.TaskDetail.Description</textarea>
+                                        }
+                                    </div>
+                                </div>
 
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-status">trạng thái</label>
+                                        @if(!Model.isInTask){
+                                            <input class="form-control form-control-flush" type='text' disabled style="background-color:#ffffff" value="@Model.TaskDetail.StatusName">
+                                        }
+                                        else{
+                                            <select class="form-control" id="task-status"
+                                            asp-for="@Model.TaskDetail.Status"
+                                            asp-items="Html.GetEnumSelectList<Status>()">
+                                            </select>
+                                        }
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-scope">Chia sẻ</label>
+                                        @if(!Model.isInTask){
+                                            <input class="form-control form-control-flush" type='text' disabled style="background-color:#ffffff" value="@Model.TaskDetail.ScopeName">
+                                        }
+                                        else{
+                                            <select class="form-control" id="task-scope"
+                                            asp-for="@Model.TaskDetail.Scope"
+                                            asp-items="Html.GetEnumSelectList<Scope>()">
+
+                                            </select>
+                                        }
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-start-date">Ngày bắt đầu</label>
+                                        @{
+                                            string start_day = Model.TaskDetail.StartDate.ToString("dd/MM/yyyy");
+                                            string end_day = Model.TaskDetail.EndDate.ToString("dd/MM/yyyy");
+                                        }
+                                        <input class="form-control form-control-flush date-picker-format"
+                                            style="background-color:#ffffff" value="@start_day" id="task-start-date"
+                                            disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-end-day">Ngày kết thúc</label>
+                                        @if(!Model.isInTask){
+                                            <input class="form-control form-control-flush date-picker-format"
+                                            style="background-color:#ffffff" value="@end_day" id="task-end-date" disabled>
+                                        }
+                                        else{
+                                            <input class="form-control date-picker-format"
+                                            style="background-color:#ffffff" value="@end_day" id="task-end-date">
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        @if (Model.TaskDetail.isDelayed)
+                                        {
+                                            <label id="check-task" class="form-control-label" style="color:red">Công
+                                                việc đã quá hạn</label>
+                                        }
+                                        else
+                                        {
+                                            <label id="check-task" class="form-control-label" style="color:green">Công
+                                                việc đang trong thời gian tiến hành</label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="task-joint-users">Danh sách thành
+                                            viên tham gia</label>
+                                        <table class="table align-items-center table-flush" id="table_emp">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col">Họ và tên</th>
+                                                    <th scope="col">Chức vụ</th>
+                                                    @if(Model.isInTask){ <th scope="col"></th>}
+                                                </tr>
+                                            </thead>
+                                            <tbody class='list'>
+                                                @if(Model.TaskDetail.JointUsers.Count() == 0 ){
+                                                    <tr id="row_empty">
+                                                        <td class='text-center' colspan="2">
+                                                            <strong>Danh sách rỗng</strong>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else{
+                                                    
+                                                        @foreach (var user in Model.TaskDetail.JointUsers)
+                                                        {
+                                                            <tr id="row_@user.UserId">
+                                                                <td id="name_@user.UserId">
+                                                                    @user.UserName
+                                                                </td>
+                                                                <td id="role_@user.UserId">
+                                                                    @user.User.RoleName
+                                                                </td>
+                                                                @if(Model.isInTask){
+                                                                <td class="text-right">
+                                                                    <a id="@user.UserId"
+                                                                        class="btn btn-icon btn-danger remove_user">
+                                                                        <span class="btn-inner--icon">
+                                                                            <i class="ni ni-fat-remove"
+                                                                                style="color:#ffffff"></i></span>
+                                                                        <span class="btn-inner--text"
+                                                                            style="color:#ffffff">Xóa</span>
+                                                                    </a>
+                                                                </td>
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    
+                                                    
+                                                }
+                                                
+                                            </tbody>
+
+                                        </table>
+                                        @if(Model.isInTask){
+                                            <div class="input-group" style="margin-top: 30px;">
+                                                <select class="form-control" id="task-joint-users"
+                                                    asp-for="@Model.jointUser" asp-items="@Model.UserNotJointed">
+
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary" id="addUser"
+                                                        type="button">Chọn</button>
+                                                </div>
+                                            </div>
+                                        }
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+                            @if(Model.isInTask){
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Danh sách tập tin</label>
+
+
+                                            @if (Model.TaskDetail.AttachedFiles.Count() == 0)
+                                            {
+                                                <input class="form-control form-control-flush"
+                                                    style="background-color:#ffffff;font-style: italic;" disabled
+                                                    value="Chưa có tập tin nào">
+                                            }
+                                            else
+                                            {
+
+
+                                                <ul class="list-unstyled" id="attach_files">
+                                                    @foreach (var file in Model.TaskDetail.AttachedFiles)
+                                                    {
+                                                        <li>
+                                                            <a href="~/Files/@file.FileUrl" download="@file.FileUrl" >@file.FileUrl</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="custom-file">
+                                            <div class="input-group mb-3">
+                                                <input type="file" class="form-control" id="task-file">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary" type="button" id="upload">Tải lên</button>
+                                                </div>
+                                                <input type="hidden" class= "get_task_id" id="@Model.TaskDetail.Id">
+                                            </div>                         
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function(){
         $(document).on('click','#upload',function(){

@@ -240,4 +240,26 @@
             }
         })
     };
+    $('#navbar-search-main').submit(function(e){
+        e.preventDefault();
+    })
+    $(document).on('keypress','#search_user_name',function(e){
+        if(e.which==13){
+            
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            var searchString = $(this).val();
+            $.ajax({
+                type: "post",
+                url: $(this).data('request-url'),
+                data: {
+                    __RequestVerificationToken: token,
+                    searchString: searchString.trim()               
+                },
+                dataType: "html",
+                success: function (result) {
+                    $("#partial").html(result);
+                }
+            });
+        }
+    });
 });

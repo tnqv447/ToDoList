@@ -6,6 +6,7 @@
     if (Context.Session.GetInt32("id") == null)
         Context.Response.Redirect(Url.Action("Index", "Login", null));
 }
+
 <input type="hidden" id="roleUser" value='@Context.Session.GetString("role")'>
 <div class="modal-content">
     <div class="modal-body p-0">

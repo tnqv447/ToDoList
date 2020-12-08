@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Interfaces;
 using AppCore.Models;
+using AppCore.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,18 +19,21 @@ namespace MvcClient.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISearchSortService _service;
         // private ToDoTask task;
         private IList<User> user_not_joints;
+        private IList<ToDoTask> tasks;
         private TaskViewModel view;
         private int userId;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public HomeController(IUnitOfWork unitOfWork, ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
+        public HomeController(IUnitOfWork unitOfWork, ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment,
+        ISearchSortService service)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _webHostEnvironment = webHostEnvironment;
+            _service = service;
         }
-
         public IActionResult Index()
         {
             if (HttpContext.Session.GetInt32("id") == null)
@@ -39,19 +43,15 @@ namespace MvcClient.Controllers
             else
             {
                 var role = HttpContext.Session.GetString("role");
-                userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
-                IList<ToDoTask> tasks = new List<ToDoTask>();
-                if (role.Equals("worker"))
+                if (role.Equals("manager"))
                 {
-                    tasks = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
+                    tasks = _unitOfWork.ToDoTasks.GetAll();
                 }
                 else
                 {
-                    if (role.Equals("manager"))
-                    {
-                        tasks = _unitOfWork.ToDoTasks.GetAll();
-                    }
+                    tasks = _unitOfWork.ToDoTasks.GetTasksForUser(HttpContext.Session.GetInt32("id").GetValueOrDefault());
                 }
+                userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
                 view = new TaskViewModel(tasks);
                 return View(view);
             }
@@ -78,13 +78,11 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddNewTask(ToDoTask task, string role)
         {
-            IList<ToDoTask> tasks = new List<ToDoTask>();
             var userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
             var user = _unitOfWork.Users.GetBy(userId);
             if (ModelState.IsValid)
             {
                 _unitOfWork.ToDoTasks.Add(user, new ToDoTask(task));
-
                 if (role.Equals("worker"))
                 {
                     tasks = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
@@ -96,23 +94,9 @@ namespace MvcClient.Controllers
                 }
                 view = new TaskViewModel(tasks);
 
-                return PartialView("_TaskList", view);
             }
-            else
-            {
-                if (role.Equals("worker"))
-                {
-                    tasks = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
-                }
-                else
-                {
-                    if (role.Equals("manager"))
-                        tasks = _unitOfWork.ToDoTasks.GetAll();
-                }
-                view = new TaskViewModel(tasks);
-                return PartialView(view);
+            return PartialView("_TaskList", view);
 
-            }
         }
         [Route("Home/TaskDetail/{taskId:int}")]
         public IActionResult TaskDetail(int taskId)
@@ -394,6 +378,32 @@ namespace MvcClient.Controllers
                 rs.Value = temp;
             }
             return rs;
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SearchTask(string searchString)
+        {
+            var role = HttpContext.Session.GetString("role");
+            var userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
+            if (role.Equals("manager"))
+            {
+                tasks = _unitOfWork.ToDoTasks.GetAll();
+            }
+            else
+            {
+                tasks = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
+            }
+            view = new TaskViewModel();
+            if (searchString == null || searchString.Equals(""))
+            {
+                view.Tasks = tasks;
+            }
+            else
+            {
+                var temp = _service.Search(tasks, searchString);
+                view.Tasks = temp;
+            }
+            return PartialView("_TaskList", view);
         }
         public IActionResult Privacy()
         {
