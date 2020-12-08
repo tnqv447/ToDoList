@@ -6,7 +6,7 @@
     if (Context.Session.GetInt32("id") == null)
         Context.Response.Redirect(Url.Action("Index", "Login", null));
 }
-
+<input type="hidden" id="roleUser" value='@Context.Session.GetString("role")'>
 <div class="modal-content">
     <div class="modal-body p-0">
         <div class="card bg-secondary border-0 mb-0">
@@ -16,13 +16,16 @@
                 </div>
             </div>
             <div class="card-body">
-                <form role="form" asp-action="Create">
+                <form role="form" asp-action="AddNewTask" id="create-form">
                     <div class="pl-lg-4">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group" style="text-align:left">
-                                    <label class="form-control-label" for="task-title">Tiêu đề</label>
+                                    <label class="form-control-label" for="create-task-title">Tiêu đề</label>
                                     <input type="text" id="create-task-title" class="form-control " placeholder="">
+                                    <span
+                                        style="display:none; margin-top: 5px;margin-bottom:5px; font-style: italic; color: red; "
+                                        id="title_err">Tiêu đề không được trống</span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -31,8 +34,9 @@
                                         thực hiện chính</label>
                                     @if (!Context.Session.GetString("role").Equals("manager"))
                                     {
-                                        <input id="create-task-registered-user" class="form-control " type='text' disabled
-                                            style="background-color:#ffffff" value="@Model.Name">
+                                        <select class="form-control" id="create-task-registered-user" disabled>
+                                            <option value='@Context.Session.GetInt32("id")'>@Model.Name</option>
+                                        </select>
                                     }
                                     else
                                     {
@@ -40,6 +44,7 @@
                                             asp-items="@Model.Users">
                                         </select>
                                     }
+
                                     </div>
                                 </div>
                             </div>
@@ -57,8 +62,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group" style="text-align:left">
                                         <label class="form-control-label" for="create-task-status">Trạng thái</label>
-                                        <input type="text" id="create-task-status" class="form-control " placeholder="Mới"
-                                            value="0" disabled>
+                                        <input type="text" id="create-task-status" class="form-control " value="Mới"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -88,6 +93,9 @@
                                     <label class="form-control-label" for="task-title">Ngày kết thúc</label>
                                     <input class="form-control date-picker-format" style="background-color:#ffffff"
                                         id="create-task-end-date">
+                                    <span
+                                        style="display:none; margin-top: 5px;margin-bottom:5px; font-style: italic; color: red; "
+                                        id="end_date_err">Hãy chọn ngày kết thúc</span>
                                 </div>
                             </div>
 
@@ -97,7 +105,8 @@
                         <div class="row">
                             <div class="col-lg-12" style="text-align: center;">
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary my-4">Tạo công việc</button>
+                                    <button type="button" class="btn btn-primary my-4" id="saveTask">Tạo công
+                                        việc</button>
                                 </div>
                             </div>
                         </div>
@@ -108,6 +117,7 @@
     </div>
 </div>
 <script>
+
     $(document).ready(function () {
         $('.date-picker-format').datepicker({
             autoclose: true,
@@ -116,5 +126,50 @@
             startDate: new Date()
 
         });
+        $('#saveTask').on('click', function () {
+            var form = $('#create-form');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var title = $('#create-task-title').val();
+            var day = $('#create-task-end-date').val();
+            var startDate = moment($('#create-task-start-date').val()).format('YYYY-DD-MM');
+            if (title.trim() == "" || title == null) {
+                $('#title_err').css('display', 'block');
+            }
+            else {
+                $('#title_err').css('display', 'none');
+                if (day == "" || day == null) {
+                    $('#end_date_err').css('display', 'block');
+                }
+                else {
+                    $('#end_date_err').css('display', 'none');
+                    var endDate = moment(day).format('YYYY-DD-MM');
+
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("AddNewTask", "Home")',
+                        data: {
+                            __RequestVerificationToken: token,
+                            task: {
+                                Title: title,
+                                Description: $('#create-task-describe').val(),
+                                StartDate: startDate,
+                                EndDate: endDate,
+                                RegisteredUserId: $('#create-task-registered-user option:selected').val(),
+                                Status: 0,
+                                Scope: $('#create-task-scope option:selected').val()
+                            },
+                            role: $('#roleUser').val()
+                        },
+                        dataType: "html",
+                        success: function (result) {
+                            $("#create-form").modal("hide");
+                            $("#partial").html(result);
+                        }
+                    });
+                }
+
+            }
+
+        })
     });
 </script>

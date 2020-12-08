@@ -76,15 +76,14 @@ namespace MvcClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ToDoTask task, string role)
+        public IActionResult AddNewTask(ToDoTask task, string role)
         {
             IList<ToDoTask> tasks = new List<ToDoTask>();
             var userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
             var user = _unitOfWork.Users.GetBy(userId);
-
             if (ModelState.IsValid)
             {
-                _unitOfWork.ToDoTasks.Add(user, task);
+                _unitOfWork.ToDoTasks.Add(user, new ToDoTask(task));
 
                 if (role.Equals("worker"))
                 {
@@ -92,8 +91,8 @@ namespace MvcClient.Controllers
                 }
                 else
                 {
-
-                    tasks = _unitOfWork.ToDoTasks.GetAll();
+                    if (role.Equals("manager"))
+                        tasks = _unitOfWork.ToDoTasks.GetAll();
                 }
                 view = new TaskViewModel(tasks);
 
@@ -107,10 +106,11 @@ namespace MvcClient.Controllers
                 }
                 else
                 {
-                    tasks = _unitOfWork.ToDoTasks.GetAll();
+                    if (role.Equals("manager"))
+                        tasks = _unitOfWork.ToDoTasks.GetAll();
                 }
                 view = new TaskViewModel(tasks);
-                return View(view);
+                return PartialView(view);
 
             }
         }
