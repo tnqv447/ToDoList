@@ -44,8 +44,9 @@ namespace MvcClient.Controllers
             {
                 user.Status = USER_STATUS.ACTIVE;
                 this._unitOfWork.Users.Add(source, user);
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            return View();
         }
         public IActionResult Detail(int? id)
         {
@@ -64,10 +65,15 @@ namespace MvcClient.Controllers
             {
                 Forbid();
             }
-            int uid = id.GetValueOrDefault();
-            var model = new UserModel();
-            model.User = this._unitOfWork.Users.GetBy(uid);
-            return View(model);
+            else
+            {
+                int uid = id.GetValueOrDefault();
+                var model = new UserModel();
+                model.User = this._unitOfWork.Users.GetBy(uid);
+                return View(model);
+            }
+            return View();
+
         }
 
         [HttpPost]
@@ -140,9 +146,9 @@ namespace MvcClient.Controllers
             {
                 this._unitOfWork.Users.Update(source, oldUser);
                 HttpContext.Session.SetString("name", oldUser.Name);
-                model.User = oldUser;
                 ViewBag.Message = "Cập nhật thông tin " + oldUser.Name + " thành công!";
             }
+            model.User = oldUser;
             return View(model);
         }
     }

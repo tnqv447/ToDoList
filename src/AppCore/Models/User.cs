@@ -7,9 +7,9 @@ namespace AppCore.Models
     public class User
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Không được để trống tên")]
         public string Name { get; set; }
-        
+
         [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Số điện thoại phải có 10 chữ số")]
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
@@ -17,11 +17,17 @@ namespace AppCore.Models
         public USER_STATUS Status { get; set; }
 
         [RegularExpression(@"^[a-zA-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$", ErrorMessage = "Email ko hợp lệ")]
-        [Required]
+        [Required(ErrorMessage = "Không được để trống tên tài khoản")]
         public string Username { get; set; }
-        [Required]
+        [MinLength(5, ErrorMessage = "Phải có ít nhất 5 ký tự")]
+        [Required(ErrorMessage = "Không được để trống mật khẩu")]
         public string Password { get; set; }
-        
+
+        [NotMapped]
+        [Required(ErrorMessage = "Không được để trống mật khẩu")]
+        [Compare(nameof(Password), ErrorMessage = "Không khớp với mật khẩu.")]
+        public string ConfirmPassword { get; set; }
+
 
         public virtual IList<JointUser> JointUsers { get; set; }
         public virtual IList<DbLog> DbLogs { get; set; }
@@ -32,7 +38,7 @@ namespace AppCore.Models
         [NotMapped]
         public string StatusName { get { return EnumConverter.Convert(this.Status); } }
 
-        public User(){}
+        public User() { }
         public User(User user)
         {
             this.Copy(user);
