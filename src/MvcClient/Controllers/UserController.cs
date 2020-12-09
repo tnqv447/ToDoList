@@ -38,6 +38,7 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = model.User;
             if (ModelState.IsValid)
             {
@@ -72,6 +73,7 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = model.User;
 
             User oldUser = this._unitOfWork.Users.GetBy(user.Id);
@@ -92,7 +94,9 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult Disable(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = this._unitOfWork.Users.GetBy(model.User.Id);
+            Console.WriteLine(user.Id + " " + user.Name);
             this._unitOfWork.Users.Disable(source, user);
             ViewBag.Message = "Khóa nhân viên " + user.Name + " thành công!";
             return RedirectToAction(nameof(Index));
@@ -101,6 +105,7 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult Active(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = this._unitOfWork.Users.GetBy(model.User.Id);
             this._unitOfWork.Users.Activate(source, user);
             ViewBag.Message = "Mở khóa nhân viên " + user.Name + " thành công!";
@@ -122,6 +127,7 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Profile(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = model.User;
 
             User oldUser = this._unitOfWork.Users.GetBy(user.Id);
