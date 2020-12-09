@@ -77,7 +77,7 @@
     })
     $(document).on('change', '#task-scope', function () {
         var value = $('#task-scope option:selected').val();
-        var act = 'Status';
+        var act = 'Scope';
         updateTask(act, value);
     })
     $(document).on('click', '#addUser', function () {
