@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCore.Models
@@ -6,13 +7,19 @@ namespace AppCore.Models
     public class User
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Số điện thoại phải có 10 chữ số")]
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public ROLE Role { get; set; }
         public USER_STATUS Status { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$", ErrorMessage = "Email ko hợp lệ")]
+        [Required]
         public string Username { get; set; }
+        [Required]
         public string Password { get; set; }
         
 

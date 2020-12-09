@@ -22,7 +22,7 @@ namespace MvcClient.Controllers
         {
             if (HttpContext.Session.GetInt32("id") == null)
             {
-                User account = this._unitOfWork.Users.GetUserByAccount("ql1", "12345");
+                User account = this._unitOfWork.Users.GetUserByAccount("ql1@gmail.com", "12345");
                 this.SetSession(account);
                 return RedirectToAction("Index", "Home");
                 // var model = new LoginModel();
