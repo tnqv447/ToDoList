@@ -22,7 +22,7 @@ namespace MvcClient.Controllers
         private readonly ISearchSortService _service;
         // private ToDoTask task;
         private IList<User> user_not_joints;
-        private IList<ToDoTask> tasks;
+        private PaginatedList<ToDoTask> tasks;
         private TaskViewModel view;
         private int userId;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -34,7 +34,7 @@ namespace MvcClient.Controllers
             _webHostEnvironment = webHostEnvironment;
             _service = service;
         }
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1, string searchString = null)
         {
             if (HttpContext.Session.GetInt32("id") == null)
             {
@@ -42,23 +42,41 @@ namespace MvcClient.Controllers
             }
             else
             {
-                var role = HttpContext.Session.GetString("role");
-                if (role.Equals("manager"))
-                {
-                    tasks = _unitOfWork.ToDoTasks.GetAll();
-                }
-                else
-                {
-                    tasks = _unitOfWork.ToDoTasks.GetTasksForUser(HttpContext.Session.GetInt32("id").GetValueOrDefault());
-                }
-                userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
-                view = new TaskViewModel(tasks);
+
+                view = GetTaskViewModel(searchString, pageNumber);
                 return View(view);
             }
-
-
         }
-
+        public TaskViewModel GetTaskViewModel(string searchString = null, int pageNumber = 1)
+        {
+            var pageSize = 6;
+            var role = HttpContext.Session.GetString("role");
+            IList<ToDoTask> temp = new List<ToDoTask>();
+            if (role.Equals("manager"))
+            {
+                temp = _unitOfWork.ToDoTasks.GetAll();
+            }
+            else
+            {
+                temp = _unitOfWork.ToDoTasks.GetTasksForUser(HttpContext.Session.GetInt32("id").GetValueOrDefault());
+            }
+            if (searchString == null || searchString.Equals(""))
+            {
+                tasks = PaginatedList<ToDoTask>.Create(temp, pageNumber, pageSize);
+            }
+            else
+            {
+                var searchResult = _service.Search(temp, searchString, null);
+                tasks = PaginatedList<ToDoTask>.Create(searchResult, pageNumber, pageSize);
+            }
+            TaskViewModel taskView = new TaskViewModel(tasks);
+            return taskView;
+        }
+        public IActionResult Paging(string searchString, int pageNumber)
+        {
+            view = GetTaskViewModel(searchString, pageNumber);
+            return PartialView("_TaskList", view);
+        }
         public IActionResult Create()
         {
             var userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
@@ -80,18 +98,23 @@ namespace MvcClient.Controllers
         {
             var userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
             var user = _unitOfWork.Users.GetBy(userId);
+            IList<ToDoTask> temp = new List<ToDoTask>();
             if (ModelState.IsValid)
             {
                 _unitOfWork.ToDoTasks.Add(user, new ToDoTask(task));
                 if (role.Equals("worker"))
                 {
-                    tasks = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
+                    temp = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
                 }
                 else
                 {
                     if (role.Equals("manager"))
-                        tasks = _unitOfWork.ToDoTasks.GetAll();
+                    {
+                        temp = _unitOfWork.ToDoTasks.GetAll();
+                    }
                 }
+                var pageNumber = (int)Math.Ceiling(temp.Count() / (double)6);
+                tasks = PaginatedList<ToDoTask>.Create(temp, pageNumber, 6);
                 view = new TaskViewModel(tasks);
 
             }
@@ -380,28 +403,11 @@ namespace MvcClient.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SearchTask(string searchString)
+        public IActionResult SearchTask(string searchString, int pageNumber = 1)
         {
             var role = HttpContext.Session.GetString("role");
             var userId = HttpContext.Session.GetInt32("id").GetValueOrDefault();
-            if (role.Equals("manager"))
-            {
-                tasks = _unitOfWork.ToDoTasks.GetAll();
-            }
-            else
-            {
-                tasks = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
-            }
-            view = new TaskViewModel();
-            if (searchString == null || searchString.Equals(""))
-            {
-                view.Tasks = tasks;
-            }
-            else
-            {
-                var temp = _service.Search(tasks, searchString, null);
-                view.Tasks = temp;
-            }
+            view = GetTaskViewModel(searchString, pageNumber);
             return PartialView("_TaskList", view);
         }
         public IActionResult Privacy()

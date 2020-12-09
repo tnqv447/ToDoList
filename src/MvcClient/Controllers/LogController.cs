@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using AppCore.Interfaces;
+using AppCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MvcClient.Models;
 
 namespace MvcClient.Controllers
 {
@@ -8,6 +11,8 @@ namespace MvcClient.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private IList<DbLog> logs;
+        private LogViewModel view;
         public LogController(IUnitOfWork unitOfWork, ILogger<HomeController> logger)
         {
             _unitOfWork = unitOfWork;
@@ -16,7 +21,10 @@ namespace MvcClient.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            logs = _unitOfWork.DbLogs.GetAll();
+            view = new LogViewModel();
+            view.Logs = logs;
+            return View(view);
         }
     }
 }

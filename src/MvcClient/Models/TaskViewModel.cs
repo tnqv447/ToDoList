@@ -8,7 +8,8 @@ namespace MvcClient.Models
 {
     public class TaskViewModel
     {
-        public IList<ToDoTask> Tasks { get; set; }
+        // public IList<ToDoTask> Tasks { get; set; }
+        public PaginatedList<ToDoTask> Tasks { get; set; }
         public ToDoTask TaskDetail { get; set; }
         public SelectList UserNotJointed { get; set; }
         public SelectList Users { get; set; }
@@ -19,7 +20,7 @@ namespace MvcClient.Models
         {
 
         }
-        public TaskViewModel(IList<ToDoTask> tasks)
+        public TaskViewModel(PaginatedList<ToDoTask> tasks)
         {
             Tasks = tasks;
         }

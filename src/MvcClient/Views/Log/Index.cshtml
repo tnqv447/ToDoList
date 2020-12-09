@@ -1,12 +1,15 @@
+@model LogViewModel
 @using Microsoft.AspNetCore.Http
 @{
     ViewData["Title"] = "Log";
+
 }
 @if (Context.Session.GetInt32("id") == null)
 {
     Context.Response.Redirect(Url.Action("Index", "Login", null));
 
 }
+
 <div class="header bg-primary">
     <div class="container-fluid">
         <div class="header-body">
@@ -29,13 +32,55 @@
 <div class="container-fluid mt-6">
     <div class="row">
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <div class="pl-lg-4">
+            @foreach (var log in @Model.Logs)
+            {
+
+                var split = log.ToString().Split(" || ");
+                var name = split[0];
+                var action = split[1];
+                var field = split[2];
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="pl-lg-4">
+                            @name
+                            @if (@action.Trim().Equals("cập nhật"))
+                            {
+                                <span style="color:green; font-weight:600">
+                                    @action
+                                </span>
+                            }
+                            else
+                            {
+                                if (@action.Trim().Equals("thêm"))
+                                {
+                                    <span style="color:blue; font-weight:600">
+                                        @action
+                                    </span>
+                                }
+                                else
+                                {
+                                    if (@action.Trim().Equals("thay đổi"))
+                                    {
+                                        <span style="color:purple; font-weight:600">
+                                            @action
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:red; font-weight:600">
+                                            @action
+                                        </span>
+                                    }
+
+                                }
+                            }
+                            @field
+                        </div>
                     </div>
                 </div>
+            }
 
-            </div>
         </div>
     </div>
     <div class="row">

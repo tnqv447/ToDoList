@@ -3,7 +3,6 @@
     var old_title = $('#task-title').val();
     var old_describe = $('#task-description').val();
     var task_id = $('#task_id').val();
-    var start_date = $('#task-start-date').val();
     $('.date-picker-format').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
@@ -262,4 +261,29 @@
             });
         }
     });
+    $(document).on('click','.page-link',function(){
+        var id = $(this).attr('id').slice(5);
+        var searchString = $('#search_user_name').val();
+        
+        Paging(id,searchString);
+    })
+    function Paging(pageNumber,searchString){
+        var url = $('#getUrl').data('request-url');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            
+            data:{
+                pageNumber: pageNumber,
+                searchString: searchString
+            },
+            dataType:'html',
+            success: function(result){
+                $("#partial").html(result);
+            },
+            error: function(){
+                alert("Không truy cập được dữ liệu");
+            }
+        })
+    }
 });

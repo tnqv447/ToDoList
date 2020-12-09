@@ -1,35 +1,89 @@
-<table class="table align-items-center table-flush">
-    <thead class="thead-light">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Tiêu đề</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Người đảm nhiệm</th>
-            <th scope="col">Ngày kết thúc</th>
-            <th scope="col">Chia sẻ</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody class="list">
-        @foreach (var item in @Model.Tasks)
-        {
+@{
+    Layout = null;
+}
+<div class="table-responsive">
+    <table class="table align-items-center table-flush">
+        <thead class="thead-light">
             <tr>
-                <th scope="row">@item.Id</th>
-                <td class="budget">@item.Title</td>
-                <td>@item.StatusName</td>
-                <td>@item.RegisteredUserName</td>
-                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                <td>@item.ScopeName</td>
-                <td>
-                    <a id="@item.Id" class="btn btn-icon btn-info" asp-action="TaskDetail" asp-controller="home"
-                        asp-route-taskId=@item.Id>
-                        <span class="btn-inner--icon">
-                            <i class="ni ni-settings"></i></span>
-                        <span class="btn-inner--text">Chi tiết</span>
-                    </a>
-                </td>
+                <th scope="col">ID</th>
+                <th scope="col">Tiêu đề</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Người đảm nhiệm</th>
+                <th scope="col">Ngày kết thúc</th>
+                <th scope="col">Chia sẻ</th>
+                <th scope="col"></th>
             </tr>
-        }
+        </thead>
+        <tbody class="list">
+            @foreach (var item in @Model.Tasks)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td class="budget">@item.Title</td>
+                    <td>@item.StatusName</td>
+                    <td>@item.RegisteredUserName</td>
+                    <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.ScopeName</td>
+                    <td>
+                        <a id="@item.Id" class="btn btn-icon btn-info" asp-action="TaskDetail" asp-controller="home"
+                            asp-route-taskId=@item.Id>
+                            <span class="btn-inner--icon">
+                                <i class="ni ni-settings"></i></span>
+                            <span class="btn-inner--text">Chi tiết</span>
+                        </a>
+                    </td>
+                </tr>
+            }
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
+@{
+    var prevDisabled = !Model.Tasks.HasPrevious ? "disabled" : "";
+    var nextDisabled = !Model.Tasks.HasNext ? "disabled" : "";
+}
+<div class="card-footer py-4">
+    <nav aria-label="...">
+        <ul class="pagination justify-content-end mb-0">
+            <li class="page-item @prevDisabled">
+                <a class="page-link " id="page_@(Model.Tasks.PageIndex-1)"
+                    data-request-url='@Url.Action("Paging","Home")' tabindex="-1">
+                    <i class="fas fa-angle-left"></i>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <input type="hidden" id="getUrl" data-request-url='@Url.Action("Paging","Home")'>
+            @for (var i = 0; i < Model.Tasks.TotalPages; i++)
+            {
+                var pageNumber = i + 1;
+                var idLink = "page_" + pageNumber;
+                if (pageNumber.Equals(@Model.Tasks.PageIndex))
+                {
+                    <li class="page-item active">
+                        <a class="page-link" id="@idLink" data-request-url='@Url.Action("Paging","Home")'>
+                            @(i+1)
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" id="@idLink" data-requested-url='@Url.Action("Paging","Home")'>
+                            @(i+1)
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                }
+
+            }
+            <li class="page-item @nextDisabled">
+                <a class="page-link " id="page_@(Model.Tasks.PageIndex+1)"
+                    data-requested-url='@Url.Action("Paging","Home")'>
+                    <i class="fas fa-angle-right"></i>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
