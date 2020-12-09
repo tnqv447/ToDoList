@@ -12,10 +12,5 @@ namespace MvcClient.Models
         public UserManagerModel()
         {
         }
-        public UserManagerModel(IList<User> users, IList<ROLE> roles)
-        {
-            Users = users;
-            Roles = roles;
-        }
     }
 }

@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
         private void UpdateStatus(User source, ToDoTask task, STATUS status)
         {
             task.Status = status;
-            this.Update(source, task);
+            this.Update(null, task);
 
             var log = new DbLog(DateTime.Now, ACTION_TARGET.TASK, ACTION.CHANGE_STATUS, CHANGE_FIELD.TITLE, source.Id, task.Id, task.Title, EnumConverter.Convert(status), null);
             _context.DbLogs.Add(log);

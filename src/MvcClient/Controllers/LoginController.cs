@@ -22,54 +22,44 @@ namespace MvcClient.Controllers
         {
             if (HttpContext.Session.GetInt32("id") == null)
             {
-                var model = new LoginModel();
-                return View(model);
+                User account = this._unitOfWork.Users.GetUserByAccount("ql1", "12345");
+                this.SetSession(account);
+                return RedirectToAction("Index", "Home");
+                // var model = new LoginModel();
+                // return View(model);
             }
             else
             {
                 return RedirectToAction("Index", "Home");
             }
-
         }
 
         [HttpPost]
         public IActionResult Index(LoginModel model)
         {
             string user = model.Username.Trim();
-            string pass = model.Password;
-            ViewResult view = View();
+            string pass = model.Password.Trim();
+            ViewResult view = View(model);
             if (this._unitOfWork.Users.isUserNameExists(user))
             {
                 User account = this._unitOfWork.Users.GetUserByAccount(user, pass);
-                if (account == null)
+                if (account.Status == USER_STATUS.DISABLED)
+                {
+                    model.Message = "Tài khoản này đã bị khóa.";
+                }
+                else if (account == null)
                 {
                     model.Message = "Tài khoản hoặc mật khẩu bị sai.";
-                    view = View(model);
                 }
                 else
                 {
-                    HttpContext.Session.SetInt32("id", account.Id);
-                    HttpContext.Session.SetString("name", account.Name);
-                    if (account.Role == ROLE.MANAGER)
-                    {
-                        HttpContext.Session.SetString("role", "manager");
-                        HttpContext.Session.SetInt32("isManager", 1);
-                        HttpContext.Session.SetInt32("isWorker", 0);
-                    }
-
-                    else
-                    {
-                        HttpContext.Session.SetString("role", "worker");
-                        HttpContext.Session.SetInt32("isManager", 0);
-                        HttpContext.Session.SetInt32("isWorker", 1);
-                    }
+                    this.SetSession(account);
                     return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 model.Message = "Tài khoản này không tồn tại.";
-                view = View(model);
             }
             return view;
         }
@@ -77,9 +67,24 @@ namespace MvcClient.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction(nameof(Index)); // return to index
+            return RedirectToAction(nameof(Index));
         }
-        // t nói r, do đã login nó chứa session, nên sẽ thành infinity loop nếu cứ direct về login/index, phải clear session
-
+        private void SetSession(User account)
+        {
+            HttpContext.Session.SetInt32("id", account.Id);
+            HttpContext.Session.SetString("name", account.Name);
+            if (account.Role == ROLE.MANAGER)
+            {
+                HttpContext.Session.SetString("role", "manager");
+                HttpContext.Session.SetInt32("isManager", 1);
+                HttpContext.Session.SetInt32("isWorker", 0);
+            }
+            else
+            {
+                HttpContext.Session.SetString("role", "worker");
+                HttpContext.Session.SetInt32("isManager", 0);
+                HttpContext.Session.SetInt32("isWorker", 1);
+            }
+        }
     }
 }

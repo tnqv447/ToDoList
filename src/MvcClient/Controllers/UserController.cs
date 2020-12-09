@@ -32,17 +32,14 @@ namespace MvcClient.Controllers
         {
             var model = new UserModel();
             return View(model);
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = model.User;
-
-            // MyEnum myEnum = (MyEnum)Enum.Parse(typeof(MyEnum), myString);
-            // (ROLE)Enum.parse(typeof(ROLE), 'WORKER')
             if (ModelState.IsValid)
             {
                 this._unitOfWork.Users.Add(source, user);
@@ -76,6 +73,7 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = model.User;
 
             User oldUser = this._unitOfWork.Users.GetBy(user.Id);
@@ -88,6 +86,7 @@ namespace MvcClient.Controllers
             if (ModelState.IsValid)
             {
                 this._unitOfWork.Users.Update(source, oldUser);
+                ViewBag.Message = "Cập nhật thông tin nhân viên " + oldUser.Name + " thành công!";
             }
             return View();
         }
@@ -95,16 +94,21 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult Disable(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = this._unitOfWork.Users.GetBy(model.User.Id);
+            Console.WriteLine(user.Id + " " + user.Name);
             this._unitOfWork.Users.Disable(source, user);
+            ViewBag.Message = "Khóa nhân viên " + user.Name + " thành công!";
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public IActionResult Active(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = this._unitOfWork.Users.GetBy(model.User.Id);
             this._unitOfWork.Users.Activate(source, user);
+            ViewBag.Message = "Mở khóa nhân viên " + user.Name + " thành công!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -123,6 +127,7 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Profile(UserModel model)
         {
+            source = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
             User user = model.User;
 
             User oldUser = this._unitOfWork.Users.GetBy(user.Id);
@@ -135,9 +140,9 @@ namespace MvcClient.Controllers
                 this._unitOfWork.Users.Update(source, oldUser);
                 HttpContext.Session.SetString("name", oldUser.Name);
                 model.User = oldUser;
+                ViewBag.Message = "Cập nhật thông tin " + oldUser.Name + " thành công!";
             }
             return View(model);
         }
-
     }
 }
