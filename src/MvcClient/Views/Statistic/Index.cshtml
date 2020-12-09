@@ -26,6 +26,17 @@
 
             </div>
 
+            <div class="row justify-content-center">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <h2 class="text-white font-weight-bold text-uppercase">Tổng số công việc</h2>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <h2 class="text-white font-weight-light font-italic">@Model.Analyze.TasksCount</h2>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-xl-7 order-xl-1">
                     <div class="card">
@@ -37,19 +48,6 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h4 class="card-title">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>Tổng số công việc</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <p class="card-text">@Model.Analyze.TasksCount</p>
-                                    </div>
-                                </div>
-                            </h4>
-                            <hr class="my-4" />
                             <form method="POST">
                                 <div class="pl-lg-4">
                                     <div class="row">

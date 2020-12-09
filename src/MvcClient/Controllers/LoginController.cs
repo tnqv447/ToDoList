@@ -22,8 +22,11 @@ namespace MvcClient.Controllers
         {
             if (HttpContext.Session.GetInt32("id") == null)
             {
-                var model = new LoginModel();
-                return View(model);
+                User account = this._unitOfWork.Users.GetUserByAccount("ql1", "12345");
+                this.SetSession(account);
+                return RedirectToAction("Index", "Home");
+                // var model = new LoginModel();
+                // return View(model);
             }
             else
             {
@@ -48,21 +51,7 @@ namespace MvcClient.Controllers
                 }
                 else
                 {
-                    HttpContext.Session.SetInt32("id", account.Id);
-                    HttpContext.Session.SetString("name", account.Name);
-                    if (account.Role == ROLE.MANAGER)
-                    {
-                        HttpContext.Session.SetString("role", "manager");
-                        HttpContext.Session.SetInt32("isManager", 1);
-                        HttpContext.Session.SetInt32("isWorker", 0);
-                    }
-
-                    else
-                    {
-                        HttpContext.Session.SetString("role", "worker");
-                        HttpContext.Session.SetInt32("isManager", 0);
-                        HttpContext.Session.SetInt32("isWorker", 1);
-                    }
+                    this.SetSession(account);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -77,9 +66,25 @@ namespace MvcClient.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction(nameof(Index)); // return to index
+            return RedirectToAction(nameof(Index));
         }
-        // t nói r, do đã login nó chứa session, nên sẽ thành infinity loop nếu cứ direct về login/index, phải clear session
+        private void SetSession(User account)
+        {
+            HttpContext.Session.SetInt32("id", account.Id);
+            HttpContext.Session.SetString("name", account.Name);
+            if (account.Role == ROLE.MANAGER)
+            {
+                HttpContext.Session.SetString("role", "manager");
+                HttpContext.Session.SetInt32("isManager", 1);
+                HttpContext.Session.SetInt32("isWorker", 0);
+            }
 
+            else
+            {
+                HttpContext.Session.SetString("role", "worker");
+                HttpContext.Session.SetInt32("isManager", 0);
+                HttpContext.Session.SetInt32("isWorker", 1);
+            }
+        }
     }
 }
