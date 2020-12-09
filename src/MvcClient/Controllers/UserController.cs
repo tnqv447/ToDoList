@@ -42,6 +42,7 @@ namespace MvcClient.Controllers
             User user = model.User;
             if (ModelState.IsValid)
             {
+                user.Status = USER_STATUS.ACTIVE;
                 this._unitOfWork.Users.Add(source, user);
             }
             return RedirectToAction(nameof(Index));
