@@ -35,7 +35,7 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult Index(LoginModel model)
         {
-            string user = model.Username;
+            string user = model.Username.Trim();
             string pass = model.Password;
             ViewResult view = View();
             if (this._unitOfWork.Users.isUserNameExists(user))
