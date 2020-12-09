@@ -87,7 +87,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-name">Vị trí</label>
                                                 <select class="form-control" asp-for="User.Role"
-                                                    asp-items="Html.GetEnumSelectList<ROLE>()">
+                                                    asp-items="Html.GetEnumSelectList<Role>()">
                                                 </select>
                                             </div>
                                         </div>
@@ -95,7 +95,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-name">Trạng thái</label>
                                                 <select class="form-control" asp-for="User.Status"
-                                                    asp-items="Html.GetEnumSelectList<USER_STATUS>()">
+                                                    asp-items="Html.GetEnumSelectList<UserStatus>()">
                                                 </select>
                                             </div>
                                         </div>
