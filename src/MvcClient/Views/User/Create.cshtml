@@ -43,7 +43,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-name">Họ và tên</label>
-                                                <input type="text" asp-for="User.Name" class="form-control">
+                                                <input asp-for="User.Name" class="form-control">
                                                 <span asp-validation-for="User.Name" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -51,7 +51,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-phone">Số điện
                                                     thoại</label>
-                                                <input type="tel" asp-for="User.PhoneNumber" class="form-control">
+                                                <input asp-for="User.PhoneNumber" class="form-control">
                                                 <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -60,8 +60,8 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-address">Địa chỉ</label>
-                                                <input id="input-address" class="form-control"
-                                                    placeholder="Home Address" asp-for="User.Address" type="text">
+                                                <input class="form-control" placeholder="Home Address"
+                                                    asp-for="User.Address">
                                                 <span asp-validation-for="User.Address" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -76,7 +76,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-username">Tên tài
                                                     khoản</label>
-                                                <input type="text" asp-for="User.Username" class="form-control">
+                                                <input asp-for="User.Username" class="form-control">
                                                 <span asp-validation-for="User.Username" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -93,15 +93,17 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-username">Mật khẩu</label>
-                                                <input type="password" asp-for="User.Password" class="form-control">
-                                                <span asp-validation-for="User.Password" class="text-danger"></span>
+                                                <input asp-for="User.Password" class="form-control">
+                                                <span type="password" asp-validation-for="User.Password"
+                                                    class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="form-control-label" for="input-username">Nhập lại mật
                                                     khẩu</label>
-                                                <input type="password" asp-for="User.Password" class="form-control">
+                                                <input type="password" asp-for="User.ConfirmPassword"
+                                                    class="form-control">
                                             </div>
                                         </div>
                                     </div>
