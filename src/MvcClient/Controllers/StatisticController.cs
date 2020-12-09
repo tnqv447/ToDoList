@@ -36,8 +36,6 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult Index(StatisticModel model)
         {
-            this.startDate = model.StartDate;
-            this.endDate = model.EndDate;
             model.Analyze = this._service.AnalyzeByTasks(model.StartDate, model.EndDate);
             model.Users = this._unitOfWork.Users.GetAll();
             return View(model);
@@ -53,7 +51,6 @@ namespace MvcClient.Controllers
             model.StartDate = this.startDate;
             model.EndDate = this.endDate;
             model.Analyze = this._service.AnalyzeByUser(user, model.StartDate, model.EndDate);
-
             return View(model);
         }
         [HttpPost]

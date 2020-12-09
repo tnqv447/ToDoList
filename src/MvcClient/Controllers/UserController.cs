@@ -32,7 +32,6 @@ namespace MvcClient.Controllers
         {
             var model = new UserModel();
             return View(model);
-
         }
 
         [HttpPost]
@@ -40,9 +39,6 @@ namespace MvcClient.Controllers
         public IActionResult Create(UserModel model)
         {
             User user = model.User;
-
-            // MyEnum myEnum = (MyEnum)Enum.Parse(typeof(MyEnum), myString);
-            // (ROLE)Enum.parse(typeof(ROLE), 'WORKER')
             if (ModelState.IsValid)
             {
                 this._unitOfWork.Users.Add(source, user);
@@ -88,6 +84,7 @@ namespace MvcClient.Controllers
             if (ModelState.IsValid)
             {
                 this._unitOfWork.Users.Update(source, oldUser);
+                ViewBag.Message = "Cập nhật thông tin nhân viên " + oldUser.Name + " thành công!";
             }
             return View();
         }
@@ -97,6 +94,7 @@ namespace MvcClient.Controllers
         {
             User user = this._unitOfWork.Users.GetBy(model.User.Id);
             this._unitOfWork.Users.Disable(source, user);
+            ViewBag.Message = "Khóa nhân viên " + user.Name + " thành công!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -105,6 +103,7 @@ namespace MvcClient.Controllers
         {
             User user = this._unitOfWork.Users.GetBy(model.User.Id);
             this._unitOfWork.Users.Activate(source, user);
+            ViewBag.Message = "Mở khóa nhân viên " + user.Name + " thành công!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -135,9 +134,9 @@ namespace MvcClient.Controllers
                 this._unitOfWork.Users.Update(source, oldUser);
                 HttpContext.Session.SetString("name", oldUser.Name);
                 model.User = oldUser;
+                ViewBag.Message = "Cập nhật thông tin " + oldUser.Name + " thành công!";
             }
             return View(model);
         }
-
     }
 }

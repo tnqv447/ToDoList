@@ -32,7 +32,6 @@ namespace MvcClient.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
         }
 
         [HttpPost]
@@ -40,14 +39,17 @@ namespace MvcClient.Controllers
         {
             string user = model.Username.Trim();
             string pass = model.Password.Trim();
-            ViewResult view = View();
+            ViewResult view = View(model);
             if (this._unitOfWork.Users.isUserNameExists(user))
             {
                 User account = this._unitOfWork.Users.GetUserByAccount(user, pass);
-                if (account == null)
+                if (account.Status == USER_STATUS.DISABLED)
+                {
+                    model.Message = "Tài khoản này đã bị khóa.";
+                }
+                else if (account == null)
                 {
                     model.Message = "Tài khoản hoặc mật khẩu bị sai.";
-                    view = View(model);
                 }
                 else
                 {
@@ -58,7 +60,6 @@ namespace MvcClient.Controllers
             else
             {
                 model.Message = "Tài khoản này không tồn tại.";
-                view = View(model);
             }
             return view;
         }
@@ -78,7 +79,6 @@ namespace MvcClient.Controllers
                 HttpContext.Session.SetInt32("isManager", 1);
                 HttpContext.Session.SetInt32("isWorker", 0);
             }
-
             else
             {
                 HttpContext.Session.SetString("role", "worker");
