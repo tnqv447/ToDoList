@@ -228,14 +228,14 @@ namespace MvcClient.Controllers
                             break;
                         case "Scope":
                             int code = Int32.Parse(val);
-                            if (code == 0)
+                            if (code.Equals(0))
                             {
                                 task.Scope = SCOPE.PUBLIC;
                                 _unitOfWork.ToDoTasks.SetPublic(user, task);
                             }
                             else
                             {
-                                if (code == 1)
+                                if (code.Equals(1))
                                 {
                                     task.Scope = SCOPE.PRIVATE;
                                     _unitOfWork.ToDoTasks.SetPrivate(user, task);
@@ -248,28 +248,27 @@ namespace MvcClient.Controllers
                             break;
                         case "Status":
                             int stt_code = Int32.Parse(val);
-                            if (stt_code == 0)
+                            if (stt_code.Equals(0))
                             {
                                 task.Status = STATUS.NEW;
                                 _unitOfWork.ToDoTasks.SetNew(user, task);
                             }
                             else
                             {
-                                if (stt_code == 1)
+                                if (stt_code.Equals(1))
                                 {
                                     task.Status = STATUS.ON_PROGRESS;
                                     _unitOfWork.ToDoTasks.SetOnProgress(user, task);
                                 }
                                 else
                                 {
-                                    if (stt_code == 2)
+                                    if (stt_code.Equals(2))
                                     {
                                         task.Status = STATUS.DONE;
                                         _unitOfWork.ToDoTasks.SetDone(user, task);
                                     }
                                 }
                             }
-                            _unitOfWork.ToDoTasks.Update(user, task);
                             temp.Clear();
                             temp.Add("check", response);
                             temp.Add("status", task.StatusName);
