@@ -9,6 +9,7 @@ namespace MvcClient.Models
     {
         public AnalyzeUserTasks Analyze { get; set; }
         public IList<User> Users { get; set; }
+        public IList<ToDoTask> Tasks { get; set; }
         public int id { get; set; }
         public string UserName { get; set; }
         public DateTime StartDate { get; set; }

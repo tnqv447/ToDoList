@@ -47,6 +47,7 @@ namespace MvcClient.Controllers
         {
             var model = new StatisticModel();
             var user = _unitOfWork.Users.GetBy(id);
+            model.Tasks = user.ToDoTasks;
             model.UserName = user.Name;
             model.id = id;
             model.StartDate = this.startDate;
@@ -58,9 +59,8 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult UserStatistic(StatisticModel model)
         {
-            startDate = model.StartDate;
-            endDate = model.EndDate;
             var user = _unitOfWork.Users.GetBy(model.id);
+            model.Tasks = user.ToDoTasks;
             model.UserName = user.Name;
             model.Analyze = this._service.AnalyzeByUser(user, model.StartDate, model.EndDate);
             return View(model);
