@@ -12,8 +12,8 @@ namespace AppCore.Services
         IList<DbLog> Search(IList<DbLog> logs, string searchString, int? searchId, ACTION? action, DateTime execDate, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ACTION);
 
         //sort
-        void Sort(IList<User> users, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING);
-        void Sort(IList<ToDoTask> tasks, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING);
-        void Sort(IList<DbLog> logs, SORT_ORDER order = SORT_ORDER.ASCENDING);
+        IList<User> Sort(IList<User> users, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING);
+        IList<ToDoTask> Sort(IList<ToDoTask> tasks, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING);
+        IList<DbLog> Sort(IList<DbLog> logs, SORT_ORDER order = SORT_ORDER.ASCENDING);
     }
 }
