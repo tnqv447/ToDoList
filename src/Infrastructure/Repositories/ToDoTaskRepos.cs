@@ -19,6 +19,16 @@ namespace Infrastructure.Repositories
             var joinedTask = this._context.JointUsers.Where(m => m.UserId.Equals(userId)).Select(m => m.ToDoTaskId);
             return tasks?.Where(m => m.RegisteredUserId.Equals(userId) || joinedTask.Contains(m.Id) || m.Scope.Equals(SCOPE.PUBLIC)).ToList() ?? null;
         }
+        public IList<int> GetListId()
+        {
+            var result = _context.ToDoTasks.Select(m => m.Id).ToList();
+            return result;
+        }
+        public IList<string> GetListTitle()
+        {
+            var result = _context.ToDoTasks.Select(m => m.Title).ToList();
+            return result;
+        }
         public void SetNew(User source, ToDoTask task)
         {
             this.UpdateStatus(source, task, STATUS.NEW);

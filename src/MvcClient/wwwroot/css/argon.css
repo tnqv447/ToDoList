@@ -2743,7 +2743,7 @@ pre code
 .form-control[readonly]
 {
     opacity: 1; 
-    background-color: #ffffff;
+    background-color: #696666;
 }
 
 select.form-control:focus::-ms-value

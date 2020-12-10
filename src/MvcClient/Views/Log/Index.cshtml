@@ -1,4 +1,5 @@
 @model LogViewModel
+@using AppCore.Models
 @using Microsoft.AspNetCore.Http
 @{
     ViewData["Title"] = "Log";
@@ -10,7 +11,7 @@
 
 }
 
-<div class="header bg-primary">
+<div class="header bg-primary pb-3">
     <div class="container-fluid">
         <div class="header-body">
             <div class="row align-items-center py-4">
@@ -26,12 +27,111 @@
                     </nav>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <h4 class="text-white d-inline-block mb-2">Bộ lọc</h4>
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
+                        <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+                            <div class="row mb-4">
+                                <div class="col-lg-2">
+                                    <div style=" border-radius: .25rem" class="form-group mb-0">
+
+                                        <select id="action_search" style="background-color:#ffffff;" class=" form-control"
+                                            asp-items="Html.GetEnumSelectList<LOG_SEARCH>()">
+                                        </select>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group mb-0">
+                                        <div class="input-group input-group-alternative input-group-merge">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            </div>
+                                            <input id="txt_search" class="form-control" id="search_user_name"
+                                                data-request-url='@Url.Action("SearchTask","Home")'
+                                                placeholder="Nhập nội dung cần tìm..." type="text" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 mr-4">
+                                    <div class="form-group">
+
+                                        <input id="date_search" style="background-color:#ffffff" class="form-control date"
+                                            value='@DateTime.Now.ToString("dd/MM/yyyy")'>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 ml-2 mr-3">
+                                    <div class="form-group">
+                                        <select id="action_log" style="background-color:#ffffff" class="form-control"
+                                            asp-items="Html.GetEnumSelectList<ACTION>()" disabled>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 ml-2">
+                                    <button id="send_filter" class="btn btn-secondary"
+                                        data-request-url='@Url.Action("FilterLog","Log")'>
+                                        LỌC
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-2 mr-1">
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label text-white" for="task-scope">Danh sách người
+                                            dùng</label>
+                                        <select id="user_name" style="background-color:#ffffff" class="form-control"
+                                            asp-items="@Model.userNames" disabled>
+                                            <option selected="selected" value="" disabled>--Chọn người dùng--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label text-white" for="task-scope">Danh sách ID công
+                                            việc</label>
+                                        <select id="task_id" style="background-color:#ffffff" class="form-control"
+                                            asp-items="@Model.taskIds" disabled>
+                                            <option selected="selected" value="" disabled>--Chọn ID công việc--</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label text-white" for="task-scope">Danhs sách ID người
+                                            dùng</label>
+                                        <select id="user_id" style="background-color:#ffffff" class="form-control"
+                                            asp-items="@Model.userIds" disabled>
+                                            <option selected="selected" value="" disabled>--Chọn ID người dùng--</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="container-fluid mt-6">
-    <div id="partial">
-        <partial name="_LogList" model="@Model" />
+    <div class="container-fluid mt-6">
+
+
+        <div id="partial">
+            <partial name="_LogList" model="@Model" />
+        </div>
+
     </div>
-    
-</div>

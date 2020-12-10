@@ -55,26 +55,26 @@ namespace AppCore.Services
             switch (type)
             {
                 case SEARCH_SORT_TYPE.EXEC_USER_NAME:
-                    arr = arr.Where(m => m.ExecUserName.Contains(searchString.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+                    arr = logs.Where(m => m.ExecUserName.Contains(searchString.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
                     break;
                 case SEARCH_SORT_TYPE.TASK_NAME:
-                    arr = arr.Where(m => !m.ActionTarget.Equals(ACTION_TARGET.USER)
+                    arr = logs.Where(m => !m.ActionTarget.Equals(ACTION_TARGET.USER)
                        && m.TargetName.Contains(searchString.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
                     break;
                 case SEARCH_SORT_TYPE.EXEC_USER_ID:
                     if (searchId == null) break;
-                    arr = arr.Where(m => m.ExecUserId.Equals(searchId)).ToList();
+                    arr = logs.Where(m => m.ExecUserId.Equals(searchId)).ToList();
                     break;
                 case SEARCH_SORT_TYPE.TASK_ID:
                     if (searchId == null) break;
-                    arr = arr.Where(m => !m.ActionTarget.Equals(ACTION_TARGET.USER) && m.TargetId.Equals(searchId)).ToList();
+                    arr = logs.Where(m => !m.ActionTarget.Equals(ACTION_TARGET.USER) && m.TargetId.Equals(searchId)).ToList();
                     break;
                 case SEARCH_SORT_TYPE.EXEC_DATE:
-                    arr = arr.Where(m => DateTime.Compare(m.ExecDate, execDate) >= 0).ToList();
+                    arr = logs.Where(m => DateTime.Compare(m.ExecDate, execDate) >= 0).ToList();
                     break;
                 default:
                     if (action == null) break;
-                    arr = arr.Where(m => m.Action.Equals(action)).ToList();
+                    arr = logs.Where(m => m.Action.Equals(action)).ToList();
                     break;
             }
 

@@ -29,154 +29,161 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="col-xl-7 order-xl-1">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Thống kê nhân viên @Model.UserName</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST">
-                            <input type="hidden" asp-for="@Model.id" />
-                            <input type="hidden" asp-for="@Model.Analyze.UserId" />
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="form-control-label">Ngày bắt
-                                                đầu</label>
-                                            <input class="form-control" type="date" asp-for="@Model.StartDate">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="form-control-label">Ngày kết
-                                                thúc</label>
-                                            <input class="form-control" type="date" asp-for="@Model.EndDate">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <div class="form-group"><button type="submit" class="btn btn-primary"><i
-                                                    class="fas fa-search"></i></button></div>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="my-4" />
-                            <!-- Count -->
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <h3>Tổng số công việc</h3>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <p class="card-text">@Model.Analyze.TasksCount</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-name">Hoàn thành</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <p class="card-text">@Model.Analyze.TaskDoneCount</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-name">Mới</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <p class="card-text">@Model.Analyze.TaskNewCount</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-name">Đang tiến
-                                                hành</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <p class="card-text">@Model.Analyze.TaskOnProgressCount</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-name">Trễ hạn</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <p class="card-text">@Model.Analyze.TaskDelayedCount</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="my-4" />
-                        </form>
+    </div>
+</div>
+<div class="container-fluid mt-6">
+    <div class="row">
+        <div class="col-xl-6 order-xl-1">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Thống kê nhân viên @Model.UserName</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-5 order-xl-2">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Danh sách công việc trễ hạn</h3>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" asp-for="@Model.id" />
+                        <input type="hidden" asp-for="@Model.Analyze.UserId" />
+                        <div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label for="example-date-input" class="form-control-label">Ngày bắt
+                                            đầu</label>
+                                        <input class="form-control" type="date" asp-for="@Model.StartDate">
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label for="example-date-input" class="form-control-label">Ngày kết
+                                            thúc</label>
+                                        <input class="form-control" type="date" asp-for="@Model.EndDate">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <button type="submit" style="margin-top:30px;margin-bottom:23px"
+                                            class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            @if (Model.Tasks == null || Model.Tasks.Count() == 0)
-                            {
-                                <h3>Không có công việc</h3>
-                            }
-                            else
-                            {
-                                <table class="table align-items-center table-flush">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Công việc</th>
-                                            <th scope="col">Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="list">
-                                        @foreach (var item in @Model.Tasks)
-                                        {
-                                            <tr>
-                                                <th scope="row">@item.Id</th>
-                                                <td class="budget">@item.Title</td>
-                                                <td>
-                                                    @if (DateTime.Compare(item.EndDate.Date, DateTime.Today) > 0)
-                                                    {
-                                                        <span class="badge badge-danger">Trễ hạn</span>
-                                                    }
-                                                    else if (item.Status == STATUS.DONE)
-                                                    {
-                                                        <span class="badge badge-success">Đã hoàn thành</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge badge-secondary">Đang tiến hành</span>
-                                                    }
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
+                        <hr class="my-4" />
+                        <!-- Count -->
+                        <div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <h3>Tổng số công việc</h3>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="card-text">@Model.Analyze.TasksCount</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-name">Hoàn thành</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="card-text">@Model.Analyze.TaskDoneCount</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-name">Mới</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="card-text">@Model.Analyze.TaskNewCount</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-name">Đang tiến
+                                            hành</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="card-text">@Model.Analyze.TaskOnProgressCount</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-name">Trễ hạn</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="card-text">@Model.Analyze.TaskDelayedCount</p>
+                                </div>
+                            </div>
                         </div>
+                        <hr class="my-4" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 order-xl-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Danh sách công việc trễ hạn</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        @if (Model.Tasks == null || Model.Tasks.Count() == 0)
+                        {
+                            <h3>Không có công việc</h3>
+                        }
+                        else
+                        {
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Công việc</th>
+                                        <th scope="col">Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    @foreach (var item in @Model.Tasks)
+                                    {
+                                        <tr>
+                                            <th scope="row">@item.Id</th>
+                                            <td class="budget">@item.Title</td>
+                                            <td>
+                                                @if (DateTime.Compare(item.EndDate.Date, DateTime.Today) > 0)
+                                                {
+                                                    <span class="badge badge-danger">Trễ hạn</span>
+                                                }
+                                                else if (item.Status == STATUS.DONE)
+                                                {
+                                                    <span class="badge badge-success">Đã hoàn thành</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-secondary">Đang tiến hành</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
                     </div>
                 </div>
             </div>

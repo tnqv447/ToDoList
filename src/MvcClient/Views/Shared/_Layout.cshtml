@@ -3,6 +3,12 @@
     string name = "";
     string detail = "/User/Profile/" + Context.Session.GetInt32("id");
     name = Context.Session.GetString("name");
+    string path = Context.Request.Path;
+    string home = path.Equals("/") ? "active active_pro" : "";
+    string user = path.Equals("/User") ? "active active_pro" : "";
+    string log = path.Equals("/Log") ? "active active_pro" : "";
+    string statistic = path.Equals("/Statistic") ? "active active_pro" : "";
+    @* string home = Contex *@
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -38,26 +44,26 @@
             <div class="navbar-inner">
                 <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" asp-action="Index" asp-controller="Home">
+                        <li class="nav-item  ">
+                            <a class="nav-link @home" asp-action="Index" asp-controller="Home">
                                 <i class="ni ni-tv-2 text-primary"></i>
                                 <span class="nav-link-text">Trang chủ</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="User">
+                        <li class="nav-item ">
+                            <a class="nav-link @user" asp-action="Index" asp-controller="User">
                                 <i class="ni ni-circle-08 text-primary"></i>
                                 <span class="nav-link-text">Quản lý nhân viên</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Log">
+                        <li class="nav-item ">
+                            <a class="nav-link @log" asp-action="Index" asp-controller="Log">
                                 <i class="ni ni-collection text-primary"></i>
                                 <span class="nav-link-text">Nhật ký hoạt động</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Statistic">
+                        <li class="nav-item ">
+                            <a class="nav-link @statistic" asp-action="Index" asp-controller="Statistic">
                                 <i class="ni ni-chart-bar-32 text-primary"></i>
                                 <span class="nav-link-text">Thống kê</span>
                             </a>

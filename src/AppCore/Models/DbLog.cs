@@ -88,7 +88,7 @@ namespace AppCore.Models
                     {
                         switch (Action)
                         {
-                            case ACTION.ADD: res += String.Format("đã || thêm || công việc '{0}' [ID: {1}], trang thái {2}", TargetName, TargetId, TargetStatusName); break;
+                            case ACTION.ADD: res += String.Format("đã || thêm || công việc '{0}' [ID: {1}]", TargetName, TargetId, TargetStatusName); break;
                             case ACTION.DELETE: res += String.Format("đã || xóa || công việc '{0}'  [ID: {1}]", TargetName, TargetId); break;
                             case ACTION.UPDATE:
                                 string field = "";

@@ -25,12 +25,17 @@
                     <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>@item.ScopeName</td>
                     <td>
-                        <a id="@item.Id" class="btn btn-icon btn-info" asp-action="TaskDetail" asp-controller="home"
+                        <a class="btn btn-icon btn-info" asp-action="TaskDetail" asp-controller="home"
                             asp-route-taskId=@item.Id>
                             <span class="btn-inner--icon">
                                 <i class="ni ni-settings"></i></span>
                             <span class="btn-inner--text">Chi tiết</span>
                         </a>
+                        <button id="@item.Id" class="btn btn-icon btn-danger delete">
+                            <span class="btn-inner--icon">
+                                <i class="ni ni-fat-remove"></i></span>
+                            <span class="btn-inner--text">Xóa</span>
+                        </button>
                     </td>
                 </tr>
             }
@@ -38,6 +43,8 @@
         </tbody>
     </table>
 </div>
+<input id="delete_url" type="hidden" data-request-url='@Url.Action("DeleteTask","Home")'>
+<input id="page_index" type="hidden" value="@Model.Tasks.PageIndex">
 @{
     var prevDisabled = !Model.Tasks.HasPrevious ? "disabled" : "";
     var nextDisabled = !Model.Tasks.HasNext ? "disabled" : "";

@@ -3,19 +3,21 @@
     var old_title = $('#task-title').val();
     var old_describe = $('#task-description').val();
     var task_id = $('#task_id').val();
+    // set up date picker
     $('.date-picker-format').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
         minDate: 0,
-        startDate: new Date()
-
+        startDate: new Date(),
+        useCurrent: true
+    });
+    $('.date').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        userCurrent: true
     });
     $('#task-end-date').datepicker('option', 'minDate', 0);
-    $('#task-end-date').change(function () {
-        var date_selected = $(this).val();
-        var act = 'Day';
-        updateTask(act, date_selected)
-    });
+    // add new task ajax
     $("#add_task").click(function () {
         $.ajax({
             url: $(this).attr("formaction"),
@@ -24,25 +26,73 @@
             $("#create-form").modal("show");
         })
     })
+    // delete task
+    $(document).on('click','.delete',function(){
+        var taskId = $(this).attr('id');
+        var pageIndex = $('#page_index').val();
+        $.ajax({
+            type:"POST",
+            url: $('#delete_url').data('request-url'),
+            data:{
+                taskId:taskId,
+                pageNumber: pageIndex
+            },
+            success: function(result){
+                $('#partial').html(result);
+                $('#text_success').text('Xóa thành công');
+                $('#success').fadeIn();
+            },
+            complete: function(){
+                setTimeout(function(){
+                    $('#success').fadeOut();
+                    $('#failed').fadeOut();
+                },2000)
+            },
+            error: function(){
+                $('#text_failed').text('Xóa thất bại');
+                $('#failed'.fadeIn());
+            }
+        })
+    });
+    // set up data + function ajax post update task detail
+    $('#task-end-date').change(function () {
+        var date_selected = $(this).val();
+        if(date_selected == null || date_selected == ''){
+            alert("Hãy chọn ngày kết thúc");
+        }
+        else{
+            var act = 'Day';
+            updateTask(act, date_selected)
+        }
+        
+    });
+    
     $(document).on('change', '#task-registered-user', function () {
         var act = 'Registered';
         var value = $('#task-registered-user option:selected').val();
         updateTask(act, value)
     })
-
     $(document).on('keypress', '#task-title', function (e) {
         var action = 'Title';
         var value = $(this).val();
-        if (value == old_title) {
-            return;
-        }
-        else {
-            if (e.which == 13) {
-
-                updateTask(action, value.trim());
-                old_title = value.trim();
+        if (e.which == 13) {
+            if (value == old_title) {
+                return;
             }
+            else {
+                if(value == "" || value == null){
+                    alert("Hãy nhập tên công việc");
+                    return;
+                }
+                else{
+                    updateTask(action, value.trim());
+                    old_title = value.trim();
+                }
+                
+            }
+            
         }
+        
     });
 
     $(document).on('focusout', '#task-title', function (e) {
@@ -97,8 +147,14 @@
     $(document).on('click', '#sendButton', function () {
         var act = 'Comment';
         var value = $('#userInput').val();
-        $('#userInput').val("");
-        updateTask(act, value);
+        if(value == null || value == ""){
+            alert("Hãy nhập bình luận");
+        }
+        else{
+            $('#userInput').val("");
+            updateTask(act, value);
+        }
+        
     })
     
     function setAddJointUser(id, role, name) {
@@ -242,6 +298,7 @@
     $('#navbar-search-main').submit(function(e){
         e.preventDefault();
     })
+    // for search bar
     $(document).on('keypress','#search_user_name',function(e){
         if(e.which==13){
             
@@ -261,6 +318,7 @@
             });
         }
     });
+    // paging
     $(document).on('click','.page-link',function(){
         var id = $(this).attr('id').slice(5);
         var searchString = $('#search_user_name').val();
@@ -284,5 +342,114 @@
                 alert("Không truy cập được dữ liệu");
             }
         })
+    }
+    $(document).on('change','#action_search',function(){
+        var value = $('#action_search option:selected').val();
+        switch(value){
+            case '0':
+                $('#txt_search').prop('disabled',true);
+                $('#date_search').prop('disabled',false);
+                $('#action_log').prop('disabled',true);
+                $('#task_id').prop('disabled',true);
+                $('#user_id').prop('disabled',true);
+                $('#user_name').prop('disabled',true);
+                break;
+            case '1':
+                $('#txt_search').prop('disabled',false);
+                $('#date_search').prop('disabled',true);
+                $('#action_log').prop('disabled',true);
+                $('#task_id').prop('disabled',true);
+                $('#user_id').prop('disabled',true);
+                $('#user_name').prop('disabled',true);
+                break;
+            case '2':
+                $('#txt_search').prop('disabled',true);
+                $('#date_search').prop('disabled',true);
+                $('#action_log').prop('disabled',true);
+                $('#task_id').prop('disabled',true);
+                $('#user_id').prop('disabled',true);
+                $('#user_name').prop('disabled',false);
+                break;
+            case '3':
+                $('#txt_search').prop('disabled',true);
+                $('#date_search').prop('disabled',true);
+                $('#action_log').prop('disabled',true);
+                $('#task_id').prop('disabled',false);
+                $('#user_id').prop('disabled',true);
+                $('#user_name').prop('disabled',true);
+                break;
+            case '4':
+                $('#txt_search').prop('disabled',true);
+                $('#date_search').prop('disabled',true);
+                $('#action_log').prop('disabled',true);
+                $('#task_id').prop('disabled',true);
+                $('#user_id').prop('disabled',false);
+                $('#user_name').prop('disabled',true);
+                break;
+            case '5':
+                $('#txt_search').prop('disabled',true);
+                $('#date_search').prop('disabled',true);
+                $('#action_log').prop('disabled',false);
+                $('#task_id').prop('disabled',true);
+                $('#user_id').prop('disabled',true);
+                $('#user_name').prop('disabled',true);
+                break;
+        }
+        
+    });
+    
+    $(document).on('click','#send_filter',function(){
+        var search_action = $('#action_search option:selected').val();
+        var url = $(this).data('request-url');
+        switch(search_action){
+            case '0':
+                var act = 'DateExec'
+                var value = $('#date_search').val();
+                SendFilter(act,value,url);
+                break;
+            case '1':
+                var act = 'TaskName'
+                var value = $('#txt_search').val().trim();
+                SendFilter(act,value,url);
+                break;
+            case '2':
+                var act = 'UserName'
+                var value = $('#user_name option:selected').val();
+                SendFilter(act,value,url);
+                break;
+            case '3':
+                var act = 'TaskId'
+                var value = $('#task_id option:selected').val();
+                SendFilter(act,value,url);
+                break;
+            case '4':
+                var act = 'UserId'
+                var value = $('#user_id option:selected').val();
+                SendFilter(act,value,url);
+                break;
+            case '5':
+                var act = 'Action'
+                var value = $('#action_log option:selected').val();
+                SendFilter(act,value,url);
+                break;
+        }
+    })
+    function SendFilter(action,value,url){
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        $.ajax({
+            type: "POST",
+            url: url,
+            
+            data:
+            {
+                __RequestVerificationToken: token,
+                value: value,
+                action: action
+            },
+            dataType:"html",
+            success: function(result){
+                $('#partial').html(result)
+            }
+        });
     }
 });

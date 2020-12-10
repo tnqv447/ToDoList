@@ -62,7 +62,6 @@ namespace MvcClient.Controllers
             }
             if (searchString == null || searchString.Equals(""))
             {
-                _service.Sort(temp, SEARCH_SORT_TYPE.ID, SORT_ORDER.DESCENDING);
                 tasks = PaginatedList<ToDoTask>.Create(temp, pageNumber, pageSize);
             }
             else
@@ -122,7 +121,17 @@ namespace MvcClient.Controllers
             return PartialView("_TaskList", view);
 
         }
+        [HttpPost]
+        public IActionResult DeleteTask(int taskId, int pageNumber)
+        {
+            var delTask = _unitOfWork.ToDoTasks.GetBy(taskId);
+            var user = _unitOfWork.Users.GetBy(HttpContext.Session.GetInt32("id").GetValueOrDefault());
+            _unitOfWork.ToDoTasks.Delete(user, delTask);
+            view = GetTaskViewModel(null, pageNumber);
+            return PartialView("_TaskList", view);
+        }
         [Route("Home/TaskDetail/{taskId:int}")]
+
         public IActionResult TaskDetail(int taskId)
         {
             if (HttpContext.Session.GetInt32("id") == null)

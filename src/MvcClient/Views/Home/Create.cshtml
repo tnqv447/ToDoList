@@ -165,6 +165,18 @@
                         success: function (result) {
                             $("#create-form").modal("hide");
                             $("#partial").html(result);
+                            $("#text_success").text("Thêm công việc thành công");
+                            $("#success").fadeIn();
+                        },
+                        complete: function () {
+                            setTimeout(function () {
+                                $("#success").fadeOut();
+                                $("failed").fadeOut();
+                            }, 2000)
+                        },
+                        error: function () {
+                            $("#text_failed").text("Thêm công việc thất bại");
+                            $("#failed").fadeIn();
                         }
                     });
                 }

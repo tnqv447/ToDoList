@@ -49,5 +49,15 @@ namespace Infrastructure.Repositories
             _context.DbLogs.Add(log);
             _context.SaveChanges();
         }
+        public IList<int> GetListId()
+        {
+            var result = _context.Users.Select(m => m.Id).ToList();
+            return result;
+        }
+        public IList<string> GetListName()
+        {
+            var result = _context.Users.Select(m => m.Name).ToList();
+            return result;
+        }
     }
 }

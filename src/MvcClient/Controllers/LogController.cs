@@ -17,14 +17,18 @@ namespace MvcClient.Controllers
         private IList<DbLog> logs;
         private LogViewModel view;
         private PaginatedList<DbLog> logPaging;
-        public SelectList LogSearch;
+        public SelectList userIds;
+        public SelectList taskIds;
+        public SelectList userNames;
         private readonly ISearchSortService _service;
         public LogController(IUnitOfWork unitOfWork, ILogger<HomeController> logger, ISearchSortService service)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _service = service;
-
+            userIds = new SelectList(_unitOfWork.Users.GetListId());
+            taskIds = new SelectList(_unitOfWork.ToDoTasks.GetListId());
+            userNames = new SelectList(_unitOfWork.Users.GetListName());
         }
         public IActionResult Index(int pageNumber = 1)
         {
@@ -40,7 +44,7 @@ namespace MvcClient.Controllers
             logs = _unitOfWork.DbLogs.GetAll();
             if (value == null || action == null)
             {
-                _service.Sort(logs, SORT_ORDER.DESCENDING);
+                logs = _service.Sort(logs, SORT_ORDER.DESCENDING);
                 logPaging = PaginatedList<DbLog>.Create(logs, pageNumber, pageSize);
             }
             else
@@ -105,7 +109,8 @@ namespace MvcClient.Controllers
 
                         break;
                 }
-                _service.Sort(temp, SORT_ORDER.DESCENDING);
+
+                temp = _service.Sort(temp, SORT_ORDER.DESCENDING);
                 logPaging = PaginatedList<DbLog>.Create(temp, pageNumber, pageSize);
 
                 // 1. Ngày thực hiện
@@ -116,11 +121,21 @@ namespace MvcClient.Controllers
                 // 6. Hành động
             }
             result.Logs = logPaging;
+            result.taskIds = taskIds;
+            result.userIds = userIds;
+            result.userNames = userNames;
             return result;
         }
         public IActionResult ItemPaging(int pageNumber, string value, string action)
         {
             view = GetViewModel(pageNumber, value, action);
+            return PartialView("_LogList", view);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult FilterLog(string value, string action)
+        {
+            view = GetViewModel(1, value, action);
             return PartialView("_LogList", view);
         }
     }
