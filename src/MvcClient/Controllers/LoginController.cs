@@ -43,13 +43,13 @@ namespace MvcClient.Controllers
             if (this._unitOfWork.Users.isUserNameExists(user))
             {
                 User account = this._unitOfWork.Users.GetUserByAccount(user, pass);
-                if (account.Status == USER_STATUS.DISABLED)
-                {
-                    model.Message = "Tài khoản này đã bị khóa.";
-                }
-                else if (account == null)
+                if (account == null)
                 {
                     model.Message = "Tài khoản hoặc mật khẩu bị sai.";
+                }
+                else if (account.Status == USER_STATUS.DISABLED)
+                {
+                    model.Message = "Tài khoản này đã bị khóa.";
                 }
                 else
                 {
