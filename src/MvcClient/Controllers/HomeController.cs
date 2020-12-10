@@ -62,6 +62,7 @@ namespace MvcClient.Controllers
             }
             if (searchString == null || searchString.Equals(""))
             {
+                _service.Sort(temp, SEARCH_SORT_TYPE.ID, SORT_ORDER.DESCENDING);
                 tasks = PaginatedList<ToDoTask>.Create(temp, pageNumber, pageSize);
             }
             else

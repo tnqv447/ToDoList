@@ -131,7 +131,7 @@ namespace AppCore.Models
                     }
             }
             var template = "{0}: " + res;
-            return String.Format(template, ExecDate.ToString("dd/MM/yyyy"));
+            return String.Format(template, ExecDate.ToString("dd/MM/yyyy H:mm:ss"));
         }
 
         public bool GetActionTarget(Type type)

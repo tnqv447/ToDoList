@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 namespace AppCore.Models
 {
@@ -86,10 +87,15 @@ namespace AppCore.Models
     }
     public enum ACTION
     {
+        [Display(Name = "Thêm")]
         ADD,
+        [Display(Name = "Xóa")]
         DELETE,
+        [Display(Name = "Cập nhật")]
         UPDATE,
+        [Display(Name = "Thay đổi trạng thái")]
         CHANGE_STATUS,
+        [Display(Name = "Thay đổi quyền chia sẻ")]
         CHANGE_SCOPE
     }
     public enum ACTION_TARGET

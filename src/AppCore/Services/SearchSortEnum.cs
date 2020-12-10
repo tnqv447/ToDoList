@@ -8,6 +8,7 @@ namespace AppCore.Services
     public enum SEARCH_SORT_TYPE
     {
         //GENERALL
+
         ID,
         NAME,
         STATUS,

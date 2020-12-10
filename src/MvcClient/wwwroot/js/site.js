@@ -264,11 +264,10 @@
     $(document).on('click','.page-link',function(){
         var id = $(this).attr('id').slice(5);
         var searchString = $('#search_user_name').val();
-        
-        Paging(id,searchString);
-    })
-    function Paging(pageNumber,searchString){
         var url = $('#getUrl').data('request-url');
+        Paging(id,searchString,url);
+    })
+    function Paging(pageNumber,searchString,url){
         $.ajax({
             type: 'GET',
             url: url,

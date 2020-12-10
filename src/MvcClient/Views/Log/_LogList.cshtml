@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col">
+        @foreach (var log in @Model.Logs)
+        {
+
+            var split = log.ToString().Split(" || ");
+            var name = split[0];
+            var action = split[1];
+            var field = split[2];
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="pl-lg-4">
+                        @name
+                        @if (@action.Trim().Equals("cập nhật"))
+                        {
+                            <span style="color:green; font-weight:600">
+                                @action
+                            </span>
+                        }
+                        else
+                        {
+                            if (@action.Trim().Equals("thêm"))
+                            {
+                                <span style="color:blue; font-weight:600">
+                                    @action
+                                </span>
+                            }
+                            else
+                            {
+                                if (@action.Trim().Equals("thay đổi"))
+                                {
+                                    <span style="color:purple; font-weight:600">
+                                        @action
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color:red; font-weight:600">
+                                        @action
+                                    </span>
+                                }
+
+                            }
+                        }
+                        @field
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+@{
+    var prevDisabled = !Model.Logs.HasPrevious ? "disabled" : "";
+    var nextDisabled = !Model.Logs.HasNext ? "disabled" : "";
+}
+<input type="hidden" id="getUrl" data-request-url='@Url.Action("ItemPaging","Log")'>
+
+<div class="row">
+    <div class="col">
+        <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+                <li class="page-item @prevDisabled">
+                    <a class="page-link" id="page_@(Model.Logs.PageIndex-1)" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                @for (var i = 0; i < Model.Logs.TotalPages; i++)
+                {
+                    var pageNumber = i + 1;
+                    var idLink = "page_" + pageNumber;
+                    if (pageNumber.Equals(@Model.Logs.PageIndex))
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" id="@idLink" data-request-url='@Url.Action("Paging","Home")'>
+                                @(i+1)
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" id="@idLink" data-requested-url='@Url.Action("Paging","Home")'>
+                                @(i+1)
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                    }
+
+                }
+                <li class="page-item @nextDisabled">
+                    <a class="page-link" id="page_@(Model.Logs.PageIndex+1)">
+                        <i class="fas fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
