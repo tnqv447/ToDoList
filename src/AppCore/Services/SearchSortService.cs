@@ -82,7 +82,7 @@ namespace AppCore.Services
         }
 
         //sort
-        public void Sort(IList<User> users, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING)
+        public IList<User> Sort(IList<User> users, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING)
         {
             switch (type)
             {
@@ -100,8 +100,9 @@ namespace AppCore.Services
                     break;
             }
             if (order.Equals(SORT_ORDER.DESCENDING)) users = users.Reverse().ToList();
+            return users;
         }
-        public void Sort(IList<ToDoTask> tasks, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING)
+        public IList<ToDoTask> Sort(IList<ToDoTask> tasks, SEARCH_SORT_TYPE type = SEARCH_SORT_TYPE.ID, SORT_ORDER order = SORT_ORDER.ASCENDING)
         {
             switch (type)
             {
@@ -119,15 +120,14 @@ namespace AppCore.Services
                     break;
             }
             if (order.Equals(SORT_ORDER.DESCENDING)) tasks = tasks.Reverse().ToList();
+            return tasks;
         }
 
-        public void Sort(IList<DbLog> logs, SORT_ORDER order = SORT_ORDER.ASCENDING)
+        public IList<DbLog> Sort(IList<DbLog> logs, SORT_ORDER order = SORT_ORDER.ASCENDING)
         {
             logs = logs.OrderBy(m => m.ExecDate).ToList();
-            if (order.Equals(SORT_ORDER.DESCENDING))
-            {
-                logs = logs.Reverse().ToList();
-            }
+            if (order.Equals(SORT_ORDER.DESCENDING)) logs = logs.Reverse().ToList();
+            return logs;
         }
     }
 }
