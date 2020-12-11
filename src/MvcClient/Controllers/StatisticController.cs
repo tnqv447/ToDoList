@@ -15,8 +15,8 @@ namespace MvcClient.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAnalysisService _service;
 
-        private DateTime startDate = DateTime.Now;
-        private DateTime endDate = DateTime.Now.AddDays(7);
+        private DateTime startDate = DateTime.Now.AddMonths(-3);
+        private DateTime endDate = DateTime.Now;
 
         public StatisticController(ILogger<User> logger, IUnitOfWork unitOfWork, IAnalysisService service)
         {

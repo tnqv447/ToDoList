@@ -11,6 +11,11 @@
         startDate: new Date(),
         useCurrent: true
     });
+    $('.date-picker').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        useCurrent: true
+    })
     $('.date').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
@@ -81,7 +86,11 @@
             }
             else {
                 if(value == "" || value == null){
-                    alert("Hãy nhập tên công việc");
+                    $('#text_failed').text('Tiêu đề công việc trống');
+                    $('#failed').fadeOut();
+                    setTimeout(function(){
+                        $('#failed').fadeIn();
+                    },2000)
                     return;
                 }
                 else{
@@ -98,13 +107,25 @@
     $(document).on('focusout', '#task-title', function (e) {
         var action = 'Title';
         var value = $(this).val();
+        
         if (value == old_title) {
             return;
         }
-        else {
-            updateTask(action, value.trim());
-            old_title = value.trim();
+        else{
+            if(value == null || value == ""){
+                $('#text_failed').text('Tiêu đề công việc trống');
+                $('#failed').fadeOut();
+                setTimeout(function(){
+                    $('#failed').fadeIn();
+                },2000)
+                return;
+            }
+            else {
+                updateTask(action, value.trim());
+                old_title = value.trim();
+            }
         }
+        
 
     });
     $(document).on('focusout ', '#task-description', function (e) {
@@ -148,7 +169,12 @@
         var act = 'Comment';
         var value = $('#userInput').val();
         if(value == null || value == ""){
-            alert("Hãy nhập bình luận");
+            $('#text_failed').text('Hãy nhập bình luận');
+            $('#failed').fadeIn();
+            setTimeout(function(){
+                $('#failed').fadeOut();
+            },1000)
+            return;
         }
         else{
             $('#userInput').val("");
