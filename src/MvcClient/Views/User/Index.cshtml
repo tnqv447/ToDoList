@@ -2,6 +2,7 @@
 @using AppCore.Models
 @{
     ViewData["Title"] = "Quản lý nhân viên";
+    int pageOne = 1;
 }
 @using Microsoft.AspNetCore.Http
 @{
@@ -43,7 +44,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" type="hidden" name="page" value="@Model.Users.PageIndex">
+                                <input class="form-control" type="hidden" name="page" value="@pageOne">
                                 <input class="form-control" type="text" name="searchName" value="@ViewData["searchName"]"
                                     placeholder="Nhập tên nhân viên ...">
                                 <div class="input-group-append">
