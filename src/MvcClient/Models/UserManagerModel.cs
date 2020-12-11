@@ -6,7 +6,7 @@ namespace MvcClient.Models
 {
     public class UserManagerModel
     {
-        public IList<User> Users { get; set; }
+        public PaginatedList<User> Users { get; set; }
         public IList<ROLE> Roles { get; set; }
         public string SearchName { get; set; }
         public UserManagerModel()

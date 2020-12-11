@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 using MvcClient.Models;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace MvcClient.Controllers
 {
@@ -21,12 +24,27 @@ namespace MvcClient.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string searchName = "")
         {
-            var users = _unitOfWork.Users.GetAll();
-            var model = new UserManagerModel();
-            model.Users = users;
+            var model = this.getUserView(page, searchName);
             return View(model);
+        }
+        public UserManagerModel getUserView(int page, string searchName)
+        {
+            var pageSize = 6;
+            var temp = _unitOfWork.Users.GetAll();
+            var model = new UserManagerModel();
+            // search
+            if (searchName != null && searchName.Trim() != "")
+            {
+                searchName = searchName.Trim().ToLower();
+                ViewData["searchName"] = searchName;
+                temp = temp.Where(a => a.Name.ToLower().IndexOf(searchName) != -1).ToList();
+            }
+            var users = PaginatedList<User>.Create(temp, page, pageSize);
+
+            model.Users = users;
+            return model;
         }
         public IActionResult Create()
         {
