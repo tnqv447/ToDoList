@@ -37,29 +37,33 @@ namespace MvcClient.Controllers
         [HttpPost]
         public IActionResult Index(LoginModel model)
         {
-            string user = model.Username.Trim();
-            string pass = model.Password.Trim();
-            ViewResult view = View(model);
-            if (this._unitOfWork.Users.isUserNameExists(user))
-            {
-                User account = this._unitOfWork.Users.GetUserByAccount(user, pass);
-                if (account == null)
+             ViewResult view = View(model);
+            if(model.Username == null || model.Password == null){
+                model.Message = "Không được để trống tài khoản và mật khẩu.";
+            }else{
+                string user = model.Username.Trim();
+                string pass = model.Password.Trim();
+                if (this._unitOfWork.Users.isUserNameExists(user))
                 {
-                    model.Message = "Tài khoản hoặc mật khẩu bị sai.";
-                }
-                else if (account.Status == USER_STATUS.DISABLED)
-                {
-                    model.Message = "Tài khoản này đã bị khóa.";
+                    User account = this._unitOfWork.Users.GetUserByAccount(user, pass);
+                    if (account == null)
+                    {
+                        model.Message = "Tài khoản hoặc mật khẩu bị sai.";
+                    }
+                    else if (account.Status == USER_STATUS.DISABLED)
+                    {
+                        model.Message = "Tài khoản này đã bị khóa.";
+                    }
+                    else
+                    {
+                        this.SetSession(account);
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
-                    this.SetSession(account);
-                    return RedirectToAction("Index", "Home");
+                    model.Message = "Tài khoản này không tồn tại.";
                 }
-            }
-            else
-            {
-                model.Message = "Tài khoản này không tồn tại.";
             }
             return view;
         }
