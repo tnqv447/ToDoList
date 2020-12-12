@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-         private readonly ToDoListContext _context;
+        private readonly ToDoListContext _context;
 
         public Repository(ToDoListContext context)
         {
@@ -29,7 +29,9 @@ namespace Infrastructure.Repositories
 
         public T Add(User source, T entity)
         {
-            var tracked = _context.Set<T>().Add(entity);
+            T toCreate = _context.Set<T>().CreateProxy();
+            _context.Entry(toCreate).CurrentValues.SetValues(entity);
+            var tracked = _context.Add(toCreate);
             _context.SaveChanges();
 
             var log = new DbLog();
@@ -43,11 +45,12 @@ namespace Infrastructure.Repositories
 
         public void Update(User source, T entity, CHANGE_FIELD field = CHANGE_FIELD.NONE)
         {
-            
+
             _context.Set<T>().Update(entity);
             _context.SaveChanges();
 
-            if(source != null){
+            if (source != null)
+            {
                 var log = new DbLog();
                 log.ExecUserId = source.Id;
                 log.Action = ACTION.UPDATE;
@@ -77,26 +80,36 @@ namespace Infrastructure.Repositories
         private void Logging(DbLog log, T entity)
         {
             var check = log.GetActionTarget(typeof(T));
-            if(check){
+            if (check)
+            {
                 log.ExecDate = DateTime.Now;
-                
-                if(typeof(T).Equals(typeof(Comment))){
+
+                if (typeof(T).Equals(typeof(Comment)))
+                {
                     var temp = entity as Comment;
                     log.TargetId = temp.ToDoTaskId;
                     log.TargetName = temp.ToDoTask.Title;
-                }else if(typeof(T).Equals(typeof(User))){
+                }
+                else if (typeof(T).Equals(typeof(User)))
+                {
                     var temp = entity as User;
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Name;
-                }else if(typeof(T).Equals(typeof(ToDoTask))){
+                }
+                else if (typeof(T).Equals(typeof(ToDoTask)))
+                {
                     var temp = entity as ToDoTask;
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
-                }else if(typeof(T).Equals(typeof(JointUser))){
+                }
+                else if (typeof(T).Equals(typeof(JointUser)))
+                {
                     var temp = (entity as JointUser).ToDoTask;
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
-                }else if(typeof(T).Equals(typeof(AttachedFile))){
+                }
+                else if (typeof(T).Equals(typeof(AttachedFile)))
+                {
                     var temp = _context.ToDoTasks.Find((entity as AttachedFile).ToDoTaskId);
                     log.TargetId = temp.Id;
                     log.TargetName = temp.Title;
@@ -105,7 +118,12 @@ namespace Infrastructure.Repositories
                 _context.Set<DbLog>().Add(log);
                 _context.SaveChanges();
             }
-            
+
+        }
+
+        public T Reload(T entity)
+        {
+            return _context.Entry<T>(entity).Entity;
         }
 
     }

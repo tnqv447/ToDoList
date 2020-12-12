@@ -101,7 +101,8 @@ namespace MvcClient.Controllers
             IList<ToDoTask> temp = new List<ToDoTask>();
             if (ModelState.IsValid)
             {
-                _unitOfWork.ToDoTasks.Add(user, new ToDoTask(task));
+                _unitOfWork.ToDoTasks.Add(user, task);
+
                 if (role.Equals("worker"))
                 {
                     temp = _unitOfWork.ToDoTasks.GetTasksForUser(userId);
@@ -113,10 +114,26 @@ namespace MvcClient.Controllers
                         temp = _unitOfWork.ToDoTasks.GetAll();
                     }
                 }
+
                 var pageNumber = (int)Math.Ceiling(temp.Count() / (double)6);
                 tasks = PaginatedList<ToDoTask>.Create(temp, pageNumber, 6);
+
                 view = new TaskViewModel(tasks);
 
+            }
+            else
+            {
+                foreach (var item in ModelState.Keys)
+                {
+                    if (ModelState[item].Errors != null)
+                    {
+                        var temp_err = ModelState[item].Errors.FirstOrDefault();
+                        if (temp_err != null)
+                        {
+                            Console.WriteLine(temp_err.ErrorMessage);
+                        }
+                    }
+                }
             }
             return PartialView("_TaskList", view);
 

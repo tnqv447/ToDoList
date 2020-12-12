@@ -9,13 +9,10 @@
         format: 'dd/mm/yyyy',
         minDate: 0,
         startDate: new Date(),
-        useCurrent: true
+        useCurrent: true,
+        dateFormat: 'yy/M/dd'
     });
-    $('.date-picker').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        useCurrent: true
-    })
+    
     $('.date').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',

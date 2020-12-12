@@ -132,18 +132,19 @@
             var token = $('input[name="__RequestVerificationToken"]', form).val();
             var title = $('#create-task-title').val();
             var day = $('#create-task-end-date').val();
-            var startDate = moment($('#create-task-start-date').val()).format('YYYY-DD-MM');
-            if (title.trim() == "" || title == null) {
+            var startDate = moment($('#create-task-start-date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+            if (title == null || title.trim() == "") {
                 $('#title_err').css('display', 'block');
             }
             else {
                 $('#title_err').css('display', 'none');
-                if (day == "" || day == null) {
+                if (day == null || day == "") {
                     $('#end_date_err').css('display', 'block');
                 }
                 else {
                     $('#end_date_err').css('display', 'none');
-                    var endDate = moment(day).format('YYYY-DD-MM');
+                    var endDate = moment(day, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
                     $.ajax({
                         type: "post",
@@ -171,12 +172,15 @@
                         complete: function () {
                             setTimeout(function () {
                                 $("#success").fadeOut();
-                                $("failed").fadeOut();
+                                $("#failed").fadeOut();
                             }, 2000)
                         },
                         error: function () {
                             $("#text_failed").text("Thêm công việc thất bại");
                             $("#failed").fadeIn();
+                            setTimeout(function () {
+                                $("#failed").fadeOut();
+                            }, 2000)
                         }
                     });
                 }
